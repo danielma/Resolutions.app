@@ -1,1 +1,3 @@
 github "groue/GRDB.swift"
+github "SwiftyJSON/SwiftyJSON"
+github "Alamofire/Alamofire"

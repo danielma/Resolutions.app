@@ -667,12 +667,38 @@
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                <windowController id="B8D-0N-5wS" customClass="RSWindowController" customModule="Resolutions" customModuleProvider="target" sceneMemberID="viewController">
+                    <window key="window" title="Resolutions" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA" customClass="RSWindow" customModule="Resolutions" customModuleProvider="target">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <toolbar key="toolbar" implicitIdentifier="6804FD83-3EB9-4DB4-B598-A3335243CD8E" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="sYd-zP-JSv">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="AA664920-00A1-4B20-8441-B8104906F859" label="Custom View" paletteLabel="Custom View" id="Hgk-rn-JY1">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="29" height="20"/>
+                                    <size key="maxSize" width="102" height="58"/>
+                                    <button key="view" verticalHuggingPriority="750" id="yH2-q9-zyc">
+                                        <rect key="frame" x="1" y="14" width="75" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Refresh" bezelStyle="texturedRounded" alignment="center" borderStyle="border" inset="2" id="HTW-r6-bIM">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="refreshButtonClicked:" target="B8D-0N-5wS" id="R1d-9Y-QLy"/>
+                                        </connections>
+                                    </button>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="p7b-rO-bsA"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="plC-rz-ZwD"/>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="plC-rz-ZwD"/>
+                                <toolbarItem reference="Hgk-rn-JY1"/>
+                            </defaultToolbarItems>
+                        </toolbar>
                     </window>
                     <connections>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
@@ -748,10 +774,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView wantsLayer="YES" fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="72" horizontalPageScroll="10" verticalLineScroll="72" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogT-rg-IHX">
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="72" horizontalPageScroll="10" verticalLineScroll="72" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogT-rg-IHX">
                                 <rect key="frame" x="0.0" y="-1" width="480" height="271"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <clipView key="contentView" ambiguous="YES" id="iHJ-6D-fD3">
+                                <clipView key="contentView" id="iHJ-6D-fD3">
                                     <rect key="frame" x="0.0" y="0.0" width="480" height="271"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -779,9 +804,8 @@
                                                             <rect key="frame" x="1" y="1" width="477" height="70"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rry-an-E7V">
+                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rry-an-E7V">
                                                                     <rect key="frame" x="1" y="50" width="475" height="17"/>
-                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="f19-xD-c4K">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -789,6 +813,11 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="Rry-an-E7V" firstAttribute="top" secondItem="2G6-Sm-XGn" secondAttribute="top" constant="3" id="0gd-9F-qic"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Rry-an-E7V" secondAttribute="trailing" constant="3" id="GGH-4q-PKG"/>
+                                                                <constraint firstItem="Rry-an-E7V" firstAttribute="leading" secondItem="2G6-Sm-XGn" secondAttribute="leading" constant="3" id="aKe-Dp-O8t"/>
+                                                            </constraints>
                                                             <connections>
                                                                 <outlet property="label" destination="Rry-an-E7V" id="l1d-k5-Z2E"/>
                                                             </connections>
@@ -798,6 +827,7 @@
                                             </tableColumns>
                                         </tableView>
                                     </subviews>
+                                    <color key="backgroundColor" name="knobColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="TNr-YD-nB6">
                                     <rect key="frame" x="1" y="118" width="237" height="16"/>
@@ -809,6 +839,12 @@
                                 </scroller>
                             </scrollView>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="ogT-rg-IHX" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="6Kw-dj-sqq"/>
+                            <constraint firstAttribute="trailing" secondItem="ogT-rg-IHX" secondAttribute="trailing" id="CLd-RP-mdu"/>
+                            <constraint firstItem="ogT-rg-IHX" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" constant="0.5" id="KbX-WS-IAJ"/>
+                            <constraint firstItem="ogT-rg-IHX" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="cCf-ph-VCd"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="PTp-Ch-YnH" id="l3F-yd-qpC"/>

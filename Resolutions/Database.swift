@@ -26,7 +26,19 @@ func setupDatabase() throws {
   // Use DatabaseMigrator to setup the database
   // See https://github.com/groue/GRDB.swift/#migrations
 
-//  var migrator = DatabaseMigrator()
+  var migrator = DatabaseMigrator()
+
+  migrator.registerMigration("CreateResolutionsTable") { db in
+    try db.create(table: "resolutions") { t in
+      t.column("id", .integer).primaryKey()
+      t.column("remoteIdentifier", .text).notNull()
+      t.column("name", .text).notNull()
+      t.column("completedAt", .date)
+
+      t.column("createdAt", .date).notNull()
+      t.column("updatedAt", .date).notNull()
+    }
+  }
 
 //  migrator.registerMigration("CreateConfigurationTable") { db in
 //    try db.create(table: "appConfiguration") { t in
@@ -45,6 +57,6 @@ func setupDatabase() throws {
 //    }
 //  }
 
-//  try migrator.migrate(dbQueue)
+  try migrator.migrate(dbQueue)
 }
 
