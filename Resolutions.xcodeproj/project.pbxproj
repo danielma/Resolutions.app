@@ -18,6 +18,7 @@
 		66837E291E08A45000F70E8D /* GRDB.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66837E281E08A45000F70E8D /* GRDB.framework.dSYM */; };
 		66837E2B1E08A47D00F70E8D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2A1E08A47D00F70E8D /* Database.swift */; };
 		66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2F1E08A5BF00F70E8D /* AppRecord.swift */; };
+		66A77D061E09D4E2009602B7 /* RequestPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A77D051E09D4E2009602B7 /* RequestPoller.swift */; };
 		66B06C6F1E09A45700F203F6 /* Alamofire.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C6D1E09A45700F203F6 /* Alamofire.framework.dSYM */; };
 		66B06C701E09A45700F203F6 /* SwiftyJSON.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C6E1E09A45700F203F6 /* SwiftyJSON.framework.dSYM */; };
 		66B06C731E09A46500F203F6 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C711E09A46500F203F6 /* Alamofire.framework */; };
@@ -93,13 +94,14 @@
 		66837E281E08A45000F70E8D /* GRDB.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GRDB.framework.dSYM; path = Carthage/Build/Mac/GRDB.framework.dSYM; sourceTree = "<group>"; };
 		66837E2A1E08A47D00F70E8D /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		66837E2F1E08A5BF00F70E8D /* AppRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRecord.swift; sourceTree = "<group>"; };
+		66A77D051E09D4E2009602B7 /* RequestPoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPoller.swift; sourceTree = "<group>"; };
 		66B06C6D1E09A45700F203F6 /* Alamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Alamofire.framework.dSYM; path = Carthage/Build/Mac/Alamofire.framework.dSYM; sourceTree = "<group>"; };
 		66B06C6E1E09A45700F203F6 /* SwiftyJSON.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SwiftyJSON.framework.dSYM; path = Carthage/Build/Mac/SwiftyJSON.framework.dSYM; sourceTree = "<group>"; };
 		66B06C711E09A46500F203F6 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
 		66B06C721E09A46500F203F6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/Mac/SwiftyJSON.framework; sourceTree = "<group>"; };
 		66B06C771E09A87400F203F6 /* PMKAlamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKAlamofire.framework; path = Carthage/Build/Mac/PMKAlamofire.framework; sourceTree = "<group>"; };
 		66B06C781E09A87400F203F6 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/Mac/PromiseKit.framework; sourceTree = "<group>"; };
-		66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSPreferencesViewController.swift; sourceTree = "<group>"; };
+		66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RSPreferencesViewController.swift; path = ../RSPreferencesViewController.swift; sourceTree = "<group>"; };
 		66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = PMKAlamofire.framework.dSYM; path = Carthage/Build/Mac/PMKAlamofire.framework.dSYM; sourceTree = "<group>"; };
 		66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = PromiseKit.framework.dSYM; path = Carthage/Build/Mac/PromiseKit.framework.dSYM; sourceTree = "<group>"; };
 		66B06C811E09B46A00F203F6 /* SwiftyJSON.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SwiftyJSON.framework.dSYM; path = Carthage/Build/Mac/SwiftyJSON.framework.dSYM; sourceTree = "<group>"; };
@@ -134,10 +136,10 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
+				66A77D051E09D4E2009602B7 /* RequestPoller.swift */,
 				66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */,
 				66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */,
 				66B06C811E09B46A00F203F6 /* SwiftyJSON.framework.dSYM */,
-				66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */,
 				66B06C771E09A87400F203F6 /* PMKAlamofire.framework */,
 				66B06C781E09A87400F203F6 /* PromiseKit.framework */,
 				66B06C711E09A46500F203F6 /* Alamofire.framework */,
@@ -208,6 +210,7 @@
 		66F4692C1E08FE7300E1D80C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */,
 				66F469281E08FDD900E1D80C /* RSWindowController.swift */,
 			);
 			name = Views;
@@ -327,6 +330,7 @@
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
 				66B06C7E1E09B12000F203F6 /* RSPreferencesViewController.swift in Sources */,
 				66F4692A1E08FDD900E1D80C /* RSWindowController.swift in Sources */,
+				66A77D061E09D4E2009602B7 /* RequestPoller.swift in Sources */,
 				66CCD36A1E08B2B300F4134F /* ResolutionsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

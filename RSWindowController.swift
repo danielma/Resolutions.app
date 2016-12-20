@@ -9,19 +9,31 @@
 import Cocoa
 
 class RSWindowController: NSWindowController {
+  var notificationsPoller: RequestPoller?
+
   @IBAction func refreshButtonClicked(_ sender: NSButton) {
-    GithubAPIClient.sharedInstance.notifications().then { notifications in
-      print(notifications)
+    if let poller = notificationsPoller {
+      poller.forceRequest()
     }
   }
   
   override func windowDidLoad() {
     super.windowDidLoad()
-    
-    window?.titleVisibility = .hidden
-//          window?.titlebarAppearsTransparent = true
-    //      window?.isMovableByWindowBackground = true
 
+    window?.delegate = self
+    window?.titleVisibility = .hidden
+//    window?.titlebarAppearsTransparent = true
+//    window?.isMovableByWindowBackground = true
+
+    notificationsPoller = GithubAPIClient.sharedInstance.pollNotifications()
+      .map { print($0) }
+      .start()
+  }
+}
+
+extension RSWindowController: NSWindowDelegate {
+  func windowWillClose(_ notification: Notification) {
+    if let poller = notificationsPoller { poller.stop() }
   }
 }
 
