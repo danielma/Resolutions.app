@@ -10,7 +10,9 @@ import Cocoa
 
 class RSWindowController: NSWindowController {
   @IBAction func refreshButtonClicked(_ sender: NSButton) {
-    print("refresh!")
+    GithubAPIClient.sharedInstance.notifications().then { notifications in
+      print(notifications)
+    }
   }
   
   override func windowDidLoad() {

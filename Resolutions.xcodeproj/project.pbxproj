@@ -18,6 +18,19 @@
 		66837E291E08A45000F70E8D /* GRDB.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66837E281E08A45000F70E8D /* GRDB.framework.dSYM */; };
 		66837E2B1E08A47D00F70E8D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2A1E08A47D00F70E8D /* Database.swift */; };
 		66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2F1E08A5BF00F70E8D /* AppRecord.swift */; };
+		66B06C6F1E09A45700F203F6 /* Alamofire.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C6D1E09A45700F203F6 /* Alamofire.framework.dSYM */; };
+		66B06C701E09A45700F203F6 /* SwiftyJSON.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C6E1E09A45700F203F6 /* SwiftyJSON.framework.dSYM */; };
+		66B06C731E09A46500F203F6 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C711E09A46500F203F6 /* Alamofire.framework */; };
+		66B06C741E09A46500F203F6 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C711E09A46500F203F6 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		66B06C751E09A46500F203F6 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C721E09A46500F203F6 /* SwiftyJSON.framework */; };
+		66B06C761E09A46500F203F6 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C721E09A46500F203F6 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		66B06C791E09A87400F203F6 /* PMKAlamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C771E09A87400F203F6 /* PMKAlamofire.framework */; };
+		66B06C7A1E09A87400F203F6 /* PMKAlamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C771E09A87400F203F6 /* PMKAlamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		66B06C7B1E09A87400F203F6 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C781E09A87400F203F6 /* PromiseKit.framework */; };
+		66B06C7C1E09A87400F203F6 /* PromiseKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C781E09A87400F203F6 /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		66B06C7E1E09B12000F203F6 /* RSPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */; };
+		66B06C821E09B46A00F203F6 /* PMKAlamofire.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */; };
+		66B06C831E09B46A00F203F6 /* PromiseKit.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */; };
 		66CCD36A1E08B2B300F4134F /* ResolutionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */; };
 		66E483C51E090BAF00C70A71 /* Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E483C41E090BAF00C70A71 /* Resolution.swift */; };
 		66F4692A1E08FDD900E1D80C /* RSWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F469281E08FDD900E1D80C /* RSWindowController.swift */; };
@@ -41,6 +54,10 @@
 			dstSubfolderSpec = 10;
 			files = (
 				66837E251E08A42100F70E8D /* GRDB.framework in Embed Frameworks */,
+				66B06C741E09A46500F203F6 /* Alamofire.framework in Embed Frameworks */,
+				66B06C7C1E09A87400F203F6 /* PromiseKit.framework in Embed Frameworks */,
+				66B06C7A1E09A87400F203F6 /* PMKAlamofire.framework in Embed Frameworks */,
+				66B06C761E09A46500F203F6 /* SwiftyJSON.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,6 +69,10 @@
 			dstSubfolderSpec = 16;
 			files = (
 				66837E291E08A45000F70E8D /* GRDB.framework.dSYM in CopyFiles */,
+				66B06C821E09B46A00F203F6 /* PMKAlamofire.framework.dSYM in CopyFiles */,
+				66B06C831E09B46A00F203F6 /* PromiseKit.framework.dSYM in CopyFiles */,
+				66B06C701E09A45700F203F6 /* SwiftyJSON.framework.dSYM in CopyFiles */,
+				66B06C6F1E09A45700F203F6 /* Alamofire.framework.dSYM in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +93,16 @@
 		66837E281E08A45000F70E8D /* GRDB.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GRDB.framework.dSYM; path = Carthage/Build/Mac/GRDB.framework.dSYM; sourceTree = "<group>"; };
 		66837E2A1E08A47D00F70E8D /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		66837E2F1E08A5BF00F70E8D /* AppRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRecord.swift; sourceTree = "<group>"; };
+		66B06C6D1E09A45700F203F6 /* Alamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Alamofire.framework.dSYM; path = Carthage/Build/Mac/Alamofire.framework.dSYM; sourceTree = "<group>"; };
+		66B06C6E1E09A45700F203F6 /* SwiftyJSON.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SwiftyJSON.framework.dSYM; path = Carthage/Build/Mac/SwiftyJSON.framework.dSYM; sourceTree = "<group>"; };
+		66B06C711E09A46500F203F6 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
+		66B06C721E09A46500F203F6 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/Mac/SwiftyJSON.framework; sourceTree = "<group>"; };
+		66B06C771E09A87400F203F6 /* PMKAlamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKAlamofire.framework; path = Carthage/Build/Mac/PMKAlamofire.framework; sourceTree = "<group>"; };
+		66B06C781E09A87400F203F6 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/Mac/PromiseKit.framework; sourceTree = "<group>"; };
+		66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSPreferencesViewController.swift; sourceTree = "<group>"; };
+		66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = PMKAlamofire.framework.dSYM; path = Carthage/Build/Mac/PMKAlamofire.framework.dSYM; sourceTree = "<group>"; };
+		66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = PromiseKit.framework.dSYM; path = Carthage/Build/Mac/PromiseKit.framework.dSYM; sourceTree = "<group>"; };
+		66B06C811E09B46A00F203F6 /* SwiftyJSON.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SwiftyJSON.framework.dSYM; path = Carthage/Build/Mac/SwiftyJSON.framework.dSYM; sourceTree = "<group>"; };
 		66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsViewController.swift; sourceTree = "<group>"; };
 		66E483C41E090BAF00C70A71 /* Resolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resolution.swift; sourceTree = "<group>"; };
 		66F469281E08FDD900E1D80C /* RSWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RSWindowController.swift; path = ../RSWindowController.swift; sourceTree = "<group>"; };
@@ -83,6 +114,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				66837E241E08A42100F70E8D /* GRDB.framework in Frameworks */,
+				66B06C731E09A46500F203F6 /* Alamofire.framework in Frameworks */,
+				66B06C7B1E09A87400F203F6 /* PromiseKit.framework in Frameworks */,
+				66B06C791E09A87400F203F6 /* PMKAlamofire.framework in Frameworks */,
+				66B06C751E09A46500F203F6 /* SwiftyJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +134,16 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
+				66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */,
+				66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */,
+				66B06C811E09B46A00F203F6 /* SwiftyJSON.framework.dSYM */,
+				66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */,
+				66B06C771E09A87400F203F6 /* PMKAlamofire.framework */,
+				66B06C781E09A87400F203F6 /* PromiseKit.framework */,
+				66B06C711E09A46500F203F6 /* Alamofire.framework */,
+				66B06C721E09A46500F203F6 /* SwiftyJSON.framework */,
+				66B06C6D1E09A45700F203F6 /* Alamofire.framework.dSYM */,
+				66B06C6E1E09A45700F203F6 /* SwiftyJSON.framework.dSYM */,
 				66837E281E08A45000F70E8D /* GRDB.framework.dSYM */,
 				66837E231E08A42100F70E8D /* GRDB.framework */,
 				66837E051E089C2700F70E8D /* Resolutions */,
@@ -280,6 +325,7 @@
 				66E483C51E090BAF00C70A71 /* Resolution.swift in Sources */,
 				6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */,
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
+				66B06C7E1E09B12000F203F6 /* RSPreferencesViewController.swift in Sources */,
 				66F4692A1E08FDD900E1D80C /* RSWindowController.swift in Sources */,
 				66CCD36A1E08B2B300F4134F /* ResolutionsViewController.swift in Sources */,
 			);

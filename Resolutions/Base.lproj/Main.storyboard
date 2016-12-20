@@ -713,10 +713,12 @@
             <objects>
                 <windowController id="cvi-YI-SHw" sceneMemberID="viewController">
                     <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="aIT-fA-1Y4">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" unifiedTitleAndToolbar="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
+                        <windowCollectionBehavior key="collectionBehavior" fullScreenNone="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="425" y="536" width="480" height="270"/>
+                        <rect key="contentRect" x="155" y="1183" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1600"/>
+                        <value key="minSize" type="size" width="480" height="270"/>
                     </window>
                     <connections>
                         <segue destination="Sbd-L7-Ppy" kind="relationship" relationship="window.shadowedContentViewController" id="62s-4c-ZZn"/>
@@ -726,43 +728,83 @@
             </objects>
             <point key="canvasLocation" x="764" y="250"/>
         </scene>
-        <!--View Controller-->
+        <!--Preferences View Controller-->
         <scene sceneID="eoG-Sb-Gph">
             <objects>
-                <viewController id="Sbd-L7-Ppy" sceneMemberID="viewController">
+                <viewController id="Sbd-L7-Ppy" customClass="RSPreferencesViewController" customModule="Resolutions" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="FCe-71-7SW">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJ1-dU-cnN">
-                                <rect key="frame" x="18" y="233" width="85" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Github Token" id="hNe-Q2-mL7">
+                                <rect key="frame" x="18" y="233" width="110" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="106" id="JON-nU-gWt"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Github Username" id="hNe-Q2-mL7">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8M-wA-6jB">
-                                <rect key="frame" x="109" y="228" width="351" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="351" id="8yb-iR-5sN"/>
-                                </constraints>
+                                <rect key="frame" x="134" y="228" width="326" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Z15-FE-sfe">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <binding destination="Q98-35-Pbu" name="value" keyPath="values.githubUsername" id="nC6-KL-iW0"/>
+                                </connections>
+                            </textField>
+                            <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RoQ-iX-Urj">
+                                <rect key="frame" x="134" y="196" width="326" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="GUd-H4-zyK">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="Q98-35-Pbu" name="value" keyPath="values.githubToken" id="fGI-gd-Gwe"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wfB-ci-QQa">
+                                <rect key="frame" x="18" y="198" width="110" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Github Token" id="GHd-1w-F3a">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
                             </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="u8M-wA-6jB" secondAttribute="trailing" constant="20" symbolic="YES" id="13n-2e-Fbs"/>
-                            <constraint firstItem="u8M-wA-6jB" firstAttribute="leading" secondItem="XJ1-dU-cnN" secondAttribute="trailing" constant="8" symbolic="YES" id="2C5-Ok-LPJ"/>
-                            <constraint firstItem="u8M-wA-6jB" firstAttribute="top" secondItem="FCe-71-7SW" secondAttribute="top" constant="20" symbolic="YES" id="PpI-m7-3JG"/>
-                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="top" secondItem="u8M-wA-6jB" secondAttribute="top" id="TEg-IR-LD5"/>
+                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="top" secondItem="FCe-71-7SW" secondAttribute="top" constant="20" id="0IE-5U-e29"/>
+                            <constraint firstItem="u8M-wA-6jB" firstAttribute="leading" secondItem="RoQ-iX-Urj" secondAttribute="leading" id="3Ko-Xj-Htf"/>
+                            <constraint firstItem="u8M-wA-6jB" firstAttribute="leading" secondItem="XJ1-dU-cnN" secondAttribute="trailing" constant="8" symbolic="YES" id="4Jr-qx-yNJ"/>
+                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="top" secondItem="u8M-wA-6jB" secondAttribute="top" id="4oW-uW-7EW"/>
+                            <constraint firstItem="wfB-ci-QQa" firstAttribute="leading" secondItem="XJ1-dU-cnN" secondAttribute="leading" id="8ey-xr-CdS"/>
+                            <constraint firstItem="RoQ-iX-Urj" firstAttribute="leading" secondItem="wfB-ci-QQa" secondAttribute="trailing" constant="8" id="ErS-d6-zRD"/>
+                            <constraint firstItem="wfB-ci-QQa" firstAttribute="top" secondItem="XJ1-dU-cnN" secondAttribute="bottom" constant="18" id="JV3-VU-iJy"/>
+                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="leading" secondItem="FCe-71-7SW" secondAttribute="leading" constant="20" id="KfR-dd-lCT"/>
+                            <constraint firstItem="u8M-wA-6jB" firstAttribute="trailing" secondItem="RoQ-iX-Urj" secondAttribute="trailing" id="OlY-um-QV9"/>
+                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="leading" secondItem="wfB-ci-QQa" secondAttribute="leading" id="PJq-OJ-kBz"/>
+                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="leading" secondItem="FCe-71-7SW" secondAttribute="leading" constant="20" symbolic="YES" id="QCU-DY-omU"/>
+                            <constraint firstItem="RoQ-iX-Urj" firstAttribute="leading" secondItem="wfB-ci-QQa" secondAttribute="trailing" constant="8" symbolic="YES" id="TUI-Ob-Y8E"/>
+                            <constraint firstItem="RoQ-iX-Urj" firstAttribute="top" secondItem="u8M-wA-6jB" secondAttribute="bottom" constant="10" symbolic="YES" id="XfG-rU-2KW"/>
+                            <constraint firstItem="wfB-ci-QQa" firstAttribute="centerY" secondItem="RoQ-iX-Urj" secondAttribute="centerY" id="clx-rx-y4E"/>
+                            <constraint firstAttribute="trailing" secondItem="u8M-wA-6jB" secondAttribute="trailing" constant="20" symbolic="YES" id="fua-DL-OIo"/>
+                            <constraint firstItem="u8M-wA-6jB" firstAttribute="leading" secondItem="XJ1-dU-cnN" secondAttribute="trailing" constant="8" id="lCK-o2-s3b"/>
+                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="top" secondItem="FCe-71-7SW" secondAttribute="top" constant="20" symbolic="YES" id="u6Z-ph-j6C"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="githubTokenTextField" destination="u8M-wA-6jB" id="bLa-u5-kg5"/>
+                        <outlet property="githubUsernameTextField" destination="RoQ-iX-Urj" id="O1b-KB-Q8I"/>
+                    </connections>
                 </viewController>
                 <customObject id="WAu-zV-TBJ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="Q98-35-Pbu"/>
             </objects>
             <point key="canvasLocation" x="764" y="655"/>
         </scene>

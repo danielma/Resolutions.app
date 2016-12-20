@@ -1,3 +1,5 @@
 github "Alamofire/Alamofire" "4.2.0"
 github "groue/GRDB.swift" "v0.99.0"
+github "mxcl/PromiseKit" "4.1.0"
 github "SwiftyJSON/SwiftyJSON" "3.1.3"
+github "PromiseKit/Alamofire-" "1.0.5"
