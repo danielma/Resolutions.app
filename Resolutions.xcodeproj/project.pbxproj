@@ -17,6 +17,7 @@
 		66837E291E08A45000F70E8D /* GRDB.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66837E281E08A45000F70E8D /* GRDB.framework.dSYM */; };
 		66837E2B1E08A47D00F70E8D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2A1E08A47D00F70E8D /* Database.swift */; };
 		66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2F1E08A5BF00F70E8D /* AppRecord.swift */; };
+		66CCD36A1E08B2B300F4134F /* ResolutionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		66837E281E08A45000F70E8D /* GRDB.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GRDB.framework.dSYM; path = Carthage/Build/Mac/GRDB.framework.dSYM; sourceTree = "<group>"; };
 		66837E2A1E08A47D00F70E8D /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		66837E2F1E08A5BF00F70E8D /* AppRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRecord.swift; sourceTree = "<group>"; };
+		66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 		66837E051E089C2700F70E8D /* Resolutions */ = {
 			isa = PBXGroup;
 			children = (
+				66CCD36B1E08B2B800F4134F /* Scenes */,
 				66837E2C1E08A59E00F70E8D /* Models */,
 				66837E061E089C2700F70E8D /* AppDelegate.swift */,
 				66837E081E089C2700F70E8D /* ViewController.swift */,
@@ -137,6 +140,15 @@
 				66837E2F1E08A5BF00F70E8D /* AppRecord.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		66CCD36B1E08B2B800F4134F /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */,
+			);
+			name = Scenes;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,6 +261,7 @@
 				66837E091E089C2700F70E8D /* ViewController.swift in Sources */,
 				66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */,
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
+				66CCD36A1E08B2B300F4134F /* ResolutionsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,6 +472,7 @@
 				66837E1F1E089C2700F70E8D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		66837E201E089C2700F70E8D /* Build configuration list for PBXNativeTarget "ResolutionsTests" */ = {
 			isa = XCConfigurationList;
@@ -467,6 +481,7 @@
 				66837E221E089C2700F70E8D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
