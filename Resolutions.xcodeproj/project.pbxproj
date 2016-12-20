@@ -12,6 +12,11 @@
 		66837E0B1E089C2700F70E8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66837E0A1E089C2700F70E8D /* Assets.xcassets */; };
 		66837E0E1E089C2700F70E8D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66837E0C1E089C2700F70E8D /* Main.storyboard */; };
 		66837E191E089C2700F70E8D /* ResolutionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E181E089C2700F70E8D /* ResolutionsTests.swift */; };
+		66837E241E08A42100F70E8D /* GRDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66837E231E08A42100F70E8D /* GRDB.framework */; };
+		66837E251E08A42100F70E8D /* GRDB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66837E231E08A42100F70E8D /* GRDB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		66837E291E08A45000F70E8D /* GRDB.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66837E281E08A45000F70E8D /* GRDB.framework.dSYM */; };
+		66837E2B1E08A47D00F70E8D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2A1E08A47D00F70E8D /* Database.swift */; };
+		66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2F1E08A5BF00F70E8D /* AppRecord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,6 +29,30 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		66837E261E08A42100F70E8D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				66837E251E08A42100F70E8D /* GRDB.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66837E271E08A42D00F70E8D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				66837E291E08A45000F70E8D /* GRDB.framework.dSYM in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		66837E031E089C2700F70E8D /* Resolutions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Resolutions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66837E061E089C2700F70E8D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +63,10 @@
 		66837E141E089C2700F70E8D /* ResolutionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResolutionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		66837E181E089C2700F70E8D /* ResolutionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolutionsTests.swift; sourceTree = "<group>"; };
 		66837E1A1E089C2700F70E8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		66837E231E08A42100F70E8D /* GRDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GRDB.framework; path = Carthage/Build/Mac/GRDB.framework; sourceTree = "<group>"; };
+		66837E281E08A45000F70E8D /* GRDB.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GRDB.framework.dSYM; path = Carthage/Build/Mac/GRDB.framework.dSYM; sourceTree = "<group>"; };
+		66837E2A1E08A47D00F70E8D /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		66837E2F1E08A5BF00F70E8D /* AppRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRecord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66837E241E08A42100F70E8D /* GRDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +91,8 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
+				66837E281E08A45000F70E8D /* GRDB.framework.dSYM */,
+				66837E231E08A42100F70E8D /* GRDB.framework */,
 				66837E051E089C2700F70E8D /* Resolutions */,
 				66837E171E089C2700F70E8D /* ResolutionsTests */,
 				66837E041E089C2700F70E8D /* Products */,
@@ -75,6 +111,7 @@
 		66837E051E089C2700F70E8D /* Resolutions */ = {
 			isa = PBXGroup;
 			children = (
+				66837E2C1E08A59E00F70E8D /* Models */,
 				66837E061E089C2700F70E8D /* AppDelegate.swift */,
 				66837E081E089C2700F70E8D /* ViewController.swift */,
 				66837E0A1E089C2700F70E8D /* Assets.xcassets */,
@@ -93,6 +130,15 @@
 			path = ResolutionsTests;
 			sourceTree = "<group>";
 		};
+		66837E2C1E08A59E00F70E8D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				66837E2A1E08A47D00F70E8D /* Database.swift */,
+				66837E2F1E08A5BF00F70E8D /* AppRecord.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -103,6 +149,8 @@
 				66837DFF1E089C2700F70E8D /* Sources */,
 				66837E001E089C2700F70E8D /* Frameworks */,
 				66837E011E089C2700F70E8D /* Resources */,
+				66837E261E08A42100F70E8D /* Embed Frameworks */,
+				66837E271E08A42D00F70E8D /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -197,7 +245,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66837E2B1E08A47D00F70E8D /* Database.swift in Sources */,
 				66837E091E089C2700F70E8D /* ViewController.swift in Sources */,
+				66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */,
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,6 +378,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9ZS2BN65E9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = Resolutions/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.danielma.Resolutions;
@@ -342,6 +396,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9ZS2BN65E9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = Resolutions/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.danielma.Resolutions;
