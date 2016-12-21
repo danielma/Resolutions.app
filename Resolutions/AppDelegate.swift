@@ -12,8 +12,6 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     UserDefaults.standard.register(defaults: ["githubToken": "", "githubUsername": ""])
-    try! setupDatabase()
-
     GithubPoller.sharedInstance.start()
   }
 

@@ -32,7 +32,13 @@ class GithubPoller {
   func start() {
     notificationsPoller
       .map { notifications in
-        notifications.arrayValue.forEach { self.handleNotification($0) }
+        DispatchQueue.global().async {
+          try! dbQueue.inTransaction { db in
+            notifications.arrayValue.forEach { self.handleNotification(db, $0) }
+
+            return .commit
+          }
+        }
       }
       .start()
   }
@@ -42,29 +48,27 @@ class GithubPoller {
     eventsPoller.stop()
   }
 
-  func handleNotification(_ notification: JSON) {
-    try! dbQueue.inDatabase { db in
-      var resolution = try Resolution
-        .filter(Column("remoteIdentifier") == notification["subject", "url"].stringValue)
-        .fetchOne(db)
-
-      if let resolution = resolution {
-        if let updatedAt = jsonDateToDate(notification["updated_at"].string), resolution.updatedAt! < updatedAt {
-          resolution.completedAt = nil
-        }
-      } else {
-        let resolutionName = notification["subject", "title"].stringValue
-        let remoteIdentifier = notification["subject", "url"].stringValue
-        resolution = Resolution(
-          name: resolutionName,
-          remoteIdentifier: remoteIdentifier
-        )
+  func handleNotification(_ db: Database, _ notification: JSON) {
+    var resolution = try! Resolution
+      .filter(Column("remoteIdentifier") == notification["subject", "url"].stringValue)
+      .fetchOne(db)
+    
+    if let resolution = resolution {
+      if let updatedAt = jsonDateToDate(notification["updated_at"].string), resolution.updatedAt! < updatedAt {
+        resolution.completedAt = nil
       }
-
-      if resolution!.hasPersistentChangedValues {
-        print("Adding resolution", resolution!)
-        try resolution!.save(db)
-      }
+    } else {
+      let resolutionName = notification["subject", "title"].stringValue
+      let remoteIdentifier = notification["subject", "url"].stringValue
+      resolution = Resolution(
+        name: resolutionName,
+        remoteIdentifier: remoteIdentifier
+      )
+    }
+    
+    if resolution!.hasPersistentChangedValues {
+      print("Adding resolution", resolution!)
+      try! resolution!.save(db)
     }
   }
 }
