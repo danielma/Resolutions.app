@@ -18,6 +18,8 @@ class RSWindowController: NSWindowController {
 
     window?.delegate = self
     window?.titleVisibility = .hidden
+
+    (NSApp.delegate as! AppDelegate).mainWindowController = self
 //    window?.titlebarAppearsTransparent = true
 //    window?.isMovableByWindowBackground = true
   }
