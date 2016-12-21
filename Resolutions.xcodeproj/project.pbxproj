@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */; };
 		6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6646772B1E09A25F009C8156 /* GithubAPIClient.swift */; };
 		66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E061E089C2700F70E8D /* AppDelegate.swift */; };
 		66837E091E089C2700F70E8D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E081E089C2700F70E8D /* ViewController.swift */; };
@@ -81,6 +82,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSResolutionCheckboxCell.swift; sourceTree = "<group>"; };
 		6646772B1E09A25F009C8156 /* GithubAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubAPIClient.swift; sourceTree = "<group>"; };
 		66837E031E089C2700F70E8D /* Resolutions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Resolutions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66837E061E089C2700F70E8D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
+				662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */,
 				668484861E09E6E400119C07 /* ResolutionsPlayground.playground */,
 				668484841E09E33F00119C07 /* GithubPoller.swift */,
 				66A77D051E09D4E2009602B7 /* RequestPoller.swift */,
@@ -336,6 +339,7 @@
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
 				66B06C7E1E09B12000F203F6 /* RSPreferencesViewController.swift in Sources */,
 				66F4692A1E08FDD900E1D80C /* RSWindowController.swift in Sources */,
+				662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */,
 				66A77D061E09D4E2009602B7 /* RequestPoller.swift in Sources */,
 				66CCD36A1E08B2B300F4134F /* ResolutionsViewController.swift in Sources */,
 			);
