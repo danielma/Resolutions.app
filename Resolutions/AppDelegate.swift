@@ -11,8 +11,10 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
   func applicationDidFinishLaunching(_ aNotification: Notification) {
-    UserDefaults.standard.register(defaults: ["githubToken": "", "githubUsername": ""])
+    UserDefaults.standard.register(defaults: ["githubToken": "", "githubUsername": "", "githubLastEventReadId": 0])
     GithubPoller.sharedInstance.start()
+
+    UserDefaults.standard.set(0, forKey: "githubLastEventReadId")
   }
 
   func applicationWillTerminate(_ aNotification: Notification) {

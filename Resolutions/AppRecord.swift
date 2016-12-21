@@ -12,12 +12,23 @@ import GRDB
 class AppRecord: Record {
   var id: Int64?
   var createdAt: Date?
-  var updatedAt: Date?
+  internal var internalUpdatedAt: Date?
+  internal var externalUpdatedAt: Date?
+
+  var updatedAt: Date? {
+    get {
+      return externalUpdatedAt ?? internalUpdatedAt
+    }
+    set {
+      externalUpdatedAt = newValue
+      internalUpdatedAt = newValue
+    }
+  }
 
   required init(row: Row) {
     id = row.value(named: "id")
     createdAt = row.value(named: "createdAt")
-    updatedAt = row.value(named: "updatedAt")
+    internalUpdatedAt = row.value(named: "updatedAt")
     super.init(row: row)
   }
 
@@ -31,12 +42,12 @@ class AppRecord: Record {
 
   override func insert(_ db: Database) throws {
     createdAt = Date()
-    updatedAt = Date()
+    internalUpdatedAt = Date()
     try super.insert(db)
   }
 
   override func update(_ db: Database, columns: Set<String>) throws {
-    updatedAt = Date()
+    internalUpdatedAt = Date()
     try super.update(db, columns: columns)
   }
 

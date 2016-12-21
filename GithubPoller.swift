@@ -34,7 +34,7 @@ class GithubPoller {
       .map { notifications in
         DispatchQueue.global().async {
           try! dbQueue.inTransaction { db in
-            notifications.arrayValue.forEach { self.handleNotification(db, $0) }
+            notifications.arrayValue.reversed().forEach { self.handleNotification(db, $0) }
 
             return .commit
           }
@@ -46,7 +46,7 @@ class GithubPoller {
       .map { events in
         DispatchQueue.global().async {
           try! dbQueue.inTransaction { db in
-            events.arrayValue.forEach { self.handleEvent(db, $0) }
+            events.arrayValue.reversed().forEach { self.handleEvent(db, $0) }
 
             return .commit
           }
@@ -69,9 +69,11 @@ class GithubPoller {
     var resolution = try! Resolution
       .filter(Column("remoteIdentifier") == notification["subject", "url"].stringValue)
       .fetchOne(db)
-    
+
+    let updatedAt = jsonDateToDate(notification["updated_at"].string)
+
     if let resolution = resolution {
-      if let updatedAt = jsonDateToDate(notification["updated_at"].string), resolution.updatedAt! < updatedAt {
+      if let updatedAt = updatedAt, resolution.updatedAt! < updatedAt {
         resolution.completedAt = nil
       }
     } else {
@@ -82,6 +84,10 @@ class GithubPoller {
         remoteIdentifier: remoteIdentifier
       )
     }
+
+    if let updatedAt = updatedAt {
+      resolution?.updatedAt = updatedAt
+    }
     
     if resolution!.hasPersistentChangedValues {
       print("Adding resolution", resolution!)
@@ -90,7 +96,13 @@ class GithubPoller {
   }
 
   internal func handleEvent(_ db: Database, _ event: JSON) {
-    debugPrint("event", event["id"].stringValue)
-//    let lastEventRead =
+    let lastEventReadId = UserDefaults.standard.value(forKey: "githubLastEventReadId") as! Int
+
+    guard let eventId = Int(event["id"].stringValue) else { return }
+    guard eventId > lastEventReadId else { return }
+
+    
+    
+    UserDefaults.standard.set(eventId, forKey: "githubLastEventReadId")
   }
 }

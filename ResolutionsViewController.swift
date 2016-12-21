@@ -80,9 +80,7 @@ class ResolutionTableCellView: NSTableCellView {
   @IBOutlet weak var titleButton: NSButton!
 
   @IBAction func titleButtonClicked(_ sender: NSButton) {
-    let url = URL(string: resolution.remoteIdentifier)
-
-    if let url = url {
+    if let url = resolution.url {
       NSWorkspace.shared().open(url)
     }
   }
