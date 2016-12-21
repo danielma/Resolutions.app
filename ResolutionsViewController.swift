@@ -11,7 +11,9 @@ import GRDB
 
 class ResolutionsViewController: NSViewController {
   var fetchedResolutionsController: FetchedRecordsController<Resolution>!
-  let resolutionsRequest = Resolution.order(Column("createdAt").asc)
+  let resolutionsRequest = Resolution
+    .filter(Column("completedAt") == nil)
+    .order(Column("createdAt").asc)
   
   @IBOutlet weak var tableView: NSTableView!
 
@@ -74,11 +76,27 @@ extension ResolutionsViewController: NSTableViewDelegate {
 }
 
 class ResolutionTableCellView: NSTableCellView {
-  @IBOutlet weak var label: NSTextField!
+  @IBOutlet weak var checkbox: NSButton!
+  @IBAction func checkboxClicked(_ sender: NSButton) {
+    dbQueue.inDatabase { db in
+      resolution.completedAt = Date()
+
+      if resolution.hasPersistentChangedValues {
+        try! resolution.save(db)
+      }
+    }
+
+    debugPrint(sender.title, sender.state == NSOnState)
+  }
+
+  var resolution: Resolution!
 
   func configure(_ resolution: Resolution?) {
     guard let resolution = resolution else { return }
-    
-    label.stringValue = resolution.name
+
+    self.resolution = resolution
+
+    checkbox.title = resolution.name
+    checkbox.state = resolution.completed ? NSOnState : NSOffState
   }
 }

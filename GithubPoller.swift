@@ -43,12 +43,17 @@ class GithubPoller {
       .start()
   }
 
+  func forceUpdate() {
+    notificationsPoller.forceRequest()
+    eventsPoller.forceRequest()
+  }
+
   deinit {
     notificationsPoller.stop()
     eventsPoller.stop()
   }
 
-  func handleNotification(_ db: Database, _ notification: JSON) {
+  internal func handleNotification(_ db: Database, _ notification: JSON) {
     var resolution = try! Resolution
       .filter(Column("remoteIdentifier") == notification["subject", "url"].stringValue)
       .fetchOne(db)

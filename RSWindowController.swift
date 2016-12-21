@@ -10,9 +10,7 @@ import Cocoa
 
 class RSWindowController: NSWindowController {
   @IBAction func refreshButtonClicked(_ sender: NSButton) {
-//    if let poller = notificationsPoller {
-//      poller.forceRequest()
-//    }
+    GithubPoller.sharedInstance.forceUpdate()
   }
   
   override func windowDidLoad() {

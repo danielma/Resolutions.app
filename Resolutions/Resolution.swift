@@ -31,6 +31,14 @@ class Resolution: AppRecord {
     super.init()
   }
 
+  var completed: Bool {
+    if let completedAt = completedAt {
+      return completedAt <= Date()
+    }
+
+    return false
+  }
+
   convenience init(name: String, remoteIdentifier: String) {
     self.init(name: name, remoteIdentifier: remoteIdentifier, completedAt: nil)
   }
