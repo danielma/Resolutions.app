@@ -18,10 +18,21 @@ class Resolution: AppRecord {
 
   required init(row: Row) {
     completedAt = row.value(named: "completedAt")
-    remoteIdentifier = row.value(named: "removeIdentifier")
-    name = row.value(named: "row")
+    remoteIdentifier = row.value(named: "remoteIdentifier")
+    name = row.value(named: "name")
 
     super.init(row: row)
+  }
+
+  init(name: String, remoteIdentifier: String, completedAt: Date?) {
+    self.name = name
+    self.remoteIdentifier = remoteIdentifier
+    self.completedAt = completedAt
+    super.init()
+  }
+
+  convenience init(name: String, remoteIdentifier: String) {
+    self.init(name: name, remoteIdentifier: remoteIdentifier, completedAt: nil)
   }
 
   override var appRecordDictionary: [String : DatabaseValueConvertible?] {

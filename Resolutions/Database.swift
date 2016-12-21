@@ -31,7 +31,7 @@ func setupDatabase() throws {
   migrator.registerMigration("CreateResolutionsTable") { db in
     try db.create(table: "resolutions") { t in
       t.column("id", .integer).primaryKey()
-      t.column("remoteIdentifier", .text).notNull()
+      t.column("remoteIdentifier", .text).notNull().unique()
       t.column("name", .text).notNull()
       t.column("completedAt", .date)
 
@@ -39,23 +39,6 @@ func setupDatabase() throws {
       t.column("updatedAt", .date).notNull()
     }
   }
-
-//  migrator.registerMigration("CreateConfigurationTable") { db in
-//    try db.create(table: "appConfiguration") { t in
-//      t.column("key", .text).primaryKey()
-//      t.column("createdAt", .date).notNull()
-//      t.column("updatedAt", .date).notNull()
-//      t.column("value", .text).notNull()
-//    }
-//
-//    let githubTokenConfiguration = AppConfiguration.filter(Column("key") == "githubToken").fetchOne(db)
-//
-//    if githubTokenConfiguration === nil {
-//      let newGithubTokenConfiguration = AppConfiguration(key: "githubToken", value: "")
-//
-//      try! newGithubTokenConfiguration.save(db)
-//    }
-//  }
 
   try migrator.migrate(dbQueue)
 }

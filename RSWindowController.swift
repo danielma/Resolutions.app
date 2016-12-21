@@ -9,12 +9,10 @@
 import Cocoa
 
 class RSWindowController: NSWindowController {
-  var notificationsPoller: RequestPoller?
-
   @IBAction func refreshButtonClicked(_ sender: NSButton) {
-    if let poller = notificationsPoller {
-      poller.forceRequest()
-    }
+//    if let poller = notificationsPoller {
+//      poller.forceRequest()
+//    }
   }
   
   override func windowDidLoad() {
@@ -24,21 +22,13 @@ class RSWindowController: NSWindowController {
     window?.titleVisibility = .hidden
 //    window?.titlebarAppearsTransparent = true
 //    window?.isMovableByWindowBackground = true
-
-    notificationsPoller = GithubAPIClient.sharedInstance.pollNotifications()
-      .map { print($0) }
-      .start()
   }
 }
 
 extension RSWindowController: NSWindowDelegate {
-  func windowWillClose(_ notification: Notification) {
-    if let poller = notificationsPoller { poller.stop() }
-  }
 }
 
 class RSWindow: NSWindow {
-
   override func awakeFromNib() {
 //    let visualEffectView = NSVisualEffectView(frame: NSMakeRect(0, 0, 0, 10))//<---the width and height is set to 0, as this doesn't matter.
 //    visualEffectView.material = NSVisualEffectMaterial.appearanceBased//Dark,MediumLight,PopOver,UltraDark,AppearanceBased,Titlebar,Menu

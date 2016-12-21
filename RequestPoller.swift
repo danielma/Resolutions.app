@@ -12,18 +12,19 @@ import Alamofire
 import PromiseKit
 import PMKAlamofire
 
-typealias Requestor = () -> DataRequest
+typealias Requestor = (Date) -> DataRequest
 
 fileprivate func defaultCallback(_ value: JSON) { }
 
 class RequestPoller {
-  static let defaultInterval = 10
+  static let defaultInterval = 60
 
   let request: Requestor
   var pollInterval: Int
   var running = false
   var callback: (JSON) -> Void = defaultCallback
   var cancelNext = false
+  var lastRequest: Date
 
   convenience init(request: @escaping Requestor) {
     self.init(pollInterval: RequestPoller.defaultInterval, request: request)
@@ -32,6 +33,7 @@ class RequestPoller {
   init(pollInterval: Int, request: @escaping Requestor) {
     self.pollInterval = pollInterval
     self.request = request
+    self.lastRequest = Date(timeIntervalSince1970: TimeInterval(0))
   }
 
   func map(_ callback: @escaping (JSON) -> Void) -> RequestPoller {
@@ -40,6 +42,7 @@ class RequestPoller {
     return self
   }
 
+  @discardableResult
   func start() -> RequestPoller {
     running = true
 
@@ -73,15 +76,23 @@ class RequestPoller {
   }
 
   internal func iteration() {
-    _ = request()
+    _ = request(self.lastRequest)
       .response()
-      .then { (_, response, data) -> Void in
+      .then { (request, response, data) -> Void in
         self.updateIntervalFromResponse(response)
         self.enqueueNextIteration()
-        self.callback(JSON(data: data))
+        if (self.shouldExecuteCallback(request: request, response: response, data: data)) {
+          self.callback(JSON(data: data))
+        }
     }
+
+    lastRequest = Date()
   }
 
   internal func updateIntervalFromResponse(_ response: HTTPURLResponse) {
+  }
+
+  internal func shouldExecuteCallback(request: URLRequest, response: HTTPURLResponse, data: Data) -> Bool {
+    return true
   }
 }
