@@ -52,7 +52,6 @@ class RequestPoller {
   }
 
   func forceRequest() {
-    print("force request")
     cancelNext = true
 
     iteration()
@@ -66,7 +65,6 @@ class RequestPoller {
   internal func enqueueNextIteration() {
     _ = after(interval: TimeInterval(self.pollInterval)).then { _ -> Void in
       if self.cancelNext {
-        print("cancelled")
         self.cancelNext = false
         return
       }
