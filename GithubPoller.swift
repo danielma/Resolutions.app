@@ -41,6 +41,18 @@ class GithubPoller {
         }
       }
       .start()
+
+    eventsPoller
+      .map { events in
+        DispatchQueue.global().async {
+          try! dbQueue.inTransaction { db in
+            events.arrayValue.forEach { self.handleEvent(db, $0) }
+
+            return .commit
+          }
+        }
+      }
+      .start()
   }
 
   func forceUpdate() {
@@ -75,5 +87,10 @@ class GithubPoller {
       print("Adding resolution", resolution!)
       try! resolution!.save(db)
     }
+  }
+
+  internal func handleEvent(_ db: Database, _ event: JSON) {
+    debugPrint("event", event["id"].stringValue)
+//    let lastEventRead =
   }
 }

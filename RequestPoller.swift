@@ -12,7 +12,7 @@ import Alamofire
 import PromiseKit
 import PMKAlamofire
 
-typealias Requestor = (Date) -> DataRequest
+typealias Requestor = (HTTPURLResponse?) -> DataRequest
 
 fileprivate func defaultCallback(_ value: JSON) { }
 
@@ -24,16 +24,11 @@ class RequestPoller {
   var running = false
   var callback: (JSON) -> Void = defaultCallback
   var cancelNext = false
-  var lastRequest: Date
+  var lastResponse: HTTPURLResponse?
 
-  convenience init(request: @escaping Requestor) {
-    self.init(pollInterval: RequestPoller.defaultInterval, request: request)
-  }
-
-  init(pollInterval: Int, request: @escaping Requestor) {
+  init(pollInterval: Int = RequestPoller.defaultInterval, request: @escaping Requestor) {
     self.pollInterval = pollInterval
     self.request = request
-    self.lastRequest = Date(timeIntervalSince1970: TimeInterval(0))
   }
 
   func map(_ callback: @escaping (JSON) -> Void) -> RequestPoller {
@@ -74,17 +69,16 @@ class RequestPoller {
   }
 
   internal func iteration() {
-    _ = request(self.lastRequest)
+    _ = request(self.lastResponse)
       .response()
       .then { (request, response, data) -> Void in
+        self.lastResponse = response
         self.updateIntervalFromResponse(response)
         self.enqueueNextIteration()
         if (self.shouldExecuteCallback(request: request, response: response, data: data)) {
           self.callback(JSON(data: data))
         }
     }
-
-    lastRequest = Date()
   }
 
   internal func updateIntervalFromResponse(_ response: HTTPURLResponse) {
