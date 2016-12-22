@@ -10,64 +10,35 @@ import Cocoa
 import GRDB
 
 class ResolutionsViewController: NSViewController {
-  var fetchedResolutionsController: FetchedRecordsController<Resolution>!
-  let resolutionsRequest = Resolution
-    .filter(Column("completedAt") == nil)
-    .order(Column("createdAt").asc)
-  
   @IBOutlet weak var tableView: NSTableView!
+  var fetchedResolutionsController: FetchedRecordsController<Resolution>?
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    GithubPoller.sharedInstance.start()
-
-    setupFetchedRecordsController()
-    
     tableView.delegate = self
     tableView.dataSource = self
     // Do view setup here.
   }
-  
-  func setupFetchedRecordsController() {
-    try! fetchedResolutionsController = FetchedRecordsController<Resolution>(dbQueue, request: resolutionsRequest)
+}
 
-    fetchedResolutionsController.trackChanges(
-//      tableViewEvent: { [unowned self] (controller, record, event) in
-//        switch event {
-//        case .insertion(let indexPath):
-//          self.tableView.insertRows(at: [indexPath], with: .fade)
-//        case .deletion(let indexPath):
-//          self.tableView.deleteRows(at: [indexPath], with: .fade)
-//        case .update(let indexPath, _):
-//          if let cell = self.tableView.cellForRow(at: indexPath) {
-//            self.configure(cell as! ReviewListTableViewCell, at: indexPath)
-//          }
-//        case .move(let indexPath, let newIndexPath, _):
-//          self.tableView.deleteRows(at: [indexPath], with: .fade)
-//          self.tableView.insertRows(at: [newIndexPath], with: .fade)
-//        }
-//      },
-
-      recordsDidChange: { [unowned self] _ in
-        self.tableView.reloadData()
-      }
-    )
-
-    try! fetchedResolutionsController.performFetch()
+extension ResolutionsViewController: ResolutionsSplitViewControllerChild {
+  func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) {
+    self.fetchedResolutionsController = controller
+    tableView.reloadData()
   }
 }
 
 extension ResolutionsViewController: NSTableViewDataSource {
   func numberOfRows(in tableView: NSTableView) -> Int {
-    return fetchedResolutionsController.fetchedRecords?.count ?? 0
+    return fetchedResolutionsController?.fetchedRecords?.count ?? 0
   }
 }
 
 extension ResolutionsViewController: NSTableViewDelegate {
   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
     let cell = tableView.make(withIdentifier: "ResolutionTableCellView", owner: self) as! ResolutionTableCellView
-    let resolution = fetchedResolutionsController.fetchedRecords?[row]
+    let resolution = fetchedResolutionsController?.fetchedRecords?[row]
 
     cell.configure(resolution)
 

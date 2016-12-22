@@ -809,10 +809,10 @@
             </objects>
             <point key="canvasLocation" x="1312" y="502"/>
         </scene>
-        <!--Split View Controller-->
+        <!--Resolutions Split View Controller-->
         <scene sceneID="Bze-6O-6EL">
             <objects>
-                <splitViewController id="6RR-2E-yPO" sceneMemberID="viewController">
+                <splitViewController id="6RR-2E-yPO" customClass="ResolutionsSplitViewController" customModule="Resolutions" customModuleProvider="target" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="rnP-Pd-QCG"/>
                         <splitViewItem id="I89-cd-1Ks"/>

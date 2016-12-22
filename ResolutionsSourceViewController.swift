@@ -7,13 +7,13 @@
 //
 
 import Cocoa
+import GRDB
 
 typealias GroupedGroupingList = (String, [String])
 
 class ResolutionsSourceViewController: NSViewController {
   @IBOutlet weak var outlineView: NSOutlineView!
-
-  var groupings: [String] = []
+  
   var groupedGroupings: [GroupedGroupingList] = []
 
   override func viewDidLoad() {
@@ -22,12 +22,14 @@ class ResolutionsSourceViewController: NSViewController {
     
     outlineView.dataSource = self
     outlineView.delegate = self
+  }
+}
 
-    dbQueue.inDatabase { (db) in
-      groupings = try! String.fetchAll(db, "SELECT DISTINCT grouping FROM resolutions ORDER BY grouping ASC")
-    }
-
-    groupedGroupings.append(("GITHUB", groupings))
+extension ResolutionsSourceViewController: ResolutionsSplitViewControllerChild {
+  func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) {
+    let groupings = Array(Set(controller.fetchedRecords?.map({ $0.grouping ?? "" }) ?? []))
+    
+    groupedGroupings = [("GITHUB", groupings)]
 
     outlineView.reloadData()
     outlineView.expandItem(nil, expandChildren: true)
