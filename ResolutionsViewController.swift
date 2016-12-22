@@ -78,6 +78,7 @@ extension ResolutionsViewController: NSTableViewDelegate {
 class ResolutionTableCellView: NSTableCellView {
   @IBOutlet weak var checkbox: NSButton!
   @IBOutlet weak var titleButton: NSButton!
+  @IBOutlet weak var groupingButton: ResolutionGroupingButton!
 
   @IBAction func titleButtonClicked(_ sender: NSButton) {
     if let url = resolution.url {
@@ -103,6 +104,52 @@ class ResolutionTableCellView: NSTableCellView {
     self.resolution = resolution
 
     titleButton.title = resolution.name
+    groupingButton.customTitle = resolution.grouping ?? ""
     checkbox.state = resolution.completed ? NSOnState : NSOffState
+  }
+}
+
+class ResolutionGroupingButton: NSButton {
+  override func draw(_ dirtyRect: NSRect) {
+    NSColor(red: 0, green: 0, blue: 0, alpha: 0.1).set()
+
+    let bPath = NSBezierPath(roundedRect: dirtyRect, xRadius: 4, yRadius: 4)
+    bPath.fill()
+
+    super.draw(dirtyRect)
+  }
+
+  var _customTitle = ""
+  var customTitle: String {
+    get { return _customTitle }
+    set {
+      _customTitle = newValue
+      updateAttributedTitle()
+    }
+  }
+
+  func updateAttributedTitle() {
+    attributedTitle = NSAttributedString(
+      string: _customTitle,
+      attributes: [
+        NSForegroundColorAttributeName: NSColor(red: 0, green: 0, blue: 0, alpha: 0.5),
+        NSFontAttributeName: NSFont.boldSystemFont(ofSize: NSFont.smallSystemFontSize())
+      ]
+    )
+  }
+}
+
+class RSResolutionGroupingCell: NSButtonCell {
+  static let padding = 4
+
+  override func drawTitle(_ title: NSAttributedString, withFrame frame: NSRect, in controlView: NSView) -> NSRect {
+    var newFrame = frame
+    newFrame.origin.x += CGFloat(RSResolutionGroupingCell.padding)
+    return super.drawTitle(title, withFrame: newFrame, in: controlView)
+  }
+  
+  override var cellSize: NSSize {
+    let original = super.cellSize
+    return NSSize(width: original.width + CGFloat(RSResolutionGroupingCell.padding * 2), height: original.height)
   }
 }

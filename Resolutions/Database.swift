@@ -38,6 +38,7 @@ func setupDatabase() throws {
       t.column("id", .integer).primaryKey()
       t.column("remoteIdentifier", .text).notNull().unique()
       t.column("name", .text).notNull()
+      t.column("grouping", .text)
       t.column("completedAt", .date)
 
       t.column("createdAt", .date).notNull()
