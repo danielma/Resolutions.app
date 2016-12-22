@@ -13,7 +13,10 @@ import SwiftyJSON
 class Resolution: AppRecord {
   override class var databaseTableName: String { return "resolutions" }
 
-  static let githubIssueRegex = try! NSRegularExpression(pattern: "api\\.github\\.com/repos/(\\w+)/(\\w+)/issues/(\\w+)", options: .caseInsensitive)
+  static let githubIssueRegex = try! NSRegularExpression(
+    pattern: "api\\.github\\.com/repos/([\\w\\-]+)/([\\w\\-]+)/issues/(\\w+)",
+    options: .caseInsensitive
+  )
   
   
   enum Kind {
