@@ -89,9 +89,9 @@ class ResolutionTableCellView: NSTableCellView {
     dbQueue.inDatabase { db in
       resolution.completedAt = Date()
 
-//      if resolution.hasPersistentChangedValues {
-//        try! resolution.save(db)
-//      }
+      if resolution.hasPersistentChangedValues {
+        try! resolution.save(db)
+      }
     }
   }
 

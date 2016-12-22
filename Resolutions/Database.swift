@@ -18,7 +18,7 @@ func setupDatabase() throws {
   // Connect to the database
   // See https://github.com/groue/GRDB.swift/#database-connections
 
-  let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String
+  let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String
   let path = try! FileManager().url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
   let appPath = path.appendingPathComponent(appName)
   try! FileManager().createDirectory(at: appPath, withIntermediateDirectories: true, attributes: nil)
