@@ -77,12 +77,7 @@ class GithubPoller {
         resolution.completedAt = nil
       }
     } else {
-      let resolutionName = notification["subject", "title"].stringValue
-      let remoteIdentifier = notification["subject", "url"].stringValue
-      resolution = Resolution(
-        name: resolutionName,
-        remoteIdentifier: remoteIdentifier
-      )
+      resolution = Resolution(fromGithubNotification: notification)
     }
 
     if let updatedAt = updatedAt {
@@ -100,9 +95,17 @@ class GithubPoller {
 
     guard let eventId = Int(event["id"].stringValue) else { return }
     guard eventId > lastEventReadId else { return }
+//    guard let type =
 
     
-    
     UserDefaults.standard.set(eventId, forKey: "githubLastEventReadId")
+  }
+}
+
+class GithubUserEvent {
+  enum type: String {
+    case IssueCommentEvent
+    case PullRequestReviewCommentEvent
+//    case
   }
 }

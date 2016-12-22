@@ -8,18 +8,18 @@
 
 import Foundation
 import GRDB
-
-enum ResolutionType {
-  case GithubIssue
-  case GithubPullRequest
-  case Unknown
-}
+import SwiftyJSON
 
 class Resolution: AppRecord {
   override class var databaseTableName: String { return "resolutions" }
 
-  static let githubPullRequestRegex = try! NSRegularExpression(pattern: "api\\.github\\.com/repos/(\\w+)/(\\w+)/pulls/(\\w+)", options: .caseInsensitive)
   static let githubIssueRegex = try! NSRegularExpression(pattern: "api\\.github\\.com/repos/(\\w+)/(\\w+)/issues/(\\w+)", options: .caseInsensitive)
+  
+  
+  enum Kind {
+    case GithubIssue
+    case Unknown
+  }
 
   var completedAt: Date?
   var remoteIdentifier: String
@@ -33,7 +33,7 @@ class Resolution: AppRecord {
     super.init(row: row)
   }
 
-  init(name: String, remoteIdentifier: String, completedAt: Date?) {
+  init(name: String, remoteIdentifier: String, completedAt: Date? = nil) {
     self.name = name
     self.remoteIdentifier = remoteIdentifier
     self.completedAt = completedAt
@@ -48,17 +48,9 @@ class Resolution: AppRecord {
     return false
   }
 
-  var remoteIdentifierRange: NSRange {
-    return NSMakeRange(0, remoteIdentifier.characters.count)
-  }
-
-  var type: ResolutionType {
-    let matchOptions = NSRegularExpression.MatchingOptions()
-
+  var kind: Kind {
     switch true {
-    case Resolution.githubPullRequestRegex.firstMatch(in: remoteIdentifier, options: matchOptions, range: remoteIdentifierRange) != nil:
-      return .GithubPullRequest
-    case Resolution.githubIssueRegex.firstMatch(in: remoteIdentifier, options: matchOptions, range: remoteIdentifierRange) != nil:
+    case Resolution.githubIssueRegex.hasMatch(remoteIdentifier):
       return .GithubIssue
     default:
       return .Unknown
@@ -74,28 +66,18 @@ class Resolution: AppRecord {
   }
 
   private var urlString: String? {
-    switch type {
-    case .GithubPullRequest:
-      return Resolution.githubPullRequestRegex.stringByReplacingMatches(
-        in: remoteIdentifier,
-        options: NSRegularExpression.MatchingOptions(),
-        range: remoteIdentifierRange,
-        withTemplate: "github.com/$1/$2/pull/$3"
-      )
+    switch kind {
     case .GithubIssue:
+      let range = NSMakeRange(0, remoteIdentifier.characters.count)
       return Resolution.githubIssueRegex.stringByReplacingMatches(
         in: remoteIdentifier,
         options: NSRegularExpression.MatchingOptions(),
-        range: remoteIdentifierRange,
+        range: range,
         withTemplate: "github.com/$1/$2/issues/$3"
       )
     default:
       return nil
     }
-  }
-
-  convenience init(name: String, remoteIdentifier: String) {
-    self.init(name: name, remoteIdentifier: remoteIdentifier, completedAt: nil)
   }
 
   override var appRecordDictionary: [String : DatabaseValueConvertible?] {
@@ -104,5 +86,29 @@ class Resolution: AppRecord {
       "remoteIdentifier": remoteIdentifier,
       "name": name,
     ]
+  }
+}
+
+fileprivate func cleanGithubNotificationRemoteIdentifier(_ identifier: String) -> String {
+  let githubPullRequestRegex = try! NSRegularExpression(pattern: "api\\.github\\.com/repos/(\\w+)/(\\w+)/pulls/(\\w+)", options: .caseInsensitive)
+
+  if githubPullRequestRegex.hasMatch(identifier) {
+    return githubPullRequestRegex.stringByReplacingMatches(
+      in: identifier,
+      options: NSRegularExpression.MatchingOptions(),
+      range: NSMakeRange(0, identifier.characters.count),
+      withTemplate: "api.github.com/repos/$1/$2/issues/$3"
+    )
+  }
+
+  return identifier
+}
+
+extension Resolution {
+  convenience init(fromGithubNotification notification: JSON) {
+    let name = notification["subject", "title"].stringValue
+    let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
+    
+    self.init(name: name, remoteIdentifier: remoteIdentifier)
   }
 }

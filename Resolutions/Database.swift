@@ -18,9 +18,14 @@ func setupDatabase() throws {
   // Connect to the database
   // See https://github.com/groue/GRDB.swift/#database-connections
 
-  let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as NSString
-  let dbPath = documentsPath.appendingPathComponent("db.sqlite")
-  dbQueue = try DatabaseQueue(path: dbPath, configuration: config)
+  let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String
+  let path = try! FileManager().url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+  let appPath = path.appendingPathComponent(appName)
+  try! FileManager().createDirectory(at: appPath, withIntermediateDirectories: true, attributes: nil)
+  let dbPath = appPath.appendingPathComponent("db.sqlite")
+
+  print(dbPath.absoluteString)
+  dbQueue = try DatabaseQueue(path: dbPath.absoluteString, configuration: config)
 
 
   // Use DatabaseMigrator to setup the database
