@@ -11,7 +11,7 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
   var mainWindowController: NSWindowController?
-  
+
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     UserDefaults.standard.register(defaults: ["githubToken": "", "githubUsername": "", "githubLastEventReadId": 0])
 
