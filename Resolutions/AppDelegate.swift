@@ -10,13 +10,25 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
+  var mainWindowController: NSWindowController?
+  
   func applicationDidFinishLaunching(_ aNotification: Notification) {
-    UserDefaults.standard.register(defaults: ["githubToken": "", "githubUsername": ""])
+    UserDefaults.standard.register(defaults: ["githubToken": "", "githubUsername": "", "githubLastEventReadId": 0])
     GithubPoller.sharedInstance.start()
+
+    // TODO: reset this
+    UserDefaults.standard.set(0, forKey: "githubLastEventReadId")
   }
 
   func applicationWillTerminate(_ aNotification: Notification) {
     // Insert code here to tear down your application
+  }
+
+  func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+    if (flag) { return false }
+    
+    mainWindowController?.window?.makeKeyAndOrderFront(self)
+    return true
   }
 }
 

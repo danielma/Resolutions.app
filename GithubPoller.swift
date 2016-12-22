@@ -34,7 +34,19 @@ class GithubPoller {
       .map { notifications in
         DispatchQueue.global().async {
           try! dbQueue.inTransaction { db in
-            notifications.arrayValue.forEach { self.handleNotification(db, $0) }
+            notifications.arrayValue.reversed().forEach { self.handleNotification(db, $0) }
+
+            return .commit
+          }
+        }
+      }
+      .start()
+
+    eventsPoller
+      .map { events in
+        DispatchQueue.global().async {
+          try! dbQueue.inTransaction { db in
+            events.arrayValue.reversed().forEach { self.handleEvent(db, $0) }
 
             return .commit
           }
@@ -54,26 +66,83 @@ class GithubPoller {
   }
 
   internal func handleNotification(_ db: Database, _ notification: JSON) {
+    let incomingResolution = Resolution(fromGithubNotification: notification)
+
     var resolution = try! Resolution
-      .filter(Column("remoteIdentifier") == notification["subject", "url"].stringValue)
+      .filter(Column("remoteIdentifier") == incomingResolution.remoteIdentifier)
       .fetchOne(db)
-    
+
+    let updatedAt = jsonDateToDate(notification["updated_at"].string)
+
     if let resolution = resolution {
-      if let updatedAt = jsonDateToDate(notification["updated_at"].string), resolution.updatedAt! < updatedAt {
+      if let updatedAt = updatedAt, resolution.updatedAt! < updatedAt {
         resolution.completedAt = nil
       }
     } else {
-      let resolutionName = notification["subject", "title"].stringValue
-      let remoteIdentifier = notification["subject", "url"].stringValue
-      resolution = Resolution(
-        name: resolutionName,
-        remoteIdentifier: remoteIdentifier
-      )
+      resolution = incomingResolution
+      resolution!.createdAt = updatedAt
+    }
+
+    if let updatedAt = updatedAt {
+      resolution?.updatedAt = updatedAt
     }
     
     if resolution!.hasPersistentChangedValues {
-      print("Adding resolution", resolution!)
       try! resolution!.save(db)
     }
+  }
+
+  internal func handleEvent(_ db: Database, _ event: JSON) {
+    let lastEventReadId = UserDefaults.standard.value(forKey: "githubLastEventReadId") as! Int
+
+    guard let eventId = Int(event["id"].stringValue) else { return }
+    guard eventId > lastEventReadId else { return }
+    guard let kind = GithubUserEvent.Kind(rawValue: event["type"].stringValue) else { return }
+
+    switch kind {
+    case .IssueCommentEvent:
+      handleIssueCommentEvent(db, event)
+    case .PullRequestReviewCommentEvent:
+      handlePullRequestReviewCommentEvent(db, event)
+    }
+    
+    UserDefaults.standard.set(eventId, forKey: "githubLastEventReadId")
+  }
+
+  internal func handleIssueCommentEvent(_ db: Database, _ event: JSON) {
+    let payload = event["payload"]
+    let issueIdentifier = payload["issue", "url"].stringValue
+
+    guard
+      let resolution = try! Resolution.filter(Column("remoteIdentifier") == issueIdentifier).fetchOne(db),
+      !resolution.completed,
+      let eventCreatedAt = jsonDateToDate(event["created_at"].stringValue),
+      resolution.updatedAt! < eventCreatedAt
+      else { return }
+
+    resolution.completedAt = eventCreatedAt
+    try! resolution.save(db)
+  }
+
+  internal func handlePullRequestReviewCommentEvent(_ db: Database, _ event: JSON) {
+    let payload = event["payload"]
+    let issueIdentifier = payload["pull_request", "pull_request", "issue_url"].stringValue
+
+    guard
+      let resolution = try! Resolution.filter(Column("remoteIdentifier") == issueIdentifier).fetchOne(db),
+      !resolution.completed,
+      let eventCreatedAt = jsonDateToDate(event["created_at"].stringValue),
+      resolution.updatedAt! < eventCreatedAt
+      else { return }
+
+    resolution.completedAt = eventCreatedAt
+    try! resolution.save(db)
+  }
+}
+
+class GithubUserEvent {
+  enum Kind: String {
+    case IssueCommentEvent
+    case PullRequestReviewCommentEvent
   }
 }

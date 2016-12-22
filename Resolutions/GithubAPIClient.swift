@@ -22,11 +22,7 @@ class GithubRequestPoller: RequestPoller {
   }
 
   override internal func shouldExecuteCallback(request: URLRequest, response: HTTPURLResponse, data: Data) -> Bool {
-    if let status = response.allHeaderFields["Status"] as? String, status == "304 Not Modified" {
-      return false
-    }
-
-    return true
+    return response.statusCode != 304
   }
 }
 
@@ -70,7 +66,18 @@ class GithubAPIClient {
   }
 
   func pollNotifications() -> RequestPoller {
-    return poll("notifications", parameters: ["all": "true"])
+    return GithubRequestPoller { lastResponse in
+      var headers: HTTPHeaders = [:]
+
+      if let lastResponse = lastResponse,
+         let date = lastResponse.allHeaderFields["Date"] as? String {
+        headers["If-Modified-Since"] = date
+      }
+
+      debugPrint("request with headers", headers)
+
+      return self.request("notifications", parameters: ["all": "true"], headers: headers)
+    }
   }
 
   func userEvents() -> Promise<JSON> {
@@ -78,28 +85,34 @@ class GithubAPIClient {
   }
 
   func pollUserEvents() -> RequestPoller {
-    return poll("users/\(username)/events")
-  }
+    return GithubRequestPoller { lastResponse in
+      var headers: HTTPHeaders = [:]
 
-  internal func poll(_ url: String) -> RequestPoller {
-    return poll(url, parameters: [:])
-  }
+      if let lastResponse = lastResponse,
+         let etag = lastResponse.allHeaderFields["Etag"] as? String {
+        headers["If-None-Match"] = etag
+      }
 
-  private func poll(_ url: String, parameters: Params) -> RequestPoller {
-    return GithubRequestPoller { lastRequest in
-      return self.request(url, parameters: parameters, headers: ["If-Modified-Since": dateToHttp(lastRequest)])
+      debugPrint("request with headers", "events", headers)
+
+      return self.request("users/\(self.username)/events", headers: headers)
     }
   }
 
-  private func get(_ url: String) -> Promise<JSON> {
-    return get(url, parameters: [:])
+  internal func poll(_ url: String, parameters: Params = [:]) -> RequestPoller {
+    return GithubRequestPoller { lastResponse in
+      var headers: HTTPHeaders = [:]
+
+      if let lastResponse = lastResponse,
+         let date = lastResponse.allHeaderFields["Date"] as? String {
+        headers["If-Modified-Since"] = date
+      }
+
+      return self.request(url, parameters: parameters, headers: headers)
+    }
   }
 
-  internal func request(_ url: String, parameters: Params) -> DataRequest {
-    return request(url, parameters: parameters, headers: [:])
-  }
-
-  private func request(_ url: String, parameters: Params, headers: HTTPHeaders) -> DataRequest {
+  private func request(_ url: String, parameters: Params = [:], headers: HTTPHeaders = [:]) -> DataRequest {
     var headers = headers
 
     if let authorizationHeader = Request.authorizationHeader(user: username, password: token) {
@@ -112,7 +125,7 @@ class GithubAPIClient {
       .validate(contentType: ["application/json"])
   }
 
-  private func get(_ url: String, parameters: Params) -> Promise<JSON> {
+  private func get(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
     return request(url, parameters: parameters)
       .responseJSON()
       .then { json in

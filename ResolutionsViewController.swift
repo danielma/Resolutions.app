@@ -77,6 +77,14 @@ extension ResolutionsViewController: NSTableViewDelegate {
 
 class ResolutionTableCellView: NSTableCellView {
   @IBOutlet weak var checkbox: NSButton!
+  @IBOutlet weak var titleButton: NSButton!
+
+  @IBAction func titleButtonClicked(_ sender: NSButton) {
+    if let url = resolution.url {
+      NSWorkspace.shared().open(url)
+    }
+  }
+
   @IBAction func checkboxClicked(_ sender: NSButton) {
     dbQueue.inDatabase { db in
       resolution.completedAt = Date()
@@ -85,8 +93,6 @@ class ResolutionTableCellView: NSTableCellView {
         try! resolution.save(db)
       }
     }
-
-    debugPrint(sender.title, sender.state == NSOnState)
   }
 
   var resolution: Resolution!
@@ -96,7 +102,7 @@ class ResolutionTableCellView: NSTableCellView {
 
     self.resolution = resolution
 
-    checkbox.title = resolution.name
+    titleButton.title = resolution.name
     checkbox.state = resolution.completed ? NSOnState : NSOffState
   }
 }

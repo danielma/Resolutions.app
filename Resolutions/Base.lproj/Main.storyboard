@@ -672,7 +672,8 @@
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
-                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+                        <value key="minSize" type="size" width="200" height="200"/>
                         <toolbar key="toolbar" implicitIdentifier="6804FD83-3EB9-4DB4-B598-A3335243CD8E" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="sYd-zP-JSv">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="AA664920-00A1-4B20-8441-B8104906F859" label="Custom View" paletteLabel="Custom View" id="Hgk-rn-JY1">
@@ -816,17 +817,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="32" horizontalPageScroll="10" verticalLineScroll="32" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogT-rg-IHX">
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogT-rg-IHX">
                                 <rect key="frame" x="0.0" y="-1" width="480" height="271"/>
                                 <clipView key="contentView" id="iHJ-6D-fD3">
                                     <rect key="frame" x="0.0" y="0.0" width="480" height="271"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="30" viewBased="YES" id="PTp-Ch-YnH">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="40" viewBased="YES" id="PTp-Ch-YnH">
                                             <rect key="frame" x="0.0" y="0.0" width="480" height="271"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn identifier="MainColumn" editable="NO" width="477" minWidth="40" maxWidth="1000" id="7SM-8O-Qra">
@@ -843,27 +845,49 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="ResolutionTableCellView" id="2G6-Sm-XGn" customClass="ResolutionTableCellView" customModule="Resolutions" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="1" width="477" height="30"/>
+                                                            <rect key="frame" x="1" y="1" width="477" height="40"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="k5y-Br-laE">
-                                                                    <rect key="frame" x="1" y="6" width="475" height="18"/>
-                                                                    <buttonCell key="cell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ePj-UQ-mJV">
+                                                                    <rect key="frame" x="8" y="10" width="20" height="20"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="16" id="b5k-gn-cSU"/>
+                                                                        <constraint firstAttribute="height" constant="16" id="qD1-ts-dlG"/>
+                                                                    </constraints>
+                                                                    <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ePj-UQ-mJV" customClass="RSResolutionCheckboxCell" customModule="Resolutions" customModuleProvider="target">
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                        <font key="font" metaFont="system"/>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                                                                <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                    </buttonCell>
+                                                                    <connections>
+                                                                        <action selector="checkboxClicked:" target="2G6-Sm-XGn" id="bUN-L6-0Pe"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5ko-DX-O2b">
+                                                                    <rect key="frame" x="34" y="4" width="433" height="32"/>
+                                                                    <buttonCell key="cell" type="bevel" title="Button" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="lap-cj-PKm">
+                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="checkboxClicked:" target="2G6-Sm-XGn" id="XjV-Xt-IGw"/>
+                                                                        <action selector="titleButtonClicked:" target="2G6-Sm-XGn" id="Uut-Y6-gi9"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="trailing" secondItem="k5y-Br-laE" secondAttribute="trailing" constant="3" id="HRl-jU-Ag7"/>
+                                                                <constraint firstItem="5ko-DX-O2b" firstAttribute="centerY" secondItem="k5y-Br-laE" secondAttribute="centerY" id="D0p-a3-jMy"/>
+                                                                <constraint firstItem="5ko-DX-O2b" firstAttribute="leading" secondItem="k5y-Br-laE" secondAttribute="trailing" constant="8" symbolic="YES" id="DcP-2I-KAr"/>
                                                                 <constraint firstItem="k5y-Br-laE" firstAttribute="centerY" secondItem="2G6-Sm-XGn" secondAttribute="centerY" id="SRR-kC-3qM"/>
-                                                                <constraint firstItem="k5y-Br-laE" firstAttribute="leading" secondItem="2G6-Sm-XGn" secondAttribute="leading" constant="3" id="X5k-4p-Hiw"/>
+                                                                <constraint firstItem="k5y-Br-laE" firstAttribute="leading" secondItem="2G6-Sm-XGn" secondAttribute="leading" constant="10" id="X5k-4p-Hiw"/>
+                                                                <constraint firstAttribute="trailing" secondItem="5ko-DX-O2b" secondAttribute="trailing" constant="10" id="zY8-cS-wDy"/>
                                                             </constraints>
                                                             <connections>
                                                                 <outlet property="checkbox" destination="k5y-Br-laE" id="uh0-De-t1m"/>
+                                                                <outlet property="titleButton" destination="5ko-DX-O2b" id="Uc7-8C-KV6"/>
                                                             </connections>
                                                         </tableCellView>
                                                     </prototypeCellViews>

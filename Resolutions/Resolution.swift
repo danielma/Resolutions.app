@@ -8,9 +8,18 @@
 
 import Foundation
 import GRDB
+import SwiftyJSON
 
 class Resolution: AppRecord {
   override class var databaseTableName: String { return "resolutions" }
+
+  static let githubIssueRegex = try! NSRegularExpression(pattern: "api\\.github\\.com/repos/(\\w+)/(\\w+)/issues/(\\w+)", options: .caseInsensitive)
+  
+  
+  enum Kind {
+    case GithubIssue
+    case Unknown
+  }
 
   var completedAt: Date?
   var remoteIdentifier: String
@@ -24,7 +33,7 @@ class Resolution: AppRecord {
     super.init(row: row)
   }
 
-  init(name: String, remoteIdentifier: String, completedAt: Date?) {
+  init(name: String, remoteIdentifier: String, completedAt: Date? = nil) {
     self.name = name
     self.remoteIdentifier = remoteIdentifier
     self.completedAt = completedAt
@@ -39,8 +48,36 @@ class Resolution: AppRecord {
     return false
   }
 
-  convenience init(name: String, remoteIdentifier: String) {
-    self.init(name: name, remoteIdentifier: remoteIdentifier, completedAt: nil)
+  var kind: Kind {
+    switch true {
+    case Resolution.githubIssueRegex.hasMatch(remoteIdentifier):
+      return .GithubIssue
+    default:
+      return .Unknown
+    }
+  }
+
+  var url: URL? {
+    if let string = urlString {
+      return URL(string: string)
+    } else {
+      return nil
+    }
+  }
+
+  private var urlString: String? {
+    switch kind {
+    case .GithubIssue:
+      let range = NSMakeRange(0, remoteIdentifier.characters.count)
+      return Resolution.githubIssueRegex.stringByReplacingMatches(
+        in: remoteIdentifier,
+        options: NSRegularExpression.MatchingOptions(),
+        range: range,
+        withTemplate: "github.com/$1/$2/issues/$3"
+      )
+    default:
+      return nil
+    }
   }
 
   override var appRecordDictionary: [String : DatabaseValueConvertible?] {
@@ -49,5 +86,29 @@ class Resolution: AppRecord {
       "remoteIdentifier": remoteIdentifier,
       "name": name,
     ]
+  }
+}
+
+fileprivate func cleanGithubNotificationRemoteIdentifier(_ identifier: String) -> String {
+  let githubPullRequestRegex = try! NSRegularExpression(pattern: "api\\.github\\.com/repos/(\\w+)/(\\w+)/pulls/(\\w+)", options: .caseInsensitive)
+
+  if githubPullRequestRegex.hasMatch(identifier) {
+    return githubPullRequestRegex.stringByReplacingMatches(
+      in: identifier,
+      options: NSRegularExpression.MatchingOptions(),
+      range: NSMakeRange(0, identifier.characters.count),
+      withTemplate: "api.github.com/repos/$1/$2/issues/$3"
+    )
+  }
+
+  return identifier
+}
+
+extension Resolution {
+  convenience init(fromGithubNotification notification: JSON) {
+    let name = notification["subject", "title"].stringValue
+    let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
+    
+    self.init(name: name, remoteIdentifier: remoteIdentifier)
   }
 }
