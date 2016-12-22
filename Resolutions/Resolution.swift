@@ -24,19 +24,22 @@ class Resolution: AppRecord {
   var completedAt: Date?
   var remoteIdentifier: String
   var name: String
+  var grouping: String?
 
   required init(row: Row) {
     completedAt = row.value(named: "completedAt")
     remoteIdentifier = row.value(named: "remoteIdentifier")
     name = row.value(named: "name")
+    grouping = row.value(named: "grouping")
 
     super.init(row: row)
   }
 
-  init(name: String, remoteIdentifier: String, completedAt: Date? = nil) {
+  init(name: String, remoteIdentifier: String, completedAt: Date? = nil, grouping: String? = nil) {
     self.name = name
     self.remoteIdentifier = remoteIdentifier
     self.completedAt = completedAt
+    self.grouping = grouping
     super.init()
   }
 
@@ -85,6 +88,7 @@ class Resolution: AppRecord {
       "completedAt": completedAt,
       "remoteIdentifier": remoteIdentifier,
       "name": name,
+      "grouping": grouping,
     ]
   }
 }
@@ -108,7 +112,8 @@ extension Resolution {
   convenience init(fromGithubNotification notification: JSON) {
     let name = notification["subject", "title"].stringValue
     let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
+    let grouping = notification["repository", "full_name"].string
     
-    self.init(name: name, remoteIdentifier: remoteIdentifier)
+    self.init(name: name, remoteIdentifier: remoteIdentifier, grouping: grouping)
   }
 }

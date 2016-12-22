@@ -867,8 +867,8 @@
                                                                         <action selector="checkboxClicked:" target="2G6-Sm-XGn" id="bUN-L6-0Pe"/>
                                                                     </connections>
                                                                 </button>
-                                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5ko-DX-O2b">
-                                                                    <rect key="frame" x="34" y="4" width="433" height="32"/>
+                                                                <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5ko-DX-O2b">
+                                                                    <rect key="frame" x="34" y="4" width="278" height="32"/>
                                                                     <buttonCell key="cell" type="bevel" title="Button" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="lap-cj-PKm">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -877,16 +877,30 @@
                                                                         <action selector="titleButtonClicked:" target="2G6-Sm-XGn" id="Uut-Y6-gi9"/>
                                                                     </connections>
                                                                 </button>
+                                                                <button horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="600" verifyAmbiguity="ignoreSizes" translatesAutoresizingMaskIntoConstraints="NO" id="OGb-Wr-XFH" customClass="ResolutionGroupingButton" customModule="Resolutions" customModuleProvider="target">
+                                                                    <rect key="frame" x="322" y="8" width="145" height="24"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" priority="100" id="n6T-Ut-DAE"/>
+                                                                        <constraint firstAttribute="height" constant="24" id="v0l-mz-GoT"/>
+                                                                    </constraints>
+                                                                    <buttonCell key="cell" type="bevel" title="MINISTRYCENTERED/GROUPS" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="NF6-VF-2dJ" customClass="RSResolutionGroupingCell" customModule="Resolutions" customModuleProvider="target">
+                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                        <font key="font" metaFont="miniSystemBold"/>
+                                                                    </buttonCell>
+                                                                </button>
                                                             </subviews>
                                                             <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="OGb-Wr-XFH" secondAttribute="trailing" constant="10" id="37a-Hb-1wA"/>
                                                                 <constraint firstItem="5ko-DX-O2b" firstAttribute="centerY" secondItem="k5y-Br-laE" secondAttribute="centerY" id="D0p-a3-jMy"/>
                                                                 <constraint firstItem="5ko-DX-O2b" firstAttribute="leading" secondItem="k5y-Br-laE" secondAttribute="trailing" constant="8" symbolic="YES" id="DcP-2I-KAr"/>
                                                                 <constraint firstItem="k5y-Br-laE" firstAttribute="centerY" secondItem="2G6-Sm-XGn" secondAttribute="centerY" id="SRR-kC-3qM"/>
                                                                 <constraint firstItem="k5y-Br-laE" firstAttribute="leading" secondItem="2G6-Sm-XGn" secondAttribute="leading" constant="10" id="X5k-4p-Hiw"/>
-                                                                <constraint firstAttribute="trailing" secondItem="5ko-DX-O2b" secondAttribute="trailing" constant="10" id="zY8-cS-wDy"/>
+                                                                <constraint firstItem="OGb-Wr-XFH" firstAttribute="centerY" secondItem="2G6-Sm-XGn" secondAttribute="centerY" id="sQx-o3-EEf"/>
+                                                                <constraint firstItem="5ko-DX-O2b" firstAttribute="trailing" secondItem="OGb-Wr-XFH" secondAttribute="leading" constant="-10" id="wsF-bS-Wz7"/>
                                                             </constraints>
                                                             <connections>
                                                                 <outlet property="checkbox" destination="k5y-Br-laE" id="uh0-De-t1m"/>
+                                                                <outlet property="groupingButton" destination="OGb-Wr-XFH" id="vYB-Ck-kkr"/>
                                                                 <outlet property="titleButton" destination="5ko-DX-O2b" id="Uc7-8C-KV6"/>
                                                             </connections>
                                                         </tableCellView>
