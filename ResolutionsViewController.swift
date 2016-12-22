@@ -21,6 +21,7 @@ class ResolutionsViewController: NSViewController {
     super.viewDidLoad()
 
     try! setupDatabase()
+    GithubPoller.sharedInstance.start()
 
     setupFetchedRecordsController()
     
