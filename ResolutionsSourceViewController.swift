@@ -22,6 +22,7 @@ class ResolutionsSourceViewController: NSViewController {
     
     outlineView.dataSource = self
     outlineView.delegate = self
+//    outlineView.selectionHighlightStyle = .none
   }
 }
 
@@ -29,9 +30,10 @@ extension ResolutionsSourceViewController: ResolutionsSplitViewControllerChild {
   func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) {
     let groupings = Array(Set(controller.fetchedRecords?.map({ $0.grouping ?? "" }) ?? []))
     
-    groupedGroupings = [("GITHUB", groupings)]
+    groupedGroupings = [("All", ["Inbox", "Completed"]), ("Github", groupings)]
 
     outlineView.reloadData()
+//    outlineView.expandItem(groupedGroupings[0], expandChildren: true)
     outlineView.expandItem(nil, expandChildren: true)
   }
 }
@@ -50,8 +52,6 @@ extension ResolutionsSourceViewController: NSOutlineViewDataSource {
   func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
     if item == nil {
       return groupedGroupings[index]
-//    } else if let item = item as? [GroupedGroupingList] {
-//      return item[index]
     } else if let item = item as? GroupedGroupingList {
       return item.1[index]
     } else {
@@ -60,11 +60,11 @@ extension ResolutionsSourceViewController: NSOutlineViewDataSource {
   }
 
   func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-    if item is String {
-      return false
+    if let item = item as? GroupedGroupingList {
+      return item.1.count > 0
     }
 
-    return true
+    return false
   }
 }
 
@@ -86,4 +86,11 @@ extension ResolutionsSourceViewController: NSOutlineViewDelegate {
 
     return nil
   }
+
+  func outlineView(_ outlineView: NSOutlineView, willDisplayCell cell: Any, for tableColumn: NSTableColumn?, item: Any) {
+    print(cell)
+  }
+}
+
+class SourceViewTableCellView: NSTableCellView {
 }
