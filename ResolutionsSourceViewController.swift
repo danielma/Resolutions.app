@@ -13,7 +13,8 @@ typealias GroupedGroupingList = (String, [String])
 
 class ResolutionsSourceViewController: NSViewController {
   @IBOutlet weak var outlineView: NSOutlineView!
-  
+
+  var groupings: [String] = []
   var groupedGroupings: [GroupedGroupingList] = []
 
   override func viewDidLoad() {
@@ -27,14 +28,24 @@ class ResolutionsSourceViewController: NSViewController {
 }
 
 extension ResolutionsSourceViewController: ResolutionsSplitViewControllerChild {
-  func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) {
-    let groupings = Array(Set(controller.fetchedRecords?.map({ $0.grouping ?? "" }) ?? []))
-    
+  func fetchedResolutionsControllerDidPopulate(_ controller: FetchedRecordsController<Resolution>) {
+    dbQueue.inDatabase { db in
+      try! groupings = String.fetchAll(db, "SELECT DISTINCT grouping FROM resolutions")
+    }
+
     groupedGroupings = [("All", ["Inbox", "Completed"]), ("Github", groupings)]
 
     outlineView.reloadData()
 //    outlineView.expandItem(groupedGroupings[0], expandChildren: true)
     outlineView.expandItem(nil, expandChildren: true)
+  }
+  
+  func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) {
+//    let groupings = Array(Set(controller.fetchedRecords?.map({ $0.grouping ?? "" }) ?? []))
+//    
+//    groupedGroupings = [("All", ["Inbox", "Completed"]), ("Github", groupings)]
+//
+//    outlineView.reloadData()
   }
 }
 
@@ -87,10 +98,20 @@ extension ResolutionsSourceViewController: NSOutlineViewDelegate {
     return nil
   }
 
-  func outlineView(_ outlineView: NSOutlineView, willDisplayCell cell: Any, for tableColumn: NSTableColumn?, item: Any) {
-    print(cell)
-  }
-}
+  func outlineViewSelectionDidChange(_ notification: Notification) {
+    guard let outlineView = notification.object as? NSOutlineView else { return }
 
-class SourceViewTableCellView: NSTableCellView {
+    let selectedIndex = outlineView.selectedRow
+    let parentController = parent as! ResolutionsSplitViewController
+
+    if let grouping = outlineView.item(atRow: selectedIndex) as? String {
+      if grouping == "Inbox" {
+        parentController.filter(Column("completedAt") == nil)
+      } else if grouping == "Completed" {
+        parentController.filter(Column("completedAt") != nil)
+      } else {
+        parentController.filter(Column("grouping") == grouping)
+      }
+    }
+  }
 }

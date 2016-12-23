@@ -23,6 +23,10 @@ class ResolutionsViewController: NSViewController {
 }
 
 extension ResolutionsViewController: ResolutionsSplitViewControllerChild {
+  func fetchedResolutionsControllerDidPopulate(_ controller: FetchedRecordsController<Resolution>) {
+    fetchedResolutionsControllerDidChange(controller)
+  }
+
   func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) {
     self.fetchedResolutionsController = controller
     tableView.reloadData()

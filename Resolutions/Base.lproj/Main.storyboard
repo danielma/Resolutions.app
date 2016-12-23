@@ -670,11 +670,19 @@
             <objects>
                 <windowController id="B8D-0N-5wS" customClass="RSWindowController" customModule="Resolutions" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Resolutions" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA" customClass="RSWindow" customModule="Resolutions" customModuleProvider="target">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
                         <value key="minSize" type="size" width="200" height="200"/>
+                        <toolbar key="toolbar" implicitIdentifier="8D123258-B4E2-433E-8144-8B24CB1E4E8D" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="hHC-h4-D56">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="fMR-QN-PJ6"/>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="fMR-QN-PJ6"/>
+                            </defaultToolbarItems>
+                        </toolbar>
                     </window>
                     <connections>
                         <segue destination="6RR-2E-yPO" kind="relationship" relationship="window.shadowedContentViewController" id="qEA-RP-2CD"/>
@@ -814,26 +822,26 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <box boxType="custom" borderType="none" borderWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="fSe-cV-g91">
-                                <rect key="frame" x="0.0" y="278" width="190" height="22"/>
+                                <rect key="frame" x="0.0" y="264" width="190" height="36"/>
                                 <view key="contentView" id="Aje-AU-4DJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="190" height="22"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="190" height="36"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="22" id="tVA-Yv-6OS"/>
+                                    <constraint firstAttribute="height" constant="36" id="tVA-Yv-6OS"/>
                                 </constraints>
                                 <color key="fillColor" red="0.14305409789085388" green="0.15571558475494385" blue="0.19769951701164246" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </box>
-                            <scrollView horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="100" borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n5T-hT-yea">
-                                <rect key="frame" x="0.0" y="0.0" width="190" height="278"/>
+                            <scrollView horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="100" borderType="none" autohidesScrollers="YES" horizontalLineScroll="21" horizontalPageScroll="10" verticalLineScroll="21" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n5T-hT-yea">
+                                <rect key="frame" x="0.0" y="0.0" width="190" height="264"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="nhF-X2-xcl">
-                                    <rect key="frame" x="0.0" y="0.0" width="190" height="278"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="190" height="264"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="1" outlineTableColumn="LEx-RU-pjR" id="iW3-Xs-Q5Q">
-                                            <rect key="frame" x="0.0" y="0.0" width="190" height="278"/>
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="19" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="1" outlineTableColumn="LEx-RU-pjR" id="iW3-Xs-Q5Q">
+                                            <rect key="frame" x="0.0" y="0.0" width="190" height="264"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <size key="intercellSpacing" width="3" height="0.0"/>
+                                            <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" red="0.14305409789085388" green="0.15571558475494385" blue="0.19769951701164246" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
@@ -851,13 +859,13 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="HeaderCell" id="tvK-Zr-ty4" userLabel="Header Cell" customClass="SourceViewTableCellView" customModule="Resolutions" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="0.0" width="187" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="187" height="19"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AlP-5d-fY7">
-                                                                    <rect key="frame" x="0.0" y="1" width="187" height="14"/>
+                                                                    <rect key="frame" x="0.0" y="3" width="187" height="14"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" sendsActionOnEndEditing="YES" title="HEADER CELL" id="zbO-Py-vUa">
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" enabled="NO" sendsActionOnEndEditing="YES" alignment="left" title="HEADER CELL" id="zbO-Py-vUa">
                                                                         <font key="font" metaFont="smallSystemBold"/>
                                                                         <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -869,7 +877,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="DataCell" id="G2w-Bz-m5B" userLabel="Data Cell" customClass="SourceViewTableCellView" customModule="Resolutions" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="17" width="187" height="17"/>
+                                                            <rect key="frame" x="1" y="22" width="187" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GXG-PK-wZc">

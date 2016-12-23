@@ -17,11 +17,12 @@ class RSWindowController: NSWindowController {
     super.windowDidLoad()
 
     window?.delegate = self
-    window?.titleVisibility = .hidden
 
     (NSApp.delegate as! AppDelegate).mainWindowController = self
+    window?.titleVisibility = .hidden
     window?.titlebarAppearsTransparent = true
     window?.isMovableByWindowBackground = true
+    window?.toolbar?.showsBaselineSeparator = false
   }
 }
 

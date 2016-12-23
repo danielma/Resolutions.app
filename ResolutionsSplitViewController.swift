@@ -11,9 +11,7 @@ import GRDB
 
 class ResolutionsSplitViewController: NSSplitViewController {
   var fetchedResolutionsController: FetchedRecordsController<Resolution>!
-  let resolutionsRequest = Resolution
-    .filter(Column("completedAt") == nil)
-    .order(Column("createdAt").asc)
+  let resolutionsRequest = Resolution.order(Column("completedAt").asc, Column("createdAt").asc)
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -22,7 +20,7 @@ class ResolutionsSplitViewController: NSSplitViewController {
     
     setupFetchedRecordsController()
   }
-  
+
   func setupFetchedRecordsController() {
     try! fetchedResolutionsController = FetchedRecordsController<Resolution>(dbQueue, request: resolutionsRequest)
 
@@ -49,16 +47,27 @@ class ResolutionsSplitViewController: NSSplitViewController {
     )
 
     try! fetchedResolutionsController.performFetch()
-    updateChildViewControllers()
+    updateChildViewControllers(initial: true)
   }
 
-  func updateChildViewControllers() {
+  func updateChildViewControllers(initial: Bool = false) {
     childViewControllers.forEach({ controller in
-      (controller as! ResolutionsSplitViewControllerChild).fetchedResolutionsControllerDidChange(self.fetchedResolutionsController)
+      let controller = controller as! ResolutionsSplitViewControllerChild
+
+      if initial {
+        controller.fetchedResolutionsControllerDidPopulate(self.fetchedResolutionsController)
+      } else {
+        controller.fetchedResolutionsControllerDidChange(self.fetchedResolutionsController)
+      }
     })
+  }
+
+  func filter(_ predicate: SQLExpressible) {
+    try! fetchedResolutionsController.setRequest(resolutionsRequest.filter(predicate))
   }
 }
 
 protocol ResolutionsSplitViewControllerChild {
   func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) -> Void
+  func fetchedResolutionsControllerDidPopulate(_ controller: FetchedRecordsController<Resolution>) -> Void
 }
