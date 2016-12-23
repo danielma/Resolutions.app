@@ -56,7 +56,7 @@ class ResolutionTableCellView: NSTableCellView {
   @IBOutlet weak var groupingButton: ResolutionGroupingButton!
 
   var tableView: NSTableView!
-  var row: Int!
+  var resolution: Resolution!
 
   @IBAction func titleButtonClicked(_ sender: NSButton) {
     if let url = resolution.url {
@@ -65,13 +65,31 @@ class ResolutionTableCellView: NSTableCellView {
   }
 
   @IBAction func checkboxClicked(_ sender: NSButton) {
+    handleCheckboxChange(sender.state == NSOnState)
+  }
+
+  internal func handleCheckboxChange(_ checked: Bool) {
+    undoManager?.registerUndo(withTarget: self, handler: { [undoResolution = resolution, undoChecked = !checked] (ResolutionTableViewCell) -> () in
+      guard let undoResolution = undoResolution else { return }
+      
+      dbQueue.inDatabase { db in
+        undoResolution.completedAt = undoChecked ? Date() : nil
+
+        if undoResolution.hasPersistentChangedValues {
+          try! undoResolution.save(db)
+        }
+      }
+    })
+    undoManager?.setActionName(checked ? "complete" : "un-complete")
+
     let row = tableView.row(for: self)
     let indexSet = IndexSet(integer: row)
+
     NSAnimationContext.runAnimationGroup({ (context) in
       tableView.removeRows(at: indexSet, withAnimation: .slideUp)
-    }) { 
+    }) {
       dbQueue.inDatabase { db in
-        self.resolution.completedAt = Date()
+        self.resolution.completedAt = checked ? Date() : nil
 
         if self.resolution.hasPersistentChangedValues {
           try! self.resolution.save(db)
@@ -79,8 +97,6 @@ class ResolutionTableCellView: NSTableCellView {
       }
     }
   }
-
-  var resolution: Resolution!
 
   func configure(_ resolution: Resolution?, tableView: NSTableView) {
     guard let resolution = resolution else { return }

@@ -25,22 +25,6 @@ class ResolutionsSplitViewController: NSSplitViewController {
     try! fetchedResolutionsController = FetchedRecordsController<Resolution>(dbQueue, request: resolutionsRequest)
 
     fetchedResolutionsController.trackChanges(
-//      tableViewEvent: { [unowned self] (controller, record, event) in
-//        switch event {
-//        case .insertion(let indexPath):
-//          self.tableView.insertRows(at: [indexPath], with: .fade)
-//        case .deletion(let indexPath):
-//          self.tableView.deleteRows(at: [indexPath], with: .fade)
-//        case .update(let indexPath, _):
-//          if let cell = self.tableView.cellForRow(at: indexPath) {
-//            self.configure(cell as! ReviewListTableViewCell, at: indexPath)
-//          }
-//        case .move(let indexPath, let newIndexPath, _):
-//          self.tableView.deleteRows(at: [indexPath], with: .fade)
-//          self.tableView.insertRows(at: [newIndexPath], with: .fade)
-//        }
-//      },
-
       recordsDidChange: { [unowned self] _ in
         self.updateChildViewControllers()
       }
