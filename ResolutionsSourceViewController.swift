@@ -98,6 +98,10 @@ extension ResolutionsSourceViewController: NSOutlineViewDelegate {
     return nil
   }
 
+  func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView? {
+    return ResolutionsSourceTableRowView()
+  }
+
   func outlineViewSelectionDidChange(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView else { return }
 
@@ -113,5 +117,13 @@ extension ResolutionsSourceViewController: NSOutlineViewDelegate {
         parentController.filter(Column("grouping") == grouping)
       }
     }
+  }
+}
+
+class ResolutionsSourceTableRowView: NSTableRowView {
+  override func drawSelection(in dirtyRect: NSRect) {
+    NSColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.2).setFill()
+    let path = NSBezierPath(rect: dirtyRect)
+    path.fill()
   }
 }
