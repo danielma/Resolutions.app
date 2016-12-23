@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */; };
+		662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */; };
+		662B928D1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */; };
 		6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6646772B1E09A25F009C8156 /* GithubAPIClient.swift */; };
 		66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E061E089C2700F70E8D /* AppDelegate.swift */; };
 		66837E091E089C2700F70E8D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E081E089C2700F70E8D /* ViewController.swift */; };
@@ -84,6 +86,8 @@
 
 /* Begin PBXFileReference section */
 		662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSResolutionCheckboxCell.swift; sourceTree = "<group>"; };
+		662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSourceViewController.swift; sourceTree = "<group>"; };
+		662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSplitViewController.swift; sourceTree = "<group>"; };
 		6646772B1E09A25F009C8156 /* GithubAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubAPIClient.swift; sourceTree = "<group>"; };
 		66837E031E089C2700F70E8D /* Resolutions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Resolutions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66837E061E089C2700F70E8D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -143,6 +147,8 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
+				662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */,
+				662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */,
 				66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */,
 				662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */,
 				668484861E09E6E400119C07 /* ResolutionsPlayground.playground */,
@@ -334,12 +340,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				66837E2B1E08A47D00F70E8D /* Database.swift in Sources */,
+				662B928D1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift in Sources */,
 				66B3E01E1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift in Sources */,
 				66837E091E089C2700F70E8D /* ViewController.swift in Sources */,
 				66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */,
 				66E483C51E090BAF00C70A71 /* Resolution.swift in Sources */,
 				668484851E09E33F00119C07 /* GithubPoller.swift in Sources */,
 				6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */,
+				662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */,
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
 				66B06C7E1E09B12000F203F6 /* RSPreferencesViewController.swift in Sources */,
 				66F4692A1E08FDD900E1D80C /* RSWindowController.swift in Sources */,

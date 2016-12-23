@@ -19,7 +19,10 @@ let x = Kind(rawValue: "heeeey")
 let b = Kind(rawValue: "Dude")
 
 
-let githubIssueRegex = try! NSRegularExpression(pattern: "api\\.github\\.com/repos/(\\w+)/([\\w\\-]+)/issues/(\\w+)", options: .caseInsensitive)
-let remoteIdentifier = "https://api.github.com/repos/sstur/react_rte/issues/156"
+let githubIssueRegex = try! NSRegularExpression(
+  pattern: "api\\.github\\.com/repos/([^/]+)/([^/]+)/issues/(\\w+)",
+  options: .caseInsensitive
+)
+let remoteIdentifier = "https://api.github.com/repos/danielma/Resolutions.app/pulls/3"
 
 githubIssueRegex.hasMatch(remoteIdentifier)

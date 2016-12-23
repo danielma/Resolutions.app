@@ -9,7 +9,12 @@
 import GRDB
 
 // The shared database queue.
-var dbQueue: DatabaseQueue!
+fileprivate var databaseSetup = false
+fileprivate var _dbQueue: DatabaseQueue!
+var dbQueue: DatabaseQueue = {
+  if !databaseSetup { try! setupDatabase() }
+  return _dbQueue
+}()
 
 func setupDatabase() throws {
   var config = Configuration()
@@ -25,7 +30,7 @@ func setupDatabase() throws {
   let dbPath = appPath.appendingPathComponent("db.sqlite")
 
   print(dbPath.absoluteString)
-  dbQueue = try DatabaseQueue(path: dbPath.absoluteString, configuration: config)
+  _dbQueue = try DatabaseQueue(path: dbPath.absoluteString, configuration: config)
 
 
   // Use DatabaseMigrator to setup the database
@@ -46,6 +51,8 @@ func setupDatabase() throws {
     }
   }
 
-  try migrator.migrate(dbQueue)
+  try migrator.migrate(_dbQueue!)
+
+  databaseSetup = true
 }
 
