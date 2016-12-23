@@ -68,7 +68,7 @@ class GithubPoller {
   internal func handleNotification(_ db: Database, _ notification: JSON) {
     let incomingResolution = Resolution(fromGithubNotification: notification)
 
-    var resolution = try! Resolution
+    var resolution = try! Resoludtion
       .filter(Column("remoteIdentifier") == incomingResolution.remoteIdentifier)
       .fetchOne(db)
 
