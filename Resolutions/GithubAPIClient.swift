@@ -49,11 +49,11 @@ class GithubAPIClient {
   }()
 
   private var token: String {
-    return UserDefaults.standard.value(forKey: "githubToken") as! String
+    return (UserDefaults.standard.value(forKey: "githubToken") as? String) ?? ""
   }
 
   private var username: String {
-    return UserDefaults.standard.value(forKey: "githubUsername") as! String
+    return (UserDefaults.standard.value(forKey: "githubUsername") as? String) ?? ""
   }
 
   func notifications() -> Promise<JSON> {

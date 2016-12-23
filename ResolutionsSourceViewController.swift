@@ -12,6 +12,12 @@ import GRDB
 typealias GroupedGroupingList = (String, [String])
 
 class ResolutionsSourceViewController: NSViewController {
+  @IBOutlet weak var reloadButton: NSButton!
+  @IBAction func reloadButtonClicked(_ sender: Any) {
+    GithubPoller.sharedInstance.forceUpdate()
+    animateReloadButton()
+  }
+
   @IBOutlet weak var outlineView: NSOutlineView!
 
   var groupings: [String] = []
@@ -20,10 +26,29 @@ class ResolutionsSourceViewController: NSViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do view setup here.
-    
+
     outlineView.dataSource = self
     outlineView.delegate = self
-//    outlineView.selectionHighlightStyle = .none
+
+    NotificationCenter.default.addObserver(forName: GithubPoller.forcedUpdateNotificationName, object: nil, queue: nil) { (_) in
+      self.animateReloadButton()
+    }
+  }
+
+  func animateReloadButton() {
+    if reloadButton.layer?.animation(forKey: "rotation") == nil {
+      let frame = reloadButton.layer!.frame
+      let center = CGPoint(x: frame.midX, y: frame.midY)
+      reloadButton.layer!.position = center
+      reloadButton.layer!.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+
+      let animate = CABasicAnimation(keyPath: "transform.rotation")
+      animate.duration = 1
+      animate.repeatCount = 1
+      animate.fromValue = 0.0
+      animate.toValue = Float(-M_PI * 2.0)
+      reloadButton.layer?.add(animate, forKey: "rotation")
+    }
   }
 }
 

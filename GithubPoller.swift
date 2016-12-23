@@ -22,6 +22,8 @@ class GithubPoller {
   let notificationsPoller: RequestPoller
   let eventsPoller: RequestPoller
 
+  static let forcedUpdateNotificationName = NSNotification.Name("githubPollerForceUpdate")
+
   static let sharedInstance = GithubPoller()
   
   init() {
@@ -58,6 +60,8 @@ class GithubPoller {
   func forceUpdate() {
     notificationsPoller.forceRequest()
     eventsPoller.forceRequest()
+
+    NotificationCenter.default.post(name: GithubPoller.forcedUpdateNotificationName, object: self)
   }
 
   deinit {

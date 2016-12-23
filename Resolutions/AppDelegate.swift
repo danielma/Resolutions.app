@@ -16,6 +16,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     UserDefaults.standard.register(defaults: ["githubToken": "", "githubUsername": "", "githubLastEventReadId": 0])
   }
 
+  @IBAction func reloadMenuClicked(_ sender: Any) {
+    GithubPoller.sharedInstance.forceUpdate()
+  }
+
   func applicationWillTerminate(_ aNotification: Notification) {
     // Insert code here to tear down your application
   }
