@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		661493631E0DA33F000B87C8 /* GithubPollerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661493621E0DA33F000B87C8 /* GithubPollerTests.swift */; };
+		661493651E0DA715000B87C8 /* notifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 661493641E0DA715000B87C8 /* notifications.json */; };
+		661493661E0DA9CD000B87C8 /* GRDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66837E231E08A42100F70E8D /* GRDB.framework */; };
 		662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */; };
 		662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */; };
 		662B928D1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */; };
@@ -23,6 +26,8 @@
 		66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2F1E08A5BF00F70E8D /* AppRecord.swift */; };
 		668484851E09E33F00119C07 /* GithubPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668484841E09E33F00119C07 /* GithubPoller.swift */; };
 		66A77D061E09D4E2009602B7 /* RequestPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A77D051E09D4E2009602B7 /* RequestPoller.swift */; };
+		66AF24E31E0DBB23003E604C /* issueCommentEvents.json in Resources */ = {isa = PBXBuildFile; fileRef = 66AF24E21E0DBB23003E604C /* issueCommentEvents.json */; };
+		66AF24E51E0DCE56003E604C /* magicIssueCommentEvents.json in Resources */ = {isa = PBXBuildFile; fileRef = 66AF24E41E0DCE56003E604C /* magicIssueCommentEvents.json */; };
 		66B06C6F1E09A45700F203F6 /* Alamofire.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C6D1E09A45700F203F6 /* Alamofire.framework.dSYM */; };
 		66B06C701E09A45700F203F6 /* SwiftyJSON.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C6E1E09A45700F203F6 /* SwiftyJSON.framework.dSYM */; };
 		66B06C731E09A46500F203F6 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B06C711E09A46500F203F6 /* Alamofire.framework */; };
@@ -85,6 +90,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		661493621E0DA33F000B87C8 /* GithubPollerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubPollerTests.swift; sourceTree = "<group>"; };
+		661493641E0DA715000B87C8 /* notifications.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = notifications.json; path = fixtures/notifications.json; sourceTree = "<group>"; };
 		662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSResolutionCheckboxCell.swift; sourceTree = "<group>"; };
 		662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSourceViewController.swift; sourceTree = "<group>"; };
 		662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSplitViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +112,8 @@
 		668484841E09E33F00119C07 /* GithubPoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubPoller.swift; sourceTree = "<group>"; };
 		668484861E09E6E400119C07 /* ResolutionsPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ResolutionsPlayground.playground; sourceTree = "<group>"; };
 		66A77D051E09D4E2009602B7 /* RequestPoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPoller.swift; sourceTree = "<group>"; };
+		66AF24E21E0DBB23003E604C /* issueCommentEvents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = issueCommentEvents.json; path = fixtures/issueCommentEvents.json; sourceTree = "<group>"; };
+		66AF24E41E0DCE56003E604C /* magicIssueCommentEvents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = magicIssueCommentEvents.json; path = fixtures/magicIssueCommentEvents.json; sourceTree = "<group>"; };
 		66B06C6D1E09A45700F203F6 /* Alamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Alamofire.framework.dSYM; path = Carthage/Build/Mac/Alamofire.framework.dSYM; sourceTree = "<group>"; };
 		66B06C6E1E09A45700F203F6 /* SwiftyJSON.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SwiftyJSON.framework.dSYM; path = Carthage/Build/Mac/SwiftyJSON.framework.dSYM; sourceTree = "<group>"; };
 		66B06C711E09A46500F203F6 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
@@ -138,6 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				661493661E0DA9CD000B87C8 /* GRDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,7 +209,11 @@
 			isa = PBXGroup;
 			children = (
 				66837E181E089C2700F70E8D /* ResolutionsTests.swift */,
+				661493641E0DA715000B87C8 /* notifications.json */,
+				66AF24E21E0DBB23003E604C /* issueCommentEvents.json */,
+				66AF24E41E0DCE56003E604C /* magicIssueCommentEvents.json */,
 				66837E1A1E089C2700F70E8D /* Info.plist */,
+				661493621E0DA33F000B87C8 /* GithubPollerTests.swift */,
 			);
 			path = ResolutionsTests;
 			sourceTree = "<group>";
@@ -329,6 +343,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				661493651E0DA715000B87C8 /* notifications.json in Resources */,
+				66AF24E51E0DCE56003E604C /* magicIssueCommentEvents.json in Resources */,
+				66AF24E31E0DBB23003E604C /* issueCommentEvents.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				661493631E0DA33F000B87C8 /* GithubPollerTests.swift in Sources */,
 				66837E191E089C2700F70E8D /* ResolutionsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,6 +540,10 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9ZS2BN65E9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = ResolutionsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.danielma.ResolutionsTests;
@@ -538,6 +560,10 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9ZS2BN65E9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = ResolutionsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.danielma.ResolutionsTests;

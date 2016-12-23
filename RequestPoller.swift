@@ -31,6 +31,7 @@ class RequestPoller {
     self.request = request
   }
 
+  @discardableResult
   func map(_ callback: @escaping (JSON) -> Void) -> RequestPoller {
     self.callback = callback
 
@@ -72,12 +73,16 @@ class RequestPoller {
     _ = request(self.lastResponse)
       .response()
       .then { (request, response, data) -> Void in
-        self.lastResponse = response
-        self.updateIntervalFromResponse(response)
-        self.enqueueNextIteration()
-        if (self.shouldExecuteCallback(request: request, response: response, data: data)) {
-          self.callback(JSON(data: data))
-        }
+        self.handleRequestResponse(request: request, response: response, data: data)
+    }
+  }
+
+  internal func handleRequestResponse(request: URLRequest, response: HTTPURLResponse, data: Data) {
+    lastResponse = response
+    updateIntervalFromResponse(response)
+    enqueueNextIteration()
+    if (shouldExecuteCallback(request: request, response: response, data: data)) {
+      callback(JSON(data: data))
     }
   }
 

@@ -696,6 +696,34 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Koa-UU-BH6">
+                                <rect key="frame" x="18" y="167" width="153" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="Use magic comments" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="StU-Xo-kJ0">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="Q98-35-Pbu" name="value" keyPath="values.githubUseMagicComments" id="v6P-8g-t1B"/>
+                                </connections>
+                            </button>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QVu-cR-vnI">
+                                <rect key="frame" x="20" y="78" width="440" height="83"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="3oX-vh-Pyr">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="Q98-35-Pbu" name="enabled" keyPath="values.githubUseMagicComments" id="Hwn-wQ-sna"/>
+                                    <binding destination="Q98-35-Pbu" name="value" keyPath="values.githubMagicComment" id="m9t-m3-vGi">
+                                        <dictionary key="options">
+                                            <bool key="NSConditionallySetsEnabled" value="YES"/>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="XJ1-dU-cnN" firstAttribute="top" secondItem="FCe-71-7SW" secondAttribute="top" constant="20" id="0IE-5U-e29"/>
@@ -717,10 +745,6 @@
                             <constraint firstItem="XJ1-dU-cnN" firstAttribute="top" secondItem="FCe-71-7SW" secondAttribute="top" constant="20" symbolic="YES" id="u6Z-ph-j6C"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="githubTokenTextField" destination="u8M-wA-6jB" id="bLa-u5-kg5"/>
-                        <outlet property="githubUsernameTextField" destination="RoQ-iX-Urj" id="O1b-KB-Q8I"/>
-                    </connections>
                 </viewController>
                 <customObject id="WAu-zV-TBJ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController representsSharedInstance="YES" id="Q98-35-Pbu"/>

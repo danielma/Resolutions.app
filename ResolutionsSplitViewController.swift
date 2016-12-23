@@ -15,8 +15,10 @@ class ResolutionsSplitViewController: NSSplitViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    GithubPoller.sharedInstance.start()
+
+    if !isTestMode {
+      GithubPoller.sharedInstance.start()
+    }
     
     setupFetchedRecordsController()
   }
