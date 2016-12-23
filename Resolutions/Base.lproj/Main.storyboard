@@ -858,7 +858,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="HeaderCell" id="tvK-Zr-ty4" userLabel="Header Cell" customClass="SourceViewTableCellView" customModule="Resolutions" customModuleProvider="target">
+                                                        <tableCellView identifier="HeaderCell" id="tvK-Zr-ty4" userLabel="Header Cell">
                                                             <rect key="frame" x="1" y="1" width="187" height="19"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
@@ -876,7 +876,7 @@
                                                                 <outlet property="textField" destination="AlP-5d-fY7" id="BLU-ti-fWJ"/>
                                                             </connections>
                                                         </tableCellView>
-                                                        <tableCellView identifier="DataCell" id="G2w-Bz-m5B" userLabel="Data Cell" customClass="SourceViewTableCellView" customModule="Resolutions" customModuleProvider="target">
+                                                        <tableCellView identifier="DataCell" id="G2w-Bz-m5B" userLabel="Data Cell">
                                                             <rect key="frame" x="1" y="22" width="187" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>

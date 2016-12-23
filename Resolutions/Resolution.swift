@@ -14,7 +14,7 @@ class Resolution: AppRecord {
   override class var databaseTableName: String { return "resolutions" }
 
   static let githubIssueRegex = try! NSRegularExpression(
-    pattern: "api\\.github\\.com/repos/([\\w\\-]+)/([\\w\\-]+)/issues/(\\w+)",
+    pattern: "api\\.github\\.com/repos/([^/]+)/([^/]+)/issues/(\\w+)",
     options: .caseInsensitive
   )
   
@@ -97,7 +97,10 @@ class Resolution: AppRecord {
 }
 
 fileprivate func cleanGithubNotificationRemoteIdentifier(_ identifier: String) -> String {
-  let githubPullRequestRegex = try! NSRegularExpression(pattern: "api\\.github\\.com/repos/(\\w+)/(\\w+)/pulls/(\\w+)", options: .caseInsensitive)
+  let githubPullRequestRegex = try! NSRegularExpression(
+    pattern: "api\\.github\\.com/repos/([^/]+)/([^/]+)/pulls/(\\w+)",
+    options: .caseInsensitive
+  )
 
   if githubPullRequestRegex.hasMatch(identifier) {
     return githubPullRequestRegex.stringByReplacingMatches(
