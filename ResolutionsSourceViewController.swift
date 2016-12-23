@@ -51,10 +51,8 @@ extension ResolutionsSourceViewController: ResolutionsSplitViewControllerChild {
     let newGroupings = fetchGroupings()
 
     guard groupings != newGroupings else { return }
-    
-    groupedGroupings = [("All", ["Inbox", "Completed"]), ("Github", groupings)]
 
-    outlineView.reloadItem(groupedGroupings.last, reloadChildren: true)
+    fetchedResolutionsControllerDidPopulate(controller)
   }
 }
 

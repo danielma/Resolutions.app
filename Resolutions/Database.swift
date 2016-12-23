@@ -19,7 +19,7 @@ var dbQueue: DatabaseQueue = {
 func setupDatabase() throws {
   var config = Configuration()
   config.foreignKeysEnabled = true
-  config.trace = { print($0) }
+//  config.trace = { print($0) }
   // Connect to the database
   // See https://github.com/groue/GRDB.swift/#database-connections
 
@@ -29,7 +29,6 @@ func setupDatabase() throws {
   try! FileManager().createDirectory(at: appPath, withIntermediateDirectories: true, attributes: nil)
   let dbPath = appPath.appendingPathComponent("db.sqlite")
 
-  print(dbPath.absoluteString)
   _dbQueue = try DatabaseQueue(path: dbPath.absoluteString, configuration: config)
 
 
