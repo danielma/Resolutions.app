@@ -28,24 +28,33 @@ class ResolutionsSourceViewController: NSViewController {
 }
 
 extension ResolutionsSourceViewController: ResolutionsSplitViewControllerChild {
-  func fetchedResolutionsControllerDidPopulate(_ controller: FetchedRecordsController<Resolution>) {
-    var newGroupings: [String] = []
-
-    dbQueue.inDatabase { db in
-      try! newGroupings = String.fetchAll(db, "SELECT DISTINCT grouping FROM resolutions ORDER BY LOWER(grouping)")
+  func fetchGroupings() -> [String] {
+    return dbQueue.inDatabase { db in
+      return try! String.fetchAll(db, "SELECT DISTINCT grouping FROM resolutions ORDER BY LOWER(grouping)")
     }
+  }
 
-    guard groupings != newGroupings else { return }
-    groupings = newGroupings
+  func fetchedResolutionsControllerDidPopulate(_ controller: FetchedRecordsController<Resolution>) {
+    groupings = fetchGroupings()
 
     groupedGroupings = [("All", ["Inbox", "Completed"]), ("Github", groupings)]
 
     outlineView.reloadData()
     outlineView.expandItem(nil, expandChildren: true)
+
+    let inboxRow = outlineView.row(forItem: "Inbox")
+    let indexSet = IndexSet(integer: inboxRow)
+    outlineView.selectRowIndexes(indexSet, byExtendingSelection: true)
   }
   
   func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) {
-    fetchedResolutionsControllerDidPopulate(controller)
+    let newGroupings = fetchGroupings()
+
+    guard groupings != newGroupings else { return }
+    
+    groupedGroupings = [("All", ["Inbox", "Completed"]), ("Github", groupings)]
+
+    outlineView.reloadItem(groupedGroupings.last, reloadChildren: true)
   }
 }
 
@@ -98,6 +107,10 @@ extension ResolutionsSourceViewController: NSOutlineViewDelegate {
     return nil
   }
 
+  func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView? {
+    return ResolutionsSourceTableRowView()
+  }
+
   func outlineViewSelectionDidChange(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView else { return }
 
@@ -113,5 +126,13 @@ extension ResolutionsSourceViewController: NSOutlineViewDelegate {
         parentController.filter(Column("grouping") == grouping)
       }
     }
+  }
+}
+
+class ResolutionsSourceTableRowView: NSTableRowView {
+  override func drawSelection(in dirtyRect: NSRect) {
+    NSColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.2).setFill()
+    let path = NSBezierPath(rect: dirtyRect)
+    path.fill()
   }
 }
