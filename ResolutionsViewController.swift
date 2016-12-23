@@ -84,6 +84,14 @@ class ResolutionTableCellView: NSTableCellView {
   }
 }
 
+class ResolutionTitleButton: NSButton {
+  let cursor = NSCursor.pointingHand()
+
+  override func resetCursorRects() {
+    addCursorRect(bounds, cursor: cursor)
+  }
+}
+
 class ResolutionGroupingButton: NSButton {
   override func draw(_ dirtyRect: NSRect) {
     NSColor(red: 0, green: 0, blue: 0, alpha: 0.1).set()

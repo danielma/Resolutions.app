@@ -991,7 +991,7 @@
                                                                         <action selector="checkboxClicked:" target="2G6-Sm-XGn" id="bUN-L6-0Pe"/>
                                                                     </connections>
                                                                 </button>
-                                                                <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5ko-DX-O2b">
+                                                                <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5ko-DX-O2b" customClass="ResolutionTitleButton" customModule="Resolutions" customModuleProvider="target">
                                                                     <rect key="frame" x="34" y="4" width="248" height="32"/>
                                                                     <buttonCell key="cell" type="bevel" title="Button" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="lap-cj-PKm">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
