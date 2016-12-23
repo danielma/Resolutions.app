@@ -29,23 +29,23 @@ class ResolutionsSourceViewController: NSViewController {
 
 extension ResolutionsSourceViewController: ResolutionsSplitViewControllerChild {
   func fetchedResolutionsControllerDidPopulate(_ controller: FetchedRecordsController<Resolution>) {
+    var newGroupings: [String] = []
+
     dbQueue.inDatabase { db in
-      try! groupings = String.fetchAll(db, "SELECT DISTINCT grouping FROM resolutions")
+      try! newGroupings = String.fetchAll(db, "SELECT DISTINCT grouping FROM resolutions ORDER BY LOWER(grouping)")
     }
+
+    guard groupings != newGroupings else { return }
+    groupings = newGroupings
 
     groupedGroupings = [("All", ["Inbox", "Completed"]), ("Github", groupings)]
 
     outlineView.reloadData()
-//    outlineView.expandItem(groupedGroupings[0], expandChildren: true)
     outlineView.expandItem(nil, expandChildren: true)
   }
   
   func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) {
-//    let groupings = Array(Set(controller.fetchedRecords?.map({ $0.grouping ?? "" }) ?? []))
-//    
-//    groupedGroupings = [("All", ["Inbox", "Completed"]), ("Github", groupings)]
-//
-//    outlineView.reloadData()
+    fetchedResolutionsControllerDidPopulate(controller)
   }
 }
 
