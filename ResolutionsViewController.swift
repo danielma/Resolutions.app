@@ -44,7 +44,7 @@ extension ResolutionsViewController: NSTableViewDelegate {
     let cell = tableView.make(withIdentifier: "ResolutionTableCellView", owner: self) as! ResolutionTableCellView
     let resolution = fetchedResolutionsController?.fetchedRecords?[row]
 
-    cell.configure(resolution)
+    cell.configure(resolution, tableView: tableView)
 
     return cell
   }
@@ -55,6 +55,9 @@ class ResolutionTableCellView: NSTableCellView {
   @IBOutlet weak var titleButton: NSButton!
   @IBOutlet weak var groupingButton: ResolutionGroupingButton!
 
+  var tableView: NSTableView!
+  var row: Int!
+
   @IBAction func titleButtonClicked(_ sender: NSButton) {
     if let url = resolution.url {
       NSWorkspace.shared().open(url)
@@ -62,20 +65,27 @@ class ResolutionTableCellView: NSTableCellView {
   }
 
   @IBAction func checkboxClicked(_ sender: NSButton) {
-    dbQueue.inDatabase { db in
-      resolution.completedAt = Date()
+    let row = tableView.row(for: self)
+    let indexSet = IndexSet(integer: row)
+    NSAnimationContext.runAnimationGroup({ (context) in
+      tableView.removeRows(at: indexSet, withAnimation: .slideUp)
+    }) { 
+      dbQueue.inDatabase { db in
+        self.resolution.completedAt = Date()
 
-      if resolution.hasPersistentChangedValues {
-        try! resolution.save(db)
+        if self.resolution.hasPersistentChangedValues {
+          try! self.resolution.save(db)
+        }
       }
     }
   }
 
   var resolution: Resolution!
 
-  func configure(_ resolution: Resolution?) {
+  func configure(_ resolution: Resolution?, tableView: NSTableView) {
     guard let resolution = resolution else { return }
 
+    self.tableView = tableView
     self.resolution = resolution
 
     titleButton.title = resolution.name
