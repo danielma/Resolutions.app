@@ -41,7 +41,6 @@ class GithubPollerTests: XCTestCase {
 
   func testIncomingNotifications() {
     handleResponse(poller.notificationsPoller, "notifications")
-    sleep(1)
 
     dbQueue.inDatabase { (db) in
       let names = try! String.fetchAll(db, "SELECT name FROM resolutions")
@@ -52,9 +51,7 @@ class GithubPollerTests: XCTestCase {
 
   func testIssueCommentEventShouldCompleteNotification() {
     handleResponse(poller.notificationsPoller, "notifications")
-    sleep(1)
     handleResponse(poller.eventsPoller, "issueCommentEvents")
-    sleep(1)
 
     dbQueue.inDatabase { (db) in
       let names = try! String.fetchAll(db, "SELECT name FROM resolutions WHERE completedAt IS NOT NULL")
@@ -68,9 +65,7 @@ class GithubPollerTests: XCTestCase {
     poller.userDefaults.set("!!NOCLOSE", forKey: "githubMagicCommentString")
     
     handleResponse(poller.notificationsPoller, "notifications")
-    sleep(1)
     handleResponse(poller.eventsPoller, "magicIssueCommentEvents")
-    sleep(1)
 
     dbQueue.inDatabase { (db) in
       let names = try! String.fetchAll(db, "SELECT name FROM resolutions WHERE completedAt IS NOT NULL")
@@ -83,9 +78,7 @@ class GithubPollerTests: XCTestCase {
     poller.userDefaults.set("!!NOCLOSE", forKey: "githubMagicCommentString")
     
     handleResponse(poller.notificationsPoller, "notifications")
-    sleep(1)
     handleResponse(poller.eventsPoller, "magicIssueCommentEvents")
-    sleep(1)
 
     dbQueue.inDatabase { (db) in
       let names = try! String.fetchAll(db, "SELECT name FROM resolutions WHERE completedAt IS NOT NULL")
@@ -98,13 +91,21 @@ class GithubPollerTests: XCTestCase {
     poller.userDefaults.set("!!MAGIC", forKey: "githubMagicCommentString")
     
     handleResponse(poller.notificationsPoller, "notifications")
-    sleep(1)
     handleResponse(poller.eventsPoller, "magicIssueCommentEvents")
-    sleep(1)
 
     dbQueue.inDatabase { (db) in
       let names = try! String.fetchAll(db, "SELECT name FROM resolutions WHERE completedAt IS NOT NULL")
       XCTAssert(names[0] == "My Pull Request")
+    }
+  }
+
+  func testIgnorePullRequestMergedEvent() {
+    poller.userDefaults.set(["pullRequestMerged": false], forKey: GithubPoller.ignoredEventsKey)
+
+    handleResponse(poller.eventsPoller, "pullRequestMergedEvents")
+
+    dbQueue.inDatabase { db in
+      let names = try! String.fetchAll(db, "SELECT name FROM resolutions WHERE ")
     }
   }
 }

@@ -11,12 +11,7 @@ import Cocoa
 class GithubAdvancedPreferencesViewController: NSViewController {
   @IBOutlet weak var ignoredEventsTableView: NSTableView!
 
-  static let ignoredEventsKey = "githubIgnoredEvents"
-  static let ignoredEventsDefaultValue = Dictionary<String,Bool>()
-
-  let ignorableEvents = [
-    ("pullRequestClosed", "When a Pull Request is closed"),
-  ]
+  let ignorableEvents = GithubPoller.ignorableEvents
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -45,7 +40,7 @@ extension GithubAdvancedPreferencesViewController: NSTableViewDelegate {
 class GithubIgnoredEventsTableCellView: NSTableCellView {
   var event: (String, String)!
 
-  let dictKey = GithubAdvancedPreferencesViewController.ignoredEventsKey
+  let dictKey = GithubPoller.ignoredEventsKey
 
   @IBOutlet weak var checkboxButton: NSButton!
   @IBAction func checkboxButtonClicked(_ sender: NSButton) {
@@ -68,7 +63,7 @@ class GithubIgnoredEventsTableCellView: NSTableCellView {
     if let savedValue = savedValue {
       return savedValue
     } else {
-      return GithubAdvancedPreferencesViewController.ignoredEventsDefaultValue
+      return GithubPoller.ignoredEventsDefaultValue
     }
   }
 }

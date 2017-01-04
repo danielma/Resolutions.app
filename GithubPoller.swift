@@ -23,6 +23,12 @@ class GithubPoller {
   let eventsPoller: RequestPoller
   let userDefaults: UserDefaults
 
+  static let ignoredEventsKey = "githubIgnoredEvents"
+  static let ignoredEventsDefaultValue = Dictionary<String,Bool>()
+  static let ignorableEvents = [
+    ("pullRequestMerged", "When a Pull Request is merged"),
+  ]
+
   static let forcedUpdateNotificationName = NSNotification.Name("githubPollerForceUpdate")
 
   static let sharedInstance = GithubPoller(defaults: UserDefaults.standard)
@@ -34,16 +40,12 @@ class GithubPoller {
 
     notificationsPoller
       .map { notifications in
-        DispatchQueue.global().async {
-          notifications.arrayValue.reversed().forEach { self.handleNotification($0) }
-        }
+        notifications.arrayValue.reversed().forEach { self.handleNotification($0) }
       }
 
     eventsPoller
       .map { events in
-        DispatchQueue.global().async {
-          events.arrayValue.reversed().forEach { self.handleEvent($0) }
-        }
+        events.arrayValue.reversed().forEach { self.handleEvent($0) }
       }
   }
 
@@ -99,6 +101,7 @@ class GithubPoller {
     guard let eventId = Int(event["id"].stringValue) else { return }
     guard eventId > lastEventReadId else { return }
     guard let kind = GithubUserEvent.Kind(rawValue: event["type"].stringValue) else { return }
+    guard shouldIgnoreEvent(event) == false else { return }
 
     switch kind {
     case .IssueCommentEvent:
@@ -110,6 +113,10 @@ class GithubPoller {
     }
     
     UserDefaults.standard.set(eventId, forKey: "githubLastEventReadId")
+  }
+
+  internal func shouldIgnoreEvent(_ event: JSON) -> Bool {
+    return false
   }
 
   internal func handleIssueCommentEvent(_ event: JSON) {

@@ -19,7 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       "githubLastEventReadId": 0,
       "githubUseMagicComments": false,
       "githubMagicCommentString": "",
-      GithubAdvancedPreferencesViewController.ignoredEventsKey: GithubAdvancedPreferencesViewController.ignoredEventsDefaultValue,
+      GithubPoller.ignoredEventsKey: GithubPoller.ignoredEventsDefaultValue,
     ])
   }
 
