@@ -682,14 +682,14 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5gR-30-hpd">
-                                <rect key="frame" x="18" y="264" width="206" height="18"/>
+                                <rect key="frame" x="18" y="264" width="349" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="check" title="Show inbox count in dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zAB-rN-gQM">
+                                <buttonCell key="cell" type="check" title="Show uncompleted count in dock icon for these repos" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zAB-rN-gQM">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <binding destination="JhK-GQ-gcG" name="value" keyPath="values.dockIconShowInboxCount" id="YdF-wB-2aQ"/>
+                                    <binding destination="JhK-GQ-gcG" name="value" keyPath="values.dockIconShowSelectedViewCount" id="y0u-6R-p6j"/>
                                 </connections>
                             </button>
                         </subviews>

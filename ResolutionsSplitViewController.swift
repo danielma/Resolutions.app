@@ -37,6 +37,8 @@ class ResolutionsSplitViewController: NSSplitViewController {
   }
 
   func updateChildViewControllers(initial: Bool = false) {
+    updateDockIcon()
+
     childViewControllers.forEach({ controller in
       let controller = controller as! ResolutionsSplitViewControllerChild
 
@@ -46,6 +48,10 @@ class ResolutionsSplitViewController: NSSplitViewController {
         controller.fetchedResolutionsControllerDidChange(self.fetchedResolutionsController)
       }
     })
+  }
+
+  internal func updateDockIcon() {
+    
   }
 
   func filter(_ predicate: SQLExpressible) {
