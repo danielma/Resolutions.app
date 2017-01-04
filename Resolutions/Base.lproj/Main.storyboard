@@ -756,7 +756,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <binding destination="oGz-Ls-c0d" name="value" keyPath="values.githubUseMagicComments" id="Lto-Vp-VMF"/>
+                                    <binding destination="RSB-pa-HFz" name="value" keyPath="values.githubUseMagicComments" id="wTT-eL-v82"/>
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="naS-XF-cxy">
@@ -766,10 +766,13 @@
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <connections>
+                                        <binding destination="RSB-pa-HFz" name="value" keyPath="values.githubMagicCommentString" id="IMb-vK-TI0"/>
+                                    </connections>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="oGz-Ls-c0d" name="enabled" keyPath="values.githubUseMagicComments" id="H32-0T-cgv"/>
-                                    <binding destination="oGz-Ls-c0d" name="value" keyPath="values.githubMagicCommentString" id="XNa-Jz-tOl">
+                                    <binding destination="RSB-pa-HFz" name="enabled" keyPath="values.githubUseMagicComments" id="oHV-Yx-XEl"/>
+                                    <binding destination="RSB-pa-HFz" name="value" keyPath="values.githubMagicCommentString" id="pEf-oQ-xb5">
                                         <dictionary key="options">
                                             <bool key="NSConditionallySetsEnabled" value="YES"/>
                                         </dictionary>
@@ -780,6 +783,7 @@
                     </view>
                 </viewController>
                 <customObject id="UZ2-cS-tb7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="RSB-pa-HFz"/>
             </objects>
             <point key="canvasLocation" x="1987" y="749"/>
         </scene>
