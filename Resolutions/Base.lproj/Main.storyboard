@@ -640,116 +640,148 @@
                         <value key="minSize" type="size" width="480" height="270"/>
                     </window>
                     <connections>
-                        <segue destination="Sbd-L7-Ppy" kind="relationship" relationship="window.shadowedContentViewController" id="62s-4c-ZZn"/>
+                        <segue destination="Kvs-Pn-fPh" kind="relationship" relationship="window.shadowedContentViewController" id="lzg-Jr-kCz"/>
                     </connections>
                 </windowController>
                 <customObject id="Qtc-st-Cty" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1312" y="124"/>
         </scene>
-        <!--Preferences View Controller-->
-        <scene sceneID="eoG-Sb-Gph">
+        <!--Tab View Controller-->
+        <scene sceneID="v1i-uf-mlq">
             <objects>
-                <viewController id="Sbd-L7-Ppy" customClass="RSPreferencesViewController" customModule="Resolutions" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="FCe-71-7SW">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <tabViewController selectedTabViewItemIndex="0" id="Kvs-Pn-fPh" sceneMemberID="viewController">
+                    <tabViewItems>
+                        <tabViewItem label="Credentials" identifier="" id="CIh-wv-ug6"/>
+                        <tabViewItem label="Magic Comments" identifier="" id="VnD-QG-eka"/>
+                    </tabViewItems>
+                    <tabView key="tabView" type="noTabsBezelBorder" id="k2n-bc-bYn">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <font key="font" metaFont="message"/>
+                        <tabViewItems/>
+                    </tabView>
+                    <connections>
+                        <segue destination="6Lg-Hq-PZA" kind="relationship" relationship="tabItems" id="h2X-gt-zqM"/>
+                        <segue destination="aem-aY-TPP" kind="relationship" relationship="tabItems" id="DRl-ed-Ay4"/>
+                    </connections>
+                </tabViewController>
+                <customObject id="JVF-LD-drd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1317" y="569"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ulO-fW-Siw">
+            <objects>
+                <viewController id="6Lg-Hq-PZA" sceneMemberID="viewController">
+                    <view key="view" id="3oh-8L-h1q">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJ1-dU-cnN">
-                                <rect key="frame" x="18" y="233" width="110" height="17"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wph-P0-3sN">
+                                <rect key="frame" x="18" y="263" width="110" height="17"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="106" id="JON-nU-gWt"/>
+                                    <constraint firstAttribute="width" constant="106" id="8gs-6d-keR"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Github Username" id="hNe-Q2-mL7">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Github Username" id="XBZ-3v-fDu">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8M-wA-6jB">
-                                <rect key="frame" x="134" y="228" width="326" height="22"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Z15-FE-sfe">
+                            <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Uo-NK-1mU">
+                                <rect key="frame" x="134" y="226" width="296" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="SAP-WE-G1q">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="Q98-35-Pbu" name="value" keyPath="values.githubUsername" id="nC6-KL-iW0"/>
+                                    <binding destination="oGz-Ls-c0d" name="value" keyPath="values.githubToken" id="vb7-Tk-Ift"/>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RoQ-iX-Urj">
-                                <rect key="frame" x="134" y="196" width="326" height="22"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="GUd-H4-zyK">
+                            <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2yd-fa-Zce">
+                                <rect key="frame" x="134" y="258" width="296" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="3og-zp-vuP">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="Q98-35-Pbu" name="value" keyPath="values.githubToken" id="fGI-gd-Gwe"/>
+                                    <binding destination="oGz-Ls-c0d" name="value" keyPath="values.githubUsername" id="hh1-RW-LzR"/>
                                 </connections>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wfB-ci-QQa">
-                                <rect key="frame" x="18" y="198" width="110" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Github Token" id="GHd-1w-F3a">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c93-8J-I5f">
+                                <rect key="frame" x="18" y="228" width="110" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Github Token" id="JPb-mD-40W">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Koa-UU-BH6">
-                                <rect key="frame" x="18" y="167" width="153" height="18"/>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="7Uo-NK-1mU" firstAttribute="top" secondItem="2yd-fa-Zce" secondAttribute="bottom" constant="10" symbolic="YES" id="8au-ko-lyR"/>
+                            <constraint firstItem="2yd-fa-Zce" firstAttribute="leading" secondItem="Wph-P0-3sN" secondAttribute="trailing" constant="8" symbolic="YES" id="ACW-Gm-IQI"/>
+                            <constraint firstItem="7Uo-NK-1mU" firstAttribute="leading" secondItem="c93-8J-I5f" secondAttribute="trailing" constant="8" symbolic="YES" id="CQw-PS-5BQ"/>
+                            <constraint firstItem="7Uo-NK-1mU" firstAttribute="trailing" secondItem="2yd-fa-Zce" secondAttribute="trailing" id="DFa-9B-fvI"/>
+                            <constraint firstItem="c93-8J-I5f" firstAttribute="centerY" secondItem="7Uo-NK-1mU" secondAttribute="centerY" id="Gsv-Wc-yjz"/>
+                            <constraint firstItem="Wph-P0-3sN" firstAttribute="top" secondItem="3oh-8L-h1q" secondAttribute="top" constant="20" symbolic="YES" id="IuI-hL-hUP"/>
+                            <constraint firstItem="c93-8J-I5f" firstAttribute="top" secondItem="Wph-P0-3sN" secondAttribute="bottom" constant="18" id="YVc-yZ-flI"/>
+                            <constraint firstItem="Wph-P0-3sN" firstAttribute="leading" secondItem="3oh-8L-h1q" secondAttribute="leading" constant="20" symbolic="YES" id="f9l-dq-5KK"/>
+                            <constraint firstItem="2yd-fa-Zce" firstAttribute="leading" secondItem="7Uo-NK-1mU" secondAttribute="leading" id="lCB-mx-HOV"/>
+                            <constraint firstItem="c93-8J-I5f" firstAttribute="leading" secondItem="Wph-P0-3sN" secondAttribute="leading" id="rrX-hp-PDd"/>
+                            <constraint firstAttribute="trailing" secondItem="2yd-fa-Zce" secondAttribute="trailing" constant="20" symbolic="YES" id="zyG-PB-Sew"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="NXT-8d-xi2" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController id="oGz-Ls-c0d"/>
+            </objects>
+            <point key="canvasLocation" x="1987" y="388"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="erh-3s-SIj">
+            <objects>
+                <viewController id="aem-aY-TPP" sceneMemberID="viewController">
+                    <view key="view" id="Qkf-nf-FFb">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EKC-mh-NJK">
+                                <rect key="frame" x="18" y="264" width="153" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="check" title="Use magic comments" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="StU-Xo-kJ0">
+                                <buttonCell key="cell" type="check" title="Use magic comments" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Sf0-Iz-8qZ">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <binding destination="Q98-35-Pbu" name="value" keyPath="values.githubUseMagicComments" id="v6P-8g-t1B"/>
+                                    <binding destination="oGz-Ls-c0d" name="value" keyPath="values.githubUseMagicComments" id="Lto-Vp-VMF"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QVu-cR-vnI">
-                                <rect key="frame" x="20" y="78" width="440" height="83"/>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="naS-XF-cxy">
+                                <rect key="frame" x="20" y="175" width="410" height="83"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="3oX-vh-Pyr">
+                                <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="8G8-Uk-KVe">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="Q98-35-Pbu" name="value" keyPath="values.githubMagicComment" id="m9t-m3-vGi">
+                                    <binding destination="oGz-Ls-c0d" name="enabled" keyPath="values.githubUseMagicComments" id="H32-0T-cgv"/>
+                                    <binding destination="oGz-Ls-c0d" name="value" keyPath="values.githubMagicCommentString" id="XNa-Jz-tOl">
                                         <dictionary key="options">
                                             <bool key="NSConditionallySetsEnabled" value="YES"/>
                                         </dictionary>
                                     </binding>
-                                    <binding destination="Q98-35-Pbu" name="enabled" keyPath="values.githubUseMagicComments" id="Hwn-wQ-sna"/>
                                 </connections>
                             </textField>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="top" secondItem="FCe-71-7SW" secondAttribute="top" constant="20" id="0IE-5U-e29"/>
-                            <constraint firstItem="u8M-wA-6jB" firstAttribute="leading" secondItem="RoQ-iX-Urj" secondAttribute="leading" id="3Ko-Xj-Htf"/>
-                            <constraint firstItem="u8M-wA-6jB" firstAttribute="leading" secondItem="XJ1-dU-cnN" secondAttribute="trailing" constant="8" symbolic="YES" id="4Jr-qx-yNJ"/>
-                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="top" secondItem="u8M-wA-6jB" secondAttribute="top" id="4oW-uW-7EW"/>
-                            <constraint firstItem="wfB-ci-QQa" firstAttribute="leading" secondItem="XJ1-dU-cnN" secondAttribute="leading" id="8ey-xr-CdS"/>
-                            <constraint firstItem="RoQ-iX-Urj" firstAttribute="leading" secondItem="wfB-ci-QQa" secondAttribute="trailing" constant="8" id="ErS-d6-zRD"/>
-                            <constraint firstItem="wfB-ci-QQa" firstAttribute="top" secondItem="XJ1-dU-cnN" secondAttribute="bottom" constant="18" id="JV3-VU-iJy"/>
-                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="leading" secondItem="FCe-71-7SW" secondAttribute="leading" constant="20" id="KfR-dd-lCT"/>
-                            <constraint firstItem="u8M-wA-6jB" firstAttribute="trailing" secondItem="RoQ-iX-Urj" secondAttribute="trailing" id="OlY-um-QV9"/>
-                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="leading" secondItem="wfB-ci-QQa" secondAttribute="leading" id="PJq-OJ-kBz"/>
-                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="leading" secondItem="FCe-71-7SW" secondAttribute="leading" constant="20" symbolic="YES" id="QCU-DY-omU"/>
-                            <constraint firstItem="RoQ-iX-Urj" firstAttribute="leading" secondItem="wfB-ci-QQa" secondAttribute="trailing" constant="8" symbolic="YES" id="TUI-Ob-Y8E"/>
-                            <constraint firstItem="RoQ-iX-Urj" firstAttribute="top" secondItem="u8M-wA-6jB" secondAttribute="bottom" constant="10" symbolic="YES" id="XfG-rU-2KW"/>
-                            <constraint firstItem="wfB-ci-QQa" firstAttribute="centerY" secondItem="RoQ-iX-Urj" secondAttribute="centerY" id="clx-rx-y4E"/>
-                            <constraint firstAttribute="trailing" secondItem="u8M-wA-6jB" secondAttribute="trailing" constant="20" symbolic="YES" id="fua-DL-OIo"/>
-                            <constraint firstItem="u8M-wA-6jB" firstAttribute="leading" secondItem="XJ1-dU-cnN" secondAttribute="trailing" constant="8" id="lCK-o2-s3b"/>
-                            <constraint firstItem="XJ1-dU-cnN" firstAttribute="top" secondItem="FCe-71-7SW" secondAttribute="top" constant="20" symbolic="YES" id="u6Z-ph-j6C"/>
-                        </constraints>
                     </view>
                 </viewController>
-                <customObject id="WAu-zV-TBJ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <userDefaultsController representsSharedInstance="YES" id="Q98-35-Pbu"/>
+                <customObject id="UZ2-cS-tb7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1312" y="502"/>
+            <point key="canvasLocation" x="1987" y="749"/>
         </scene>
         <!--Resolutions Split View Controller-->
         <scene sceneID="Bze-6O-6EL">
