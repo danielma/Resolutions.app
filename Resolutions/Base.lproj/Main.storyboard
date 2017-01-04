@@ -709,19 +709,19 @@
                             </button>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QVu-cR-vnI">
                                 <rect key="frame" x="20" y="78" width="440" height="83"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="3oX-vh-Pyr">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="Q98-35-Pbu" name="enabled" keyPath="values.githubUseMagicComments" id="Hwn-wQ-sna"/>
                                     <binding destination="Q98-35-Pbu" name="value" keyPath="values.githubMagicComment" id="m9t-m3-vGi">
                                         <dictionary key="options">
                                             <bool key="NSConditionallySetsEnabled" value="YES"/>
                                         </dictionary>
                                     </binding>
+                                    <binding destination="Q98-35-Pbu" name="enabled" keyPath="values.githubUseMagicComments" id="Hwn-wQ-sna"/>
                                 </connections>
                             </textField>
                         </subviews>
