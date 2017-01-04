@@ -654,6 +654,7 @@
                     <tabViewItems>
                         <tabViewItem label="Credentials" identifier="" id="CIh-wv-ug6"/>
                         <tabViewItem label="Magic Comments" identifier="" id="VnD-QG-eka"/>
+                        <tabViewItem label="Dock Icon" id="uGU-Nh-wEw"/>
                     </tabViewItems>
                     <tabView key="tabView" type="noTabsBezelBorder" id="k2n-bc-bYn">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
@@ -664,11 +665,40 @@
                     <connections>
                         <segue destination="6Lg-Hq-PZA" kind="relationship" relationship="tabItems" id="h2X-gt-zqM"/>
                         <segue destination="aem-aY-TPP" kind="relationship" relationship="tabItems" id="DRl-ed-Ay4"/>
+                        <segue destination="eR7-Zk-8qR" kind="relationship" relationship="tabItems" id="NZr-1b-ALo"/>
                     </connections>
                 </tabViewController>
                 <customObject id="JVF-LD-drd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <tabViewItem label="Cool Kids" identifier="" id="yPG-Kf-UwP"/>
             </objects>
             <point key="canvasLocation" x="1317" y="569"/>
+        </scene>
+        <!--Dock Icon-->
+        <scene sceneID="xzR-p3-fyf">
+            <objects>
+                <viewController title="Dock Icon" id="eR7-Zk-8qR" sceneMemberID="viewController">
+                    <view key="view" id="K1a-ws-735">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5gR-30-hpd">
+                                <rect key="frame" x="18" y="264" width="206" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="Show inbox count in dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zAB-rN-gQM">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="JhK-GQ-gcG" name="value" keyPath="values.dockIconShowInboxCount" id="YdF-wB-2aQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="OTa-K8-O8V" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController id="JhK-GQ-gcG"/>
+            </objects>
+            <point key="canvasLocation" x="1413" y="1036"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ulO-fW-Siw">
