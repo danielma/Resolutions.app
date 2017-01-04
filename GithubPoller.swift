@@ -21,40 +21,35 @@ func jsonDateToDate(_ jsonDate: String?) -> Date? {
 class GithubPoller {
   let notificationsPoller: RequestPoller
   let eventsPoller: RequestPoller
+  let userDefaults: UserDefaults
 
   static let forcedUpdateNotificationName = NSNotification.Name("githubPollerForceUpdate")
 
-  static let sharedInstance = GithubPoller()
-  
-  init() {
+  static let sharedInstance = GithubPoller(defaults: UserDefaults.standard)
+
+  init(defaults: UserDefaults) {
+    userDefaults = defaults
     notificationsPoller = GithubAPIClient.sharedInstance.pollNotifications()
     eventsPoller = GithubAPIClient.sharedInstance.pollUserEvents()
-  }
 
-  func start() {
     notificationsPoller
       .map { notifications in
         DispatchQueue.global().async {
-          try! dbQueue.inTransaction { db in
-            notifications.arrayValue.reversed().forEach { self.handleNotification(db, $0) }
-
-            return .commit
-          }
+          notifications.arrayValue.reversed().forEach { self.handleNotification($0) }
         }
       }
-      .start()
 
     eventsPoller
       .map { events in
         DispatchQueue.global().async {
-          try! dbQueue.inTransaction { db in
-            events.arrayValue.reversed().forEach { self.handleEvent(db, $0) }
-
-            return .commit
-          }
+          events.arrayValue.reversed().forEach { self.handleEvent($0) }
         }
       }
-      .start()
+  }
+
+  func start() {
+    notificationsPoller.start()
+    eventsPoller.start()
   }
 
   func forceUpdate() {
@@ -69,35 +64,37 @@ class GithubPoller {
     eventsPoller.stop()
   }
 
-  internal func handleNotification(_ db: Database, _ notification: JSON) {
+  internal func handleNotification(_ notification: JSON) {
     let incomingResolution = Resolution(fromGithubNotification: notification)
 
-    var resolution = try! Resolution
-      .filter(Column("remoteIdentifier") == incomingResolution.remoteIdentifier)
-      .fetchOne(db)
+    dbQueue.inDatabase { db in
+      var resolution = try! Resolution
+        .filter(Column("remoteIdentifier") == incomingResolution.remoteIdentifier)
+        .fetchOne(db)
 
-    let updatedAt = jsonDateToDate(notification["updated_at"].string)
+      let updatedAt = jsonDateToDate(notification["updated_at"].string)
 
-    if let resolution = resolution {
-      if let updatedAt = updatedAt, resolution.updatedAt! < updatedAt {
-        resolution.completedAt = nil
+      if let resolution = resolution {
+        if let updatedAt = updatedAt, resolution.updatedAt! < updatedAt {
+          resolution.completedAt = nil
+        }
+      } else {
+        resolution = incomingResolution
+        resolution!.createdAt = updatedAt
       }
-    } else {
-      resolution = incomingResolution
-      resolution!.createdAt = updatedAt
-    }
 
-    if let updatedAt = updatedAt {
-      resolution?.updatedAt = updatedAt
-    }
-    
-    if resolution!.hasPersistentChangedValues {
-      try! resolution!.save(db)
+      if let updatedAt = updatedAt {
+        resolution?.updatedAt = updatedAt
+      }
+      
+      if resolution!.hasPersistentChangedValues {
+        try! resolution!.save(db)
+      }
     }
   }
 
-  internal func handleEvent(_ db: Database, _ event: JSON) {
-    let lastEventReadId = UserDefaults.standard.value(forKey: "githubLastEventReadId") as! Int
+  internal func handleEvent(_ event: JSON) {
+    let lastEventReadId = userDefaults.value(forKey: "githubLastEventReadId") as! Int
 
     guard let eventId = Int(event["id"].stringValue) else { return }
     guard eventId > lastEventReadId else { return }
@@ -105,63 +102,66 @@ class GithubPoller {
 
     switch kind {
     case .IssueCommentEvent:
-      handleIssueCommentEvent(db, event)
+      handleIssueCommentEvent(event)
     case .PullRequestReviewCommentEvent:
-      handlePullRequestReviewCommentEvent(db, event)
+      handlePullRequestReviewCommentEvent(event)
     case .PullRequestEvent:
-      handlePullRequestEvent(db, event)
+      handlePullRequestEvent(event)
     }
     
     UserDefaults.standard.set(eventId, forKey: "githubLastEventReadId")
   }
 
-  internal func handleIssueCommentEvent(_ db: Database, _ event: JSON) {
+  internal func handleIssueCommentEvent(_ event: JSON) {
     let payload = event["payload"]
     let issueIdentifier = payload["issue", "url"].stringValue
+    let event = GithubUserEvent(event: event, issueIdentifier: issueIdentifier)
 
-    guard
-      let resolution = try! Resolution.filter(Column("remoteIdentifier") == issueIdentifier).fetchOne(db),
-      !resolution.completed,
-      let eventCreatedAt = jsonDateToDate(event["created_at"].stringValue),
-      resolution.updatedAt! < eventCreatedAt
-      else { return }
+    guard event.isValid else { return }
+    if userDefaults.bool(forKey: "githubUseMagicComments") {
+      let magicValue = userDefaults.string(forKey: "githubMagicCommentString")
+      guard !event.commentIncludesMagicValue(magicValue) else { return }
+    }
 
-    resolution.completedAt = eventCreatedAt
-    try! resolution.save(db)
+    event.resolution?.completedAt = event.createdAt
+    dbQueue.inDatabase { db in
+      try! event.resolution?.save(db)
+    }
   }
 
-  internal func handlePullRequestReviewCommentEvent(_ db: Database, _ event: JSON) {
+  internal func handlePullRequestReviewCommentEvent(_ event: JSON) {
     let payload = event["payload"]
     let issueIdentifier = payload["pull_request", "issue_url"].stringValue
+    let event = GithubUserEvent(event: event, issueIdentifier: issueIdentifier)
 
-    guard
-      let resolution = try! Resolution.filter(Column("remoteIdentifier") == issueIdentifier).fetchOne(db),
-      !resolution.completed,
-      let eventCreatedAt = jsonDateToDate(event["created_at"].stringValue),
-      resolution.updatedAt! < eventCreatedAt
-      else { return }
+    guard event.isValid else { return }
+    if userDefaults.bool(forKey: "githubUseMagicComments") {
+      let magicValue = userDefaults.string(forKey: "githubMagicCommentString")
+      guard !event.commentIncludesMagicValue(magicValue) else { return }
+    }
 
-    resolution.completedAt = eventCreatedAt
-    try! resolution.save(db)
+    event.resolution?.completedAt = event.createdAt
+    dbQueue.inDatabase { db in
+      try! event.resolution?.save(db)
+    }
   }
 
-  internal func handlePullRequestEvent(_ db: Database, _ event: JSON) {
+  internal func handlePullRequestEvent(_ event: JSON) {
     let payload = event["payload"]
     let issueIdentifier = payload["pull_request", "issue_url"].stringValue
+    let event = GithubUserEvent(event: event, issueIdentifier: issueIdentifier)
 
-    guard
-      let resolution = try! Resolution.filter(Column("remoteIdentifier") == issueIdentifier).fetchOne(db),
-      !resolution.completed,
-      let eventCreatedAt = jsonDateToDate(event["created_at"].stringValue),
-      resolution.updatedAt! < eventCreatedAt
+    guard event.isValid, let resolution = event.resolution
       else { return }
 
     if payload["action"].stringValue == "closed" {
-      resolution.completedAt = eventCreatedAt
+      resolution.completedAt = event.createdAt
     }
 
     if resolution.hasPersistentChangedValues {
-      try! resolution.save(db)
+      dbQueue.inDatabase { db in
+        try! resolution.save(db)
+      }
     }
   }
 }
@@ -171,5 +171,36 @@ class GithubUserEvent {
     case IssueCommentEvent
     case PullRequestReviewCommentEvent
     case PullRequestEvent
+  }
+
+  var resolution: Resolution? = nil
+  let createdAt: Date
+  let event: JSON
+
+  init(event: JSON, issueIdentifier: String) {
+    self.event = event
+    createdAt = jsonDateToDate(event["created_at"].stringValue)!
+
+    dbQueue.inDatabase { db in
+      resolution = try! Resolution.filter(Column("remoteIdentifier") == issueIdentifier).fetchOne(db)
+    }
+  }
+
+  func commentIncludesMagicValue(_ magicValue: String?) -> Bool {
+    guard let magicValue = magicValue else { return false }
+
+    let comment = event["payload", "comment"]
+
+    guard comment.exists() else { return false }
+
+    return comment["body"].stringValue.contains(magicValue)
+  }
+
+  var isValid: Bool {
+    if let resolution = resolution {
+      return !resolution.completed && resolution.updatedAt! < createdAt
+    }
+
+    return false
   }
 }

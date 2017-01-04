@@ -13,7 +13,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   var mainWindowController: NSWindowController?
 
   func applicationDidFinishLaunching(_ aNotification: Notification) {
-    UserDefaults.standard.register(defaults: ["githubToken": "", "githubUsername": "", "githubLastEventReadId": 0])
+    UserDefaults.standard.register(defaults: [
+      "githubToken": "",
+      "githubUsername": "",
+      "githubLastEventReadId": 0,
+      "githubUseMagicComments": false,
+      "githubMagicCommentString": "",
+    ])
   }
 
   @IBAction func reloadMenuClicked(_ sender: Any) {

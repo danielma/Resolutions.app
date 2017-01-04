@@ -11,10 +11,30 @@ import GRDB
 // The shared database queue.
 fileprivate var databaseSetup = false
 fileprivate var _dbQueue: DatabaseQueue!
-var dbQueue: DatabaseQueue = {
+var dbQueue: DatabaseQueue {
   if !databaseSetup { try! setupDatabase() }
   return _dbQueue
+}
+
+let isTestMode = ProcessInfo.processInfo.environment["TESTING"] != nil
+
+var appPath: URL = {
+  var appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String
+  if isTestMode {
+    appName += "testMode"
+  }
+  let path = try! FileManager().url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+
+  return path.appendingPathComponent(appName)
 }()
+
+var dbPath: URL = {
+  return appPath.appendingPathComponent("db.sqlite")
+}()
+
+fileprivate func ensureDbFileExists() {
+  try! FileManager.default.createDirectory(at: appPath, withIntermediateDirectories: true, attributes: nil)
+}
 
 func setupDatabase() throws {
   var config = Configuration()
@@ -23,14 +43,9 @@ func setupDatabase() throws {
   // Connect to the database
   // See https://github.com/groue/GRDB.swift/#database-connections
 
-  let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String
-  let path = try! FileManager().url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-  let appPath = path.appendingPathComponent(appName)
-  try! FileManager().createDirectory(at: appPath, withIntermediateDirectories: true, attributes: nil)
-  let dbPath = appPath.appendingPathComponent("db.sqlite")
+  ensureDbFileExists()
 
   _dbQueue = try DatabaseQueue(path: dbPath.absoluteString, configuration: config)
-
 
   // Use DatabaseMigrator to setup the database
   // See https://github.com/groue/GRDB.swift/#migrations
@@ -55,3 +70,7 @@ func setupDatabase() throws {
   databaseSetup = true
 }
 
+func deleteDatabase() throws {
+  try! FileManager.default.removeItem(at: dbPath)
+  databaseSetup = false
+}
