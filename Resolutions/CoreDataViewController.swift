@@ -10,15 +10,14 @@ import Foundation
 import Cocoa
 
 class CoreDataViewController: NSViewController {
-  @IBOutlet var resolutionsArrayController: NSArrayController!
+  lazy var managedObjectContext: NSManagedObjectContext = {
+    return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+  }()
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+//  @IBOutlet var resolutionsArrayController: NSArrayController!
 
-    
-    let appDelegate = NSApplication.shared().delegate as! AppDelegate
-
-    let moc = appDelegate.managedObjectContext
+//  override func viewDidLoad() {
+//    super.viewDidLoad()
 
 //
 //    let repo = GithubRepoMO(context: moc)
@@ -37,17 +36,16 @@ class CoreDataViewController: NSViewController {
 //      fatalError("Failure to save contexxt: \(error)")
 //    }
 
-    let resolutionsFetch: NSFetchRequest<ResolutionMO> = NSFetchRequest(entityName: "Resolution")
-
-    let fetchedResolutions: [ResolutionMO]!
-
-    do {
-      fetchedResolutions = try moc.fetch(resolutionsFetch)
-    } catch {
-      fatalError("Failed to fetch resolutions: \(error)")
-    }
-
-    resolutionsArrayController.content = fetchedResolutions
-    debugPrint(resolutionsArrayController.content)
-  }
+//    let resolutionsFetch: NSFetchRequest<ResolutionMO> = NSFetchRequest(entityName: "Resolution")
+//
+//    let fetchedResolutions: [ResolutionMO]!
+//
+//    do {
+//      fetchedResolutions = try moc.fetch(resolutionsFetch)
+//    } catch {
+//      fatalError("Failed to fetch resolutions: \(error)")
+//    }
+//
+//    resolutionsArrayController.content = fetchedResolutions
+//  }
 }
