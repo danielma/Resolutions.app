@@ -96,7 +96,7 @@ class GithubPoller {
   internal func handleEvent(_ event: JSON) {
     let lastEventReadId = userDefaults.value(forKey: "githubLastEventReadId") as! Int
 
-    guard let eventId = Int(event["id"].stringValue) else { return }
+    let eventId = Int(event["id"].string!)!
     guard eventId > lastEventReadId else { return }
     guard let kind = GithubUserEvent.Kind(rawValue: event["type"].stringValue) else { return }
 

@@ -56,11 +56,7 @@ class GithubAPIClient {
     return (UserDefaults.standard.value(forKey: "githubUsername") as? String) ?? ""
   }
 
-  func notifications() -> Promise<JSON> {
-    return notifications(all: false)
-  }
-  
-  func notifications(all: Bool) -> Promise<JSON> {
+  func notifications(all: Bool = true) -> Promise<JSON> {
     let allParam = all ? "true" : "false"
     return get("notifications", parameters: ["all": allParam])
   }

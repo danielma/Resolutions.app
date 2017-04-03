@@ -92,9 +92,9 @@
 /* Begin PBXFileReference section */
 		661493621E0DA33F000B87C8 /* GithubPollerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubPollerTests.swift; sourceTree = "<group>"; };
 		661493641E0DA715000B87C8 /* notifications.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = notifications.json; path = fixtures/notifications.json; sourceTree = "<group>"; };
-		662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSResolutionCheckboxCell.swift; sourceTree = "<group>"; };
-		662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSourceViewController.swift; sourceTree = "<group>"; };
-		662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSplitViewController.swift; sourceTree = "<group>"; };
+		662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RSResolutionCheckboxCell.swift; path = ../RSResolutionCheckboxCell.swift; sourceTree = "<group>"; };
+		662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSourceViewController.swift; sourceTree = SOURCE_ROOT; };
+		662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSplitViewController.swift; sourceTree = SOURCE_ROOT; };
 		6646772B1E09A25F009C8156 /* GithubAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubAPIClient.swift; sourceTree = "<group>"; };
 		66837E031E089C2700F70E8D /* Resolutions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Resolutions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66837E061E089C2700F70E8D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,9 +109,9 @@
 		66837E281E08A45000F70E8D /* GRDB.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GRDB.framework.dSYM; path = Carthage/Build/Mac/GRDB.framework.dSYM; sourceTree = "<group>"; };
 		66837E2A1E08A47D00F70E8D /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		66837E2F1E08A5BF00F70E8D /* AppRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRecord.swift; sourceTree = "<group>"; };
-		668484841E09E33F00119C07 /* GithubPoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubPoller.swift; sourceTree = "<group>"; };
+		668484841E09E33F00119C07 /* GithubPoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GithubPoller.swift; path = ../GithubPoller.swift; sourceTree = "<group>"; };
 		668484861E09E6E400119C07 /* ResolutionsPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ResolutionsPlayground.playground; sourceTree = "<group>"; };
-		66A77D051E09D4E2009602B7 /* RequestPoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPoller.swift; sourceTree = "<group>"; };
+		66A77D051E09D4E2009602B7 /* RequestPoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestPoller.swift; path = ../RequestPoller.swift; sourceTree = "<group>"; };
 		66AF24E21E0DBB23003E604C /* issueCommentEvents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = issueCommentEvents.json; path = fixtures/issueCommentEvents.json; sourceTree = "<group>"; };
 		66AF24E41E0DCE56003E604C /* magicIssueCommentEvents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = magicIssueCommentEvents.json; path = fixtures/magicIssueCommentEvents.json; sourceTree = "<group>"; };
 		66B06C6D1E09A45700F203F6 /* Alamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Alamofire.framework.dSYM; path = Carthage/Build/Mac/Alamofire.framework.dSYM; sourceTree = "<group>"; };
@@ -124,7 +124,7 @@
 		66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = PMKAlamofire.framework.dSYM; path = Carthage/Build/Mac/PMKAlamofire.framework.dSYM; sourceTree = "<group>"; };
 		66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = PromiseKit.framework.dSYM; path = Carthage/Build/Mac/PromiseKit.framework.dSYM; sourceTree = "<group>"; };
 		66B06C811E09B46A00F203F6 /* SwiftyJSON.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SwiftyJSON.framework.dSYM; path = Carthage/Build/Mac/SwiftyJSON.framework.dSYM; sourceTree = "<group>"; };
-		66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Resolutions.swift"; sourceTree = "<group>"; };
+		66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSRegularExpression+Resolutions.swift"; path = "../NSRegularExpression+Resolutions.swift"; sourceTree = "<group>"; };
 		66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsViewController.swift; sourceTree = "<group>"; };
 		66E483C41E090BAF00C70A71 /* Resolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resolution.swift; sourceTree = "<group>"; };
 		66F469281E08FDD900E1D80C /* RSWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RSWindowController.swift; path = ../RSWindowController.swift; sourceTree = "<group>"; };
@@ -157,13 +157,7 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
-				662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */,
-				662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */,
-				66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */,
-				662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */,
 				668484861E09E6E400119C07 /* ResolutionsPlayground.playground */,
-				668484841E09E33F00119C07 /* GithubPoller.swift */,
-				66A77D051E09D4E2009602B7 /* RequestPoller.swift */,
 				66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */,
 				66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */,
 				66B06C811E09B46A00F203F6 /* SwiftyJSON.framework.dSYM */,
@@ -193,6 +187,7 @@
 		66837E051E089C2700F70E8D /* Resolutions */ = {
 			isa = PBXGroup;
 			children = (
+				66B37A5F1E92A9BD00FDC343 /* Extensions */,
 				66F4692C1E08FE7300E1D80C /* Views */,
 				66CCD36B1E08B2B800F4134F /* Scenes */,
 				66837E2C1E08A59E00F70E8D /* Models */,
@@ -221,12 +216,22 @@
 		66837E2C1E08A59E00F70E8D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				668484841E09E33F00119C07 /* GithubPoller.swift */,
+				66A77D051E09D4E2009602B7 /* RequestPoller.swift */,
 				66837E2A1E08A47D00F70E8D /* Database.swift */,
 				66837E2F1E08A5BF00F70E8D /* AppRecord.swift */,
 				66E483C41E090BAF00C70A71 /* Resolution.swift */,
 				6646772B1E09A25F009C8156 /* GithubAPIClient.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		66B37A5F1E92A9BD00FDC343 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		66CCD36B1E08B2B800F4134F /* Scenes */ = {
@@ -241,6 +246,9 @@
 		66F4692C1E08FE7300E1D80C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */,
+				662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */,
+				662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */,
 				66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */,
 				66F469281E08FDD900E1D80C /* RSWindowController.swift */,
 			);
