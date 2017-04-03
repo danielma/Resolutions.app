@@ -6,6 +6,8 @@
 //  Copyright © 2016 Daniel Ma. All rights reserved.
 //
 
+/*
+
 import Cocoa
 import GRDB
 
@@ -118,3 +120,5 @@ protocol ResolutionsSplitViewControllerChild {
   func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) -> Void
   func fetchedResolutionsControllerDidPopulate(_ controller: FetchedRecordsController<Resolution>) -> Void
 }
+
+ */

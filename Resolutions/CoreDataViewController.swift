@@ -24,22 +24,22 @@ class CoreDataViewController: NSViewController {
     }
 
 //
-    let repo = GithubRepoMO(context: managedObjectContext)
-    let resolution = ResolutionMO(context: managedObjectContext)
-
-    repo.name = "ministrycentered/giving"
-    repo.url = "https://github.com/ministrycentered/giving"
-
-    resolution.name = "The new Hotness"
-    resolution.remoteIdentifier = "shepa"
-    resolution.repo = repo
-
-    do {
-      print("create object")
-      try managedObjectContext.save()
-    } catch {
-      fatalError("Failure to save contexxt: \(error)")
-    }
+//    let repo = GithubRepoMO(context: managedObjectContext)
+//    let resolution = ResolutionMO(context: managedObjectContext)
+//
+//    repo.name = "ministrycentered/giving"
+//    repo.url = "https://github.com/ministrycentered/giving"
+//
+//    resolution.name = "The new Hotness"
+//    resolution.remoteIdentifier = "shepa"
+//    resolution.repo = repo
+//
+//    do {
+//      print("create object")
+//      try managedObjectContext.save()
+//    } catch {
+//      fatalError("Failure to save contexxt: \(error)")
+//    }
 
 //    let resolutionsFetch: NSFetchRequest<ResolutionMO> = NSFetchRequest(entityName: "Resolution")
 //

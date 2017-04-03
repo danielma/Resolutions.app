@@ -6,10 +6,12 @@
 //  Copyright © 2016 Daniel Ma. All rights reserved.
 //
 
+/*
+
 import Cocoa
 import GRDB
 
-typealias GroupedGroupingList = (String, [String])
+typealias GroupedroupingList = (String, [String])
 
 class ResolutionsSourceViewController: NSViewController {
   @IBOutlet weak var reloadButton: NSButton!
@@ -159,3 +161,5 @@ class ResolutionsSourceTableRowView: NSTableRowView {
     path.fill()
   }
 }
+
+ */

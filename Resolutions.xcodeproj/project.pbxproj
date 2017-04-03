@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		661493631E0DA33F000B87C8 /* GithubPollerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661493621E0DA33F000B87C8 /* GithubPollerTests.swift */; };
 		661493651E0DA715000B87C8 /* notifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 661493641E0DA715000B87C8 /* notifications.json */; };
-		661493661E0DA9CD000B87C8 /* GRDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66837E231E08A42100F70E8D /* GRDB.framework */; };
 		662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */; };
 		662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */; };
 		662B928D1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */; };
@@ -20,9 +19,6 @@
 		66837E0B1E089C2700F70E8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66837E0A1E089C2700F70E8D /* Assets.xcassets */; };
 		66837E0E1E089C2700F70E8D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66837E0C1E089C2700F70E8D /* Main.storyboard */; };
 		66837E191E089C2700F70E8D /* ResolutionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E181E089C2700F70E8D /* ResolutionsTests.swift */; };
-		66837E241E08A42100F70E8D /* GRDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66837E231E08A42100F70E8D /* GRDB.framework */; };
-		66837E251E08A42100F70E8D /* GRDB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66837E231E08A42100F70E8D /* GRDB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		66837E291E08A45000F70E8D /* GRDB.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66837E281E08A45000F70E8D /* GRDB.framework.dSYM */; };
 		66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E2F1E08A5BF00F70E8D /* AppRecord.swift */; };
 		668484851E09E33F00119C07 /* GithubPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668484841E09E33F00119C07 /* GithubPoller.swift */; };
 		6695D06D1E92CCD20057E54B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6695D06C1E92CCD20057E54B /* Database.swift */; };
@@ -48,6 +44,7 @@
 		66CCD36A1E08B2B300F4134F /* ResolutionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */; };
 		66D2CF6B1E92E8020030FD54 /* ResolutionMO+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6A1E92E8020030FD54 /* ResolutionMO+Resolutions.swift */; };
 		66D2CF6D1E92EA030030FD54 /* UpdateListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6C1E92EA030030FD54 /* UpdateListener.swift */; };
+		66D2CF6F1E92FB7F0030FD54 /* GithubNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6E1E92FB7F0030FD54 /* GithubNotification.swift */; };
 		66E483C51E090BAF00C70A71 /* Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E483C41E090BAF00C70A71 /* Resolution.swift */; };
 		66F4692A1E08FDD900E1D80C /* RSWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F469281E08FDD900E1D80C /* RSWindowController.swift */; };
 /* End PBXBuildFile section */
@@ -69,7 +66,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				66837E251E08A42100F70E8D /* GRDB.framework in Embed Frameworks */,
 				66B06C741E09A46500F203F6 /* Alamofire.framework in Embed Frameworks */,
 				66B06C7C1E09A87400F203F6 /* PromiseKit.framework in Embed Frameworks */,
 				66B06C7A1E09A87400F203F6 /* PMKAlamofire.framework in Embed Frameworks */,
@@ -84,7 +80,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				66837E291E08A45000F70E8D /* GRDB.framework.dSYM in CopyFiles */,
 				66B06C821E09B46A00F203F6 /* PMKAlamofire.framework.dSYM in CopyFiles */,
 				66B06C831E09B46A00F203F6 /* PromiseKit.framework.dSYM in CopyFiles */,
 				66B06C701E09A45700F203F6 /* SwiftyJSON.framework.dSYM in CopyFiles */,
@@ -111,8 +106,6 @@
 		66837E141E089C2700F70E8D /* ResolutionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResolutionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		66837E181E089C2700F70E8D /* ResolutionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolutionsTests.swift; sourceTree = "<group>"; };
 		66837E1A1E089C2700F70E8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		66837E231E08A42100F70E8D /* GRDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GRDB.framework; path = Carthage/Build/Mac/GRDB.framework; sourceTree = "<group>"; };
-		66837E281E08A45000F70E8D /* GRDB.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = GRDB.framework.dSYM; path = Carthage/Build/Mac/GRDB.framework.dSYM; sourceTree = "<group>"; };
 		66837E2F1E08A5BF00F70E8D /* AppRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRecord.swift; sourceTree = "<group>"; };
 		668484841E09E33F00119C07 /* GithubPoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GithubPoller.swift; path = ../GithubPoller.swift; sourceTree = "<group>"; };
 		668484861E09E6E400119C07 /* ResolutionsPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ResolutionsPlayground.playground; sourceTree = "<group>"; };
@@ -136,6 +129,7 @@
 		66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsViewController.swift; sourceTree = "<group>"; };
 		66D2CF6A1E92E8020030FD54 /* ResolutionMO+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ResolutionMO+Resolutions.swift"; sourceTree = "<group>"; };
 		66D2CF6C1E92EA030030FD54 /* UpdateListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateListener.swift; sourceTree = "<group>"; };
+		66D2CF6E1E92FB7F0030FD54 /* GithubNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubNotification.swift; sourceTree = "<group>"; };
 		66E483C41E090BAF00C70A71 /* Resolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resolution.swift; sourceTree = "<group>"; };
 		66F469281E08FDD900E1D80C /* RSWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RSWindowController.swift; path = ../RSWindowController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,7 +139,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66837E241E08A42100F70E8D /* GRDB.framework in Frameworks */,
 				66B06C731E09A46500F203F6 /* Alamofire.framework in Frameworks */,
 				66B06C7B1E09A87400F203F6 /* PromiseKit.framework in Frameworks */,
 				66B06C791E09A87400F203F6 /* PMKAlamofire.framework in Frameworks */,
@@ -157,7 +150,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				661493661E0DA9CD000B87C8 /* GRDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +159,7 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
+				66D2CF6E1E92FB7F0030FD54 /* GithubNotification.swift */,
 				66D2CF6C1E92EA030030FD54 /* UpdateListener.swift */,
 				668484861E09E6E400119C07 /* ResolutionsPlayground.playground */,
 				66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */,
@@ -178,8 +171,6 @@
 				66B06C721E09A46500F203F6 /* SwiftyJSON.framework */,
 				66B06C6D1E09A45700F203F6 /* Alamofire.framework.dSYM */,
 				66B06C6E1E09A45700F203F6 /* SwiftyJSON.framework.dSYM */,
-				66837E281E08A45000F70E8D /* GRDB.framework.dSYM */,
-				66837E231E08A42100F70E8D /* GRDB.framework */,
 				66837E051E089C2700F70E8D /* Resolutions */,
 				66837E171E089C2700F70E8D /* ResolutionsTests */,
 				66837E041E089C2700F70E8D /* Products */,
@@ -388,6 +379,7 @@
 				66E483C51E090BAF00C70A71 /* Resolution.swift in Sources */,
 				668484851E09E33F00119C07 /* GithubPoller.swift in Sources */,
 				6695D06D1E92CCD20057E54B /* Database.swift in Sources */,
+				66D2CF6F1E92FB7F0030FD54 /* GithubNotification.swift in Sources */,
 				6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */,
 				662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */,
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
@@ -536,6 +528,7 @@
 				);
 				INFOPLIST_FILE = Resolutions/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danielma.Resolutions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -555,6 +548,7 @@
 				);
 				INFOPLIST_FILE = Resolutions/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danielma.Resolutions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;

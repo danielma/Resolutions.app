@@ -29,7 +29,7 @@ class UpdateListener {
         managedObject.setValue(Date(), forKey: updateDateProperty)
 
         if UpdateListener.loggingEnabled {
-          print("Updated \(updateDateProperty) for entity of name: \(managedObject.entity.name)")
+          print("Updated \(updateDateProperty) for entity of name: \(managedObject.entity.name!)")
         }
       }
 
@@ -37,7 +37,7 @@ class UpdateListener {
         managedObject.setValue(Date(), forKey: insertDateProperty)
 
         if UpdateListener.loggingEnabled {
-          print("Set \(insertDateProperty) for entity of name: \(managedObject.entity.name)")
+          print("Set \(insertDateProperty) for entity of name: \(managedObject.entity.name!)")
         }
       }
     }

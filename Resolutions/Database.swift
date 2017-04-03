@@ -5,7 +5,7 @@
 //  Created by Daniel Ma on 11/5/16.
 //  Copyright © 2016 Daniel Ma. All rights reserved.
 //
-
+/*
 import GRDB
 
 // The shared database queue.
@@ -74,3 +74,4 @@ func deleteDatabase() throws {
   try! FileManager.default.removeItem(at: dbPath)
   databaseSetup = false
 }
+*/
