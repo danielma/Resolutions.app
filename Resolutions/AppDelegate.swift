@@ -43,10 +43,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   // MARK: - Core Data stack
 
   lazy var applicationDocumentsDirectory: Foundation.URL = {
-    // The directory the application uses to store the Core Data store file. This code uses a directory named "com.apple.toolsQA.CocoaApp_CD" in the user's Application Support directory.
     let urls = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
     let appSupportURL = urls[urls.count - 1]
-    return appSupportURL.appendingPathComponent("com.apple.toolsQA.CocoaApp_CD")
+    return appSupportURL.appendingPathComponent(Bundle.main.bundleIdentifier!)
   }()
 
   lazy var managedObjectModel: NSManagedObjectModel = {
@@ -84,11 +83,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // Create the coordinator and store
     var coordinator: NSPersistentStoreCoordinator? = nil
+    let mOptions = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
     if failError == nil {
       coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-      let url = self.applicationDocumentsDirectory.appendingPathComponent("yyoloo.storedata")
+      let url = self.applicationDocumentsDirectory.appendingPathComponent("resolutions.storedata")
       do {
-        try coordinator!.addPersistentStore(ofType: NSXMLStoreType, configurationName: nil, at: url, options: nil)
+        try coordinator!.addPersistentStore(ofType: NSXMLStoreType, configurationName: nil, at: url, options: mOptions)
       } catch {
         // Replace this implementation with code to handle the error appropriately.
 
@@ -116,6 +116,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }()
 
   lazy var managedObjectContext: NSManagedObjectContext = {
+    UpdateListener.sharedInstance.listen()
+    print("yolo")
     // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
     let coordinator = self.persistentStoreCoordinator
     var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)

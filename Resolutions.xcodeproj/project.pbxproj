@@ -46,6 +46,8 @@
 		66B37A651E92B02D00FDC343 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 66B37A631E92B02D00FDC343 /* DataModel.xcdatamodeld */; };
 		66B3E01E1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */; };
 		66CCD36A1E08B2B300F4134F /* ResolutionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */; };
+		66D2CF6B1E92E8020030FD54 /* ResolutionMO+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6A1E92E8020030FD54 /* ResolutionMO+Resolutions.swift */; };
+		66D2CF6D1E92EA030030FD54 /* UpdateListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6C1E92EA030030FD54 /* UpdateListener.swift */; };
 		66E483C51E090BAF00C70A71 /* Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E483C41E090BAF00C70A71 /* Resolution.swift */; };
 		66F4692A1E08FDD900E1D80C /* RSWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F469281E08FDD900E1D80C /* RSWindowController.swift */; };
 /* End PBXBuildFile section */
@@ -132,6 +134,8 @@
 		66B37A641E92B02D00FDC343 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSRegularExpression+Resolutions.swift"; path = "../NSRegularExpression+Resolutions.swift"; sourceTree = "<group>"; };
 		66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsViewController.swift; sourceTree = "<group>"; };
+		66D2CF6A1E92E8020030FD54 /* ResolutionMO+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ResolutionMO+Resolutions.swift"; sourceTree = "<group>"; };
+		66D2CF6C1E92EA030030FD54 /* UpdateListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateListener.swift; sourceTree = "<group>"; };
 		66E483C41E090BAF00C70A71 /* Resolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resolution.swift; sourceTree = "<group>"; };
 		66F469281E08FDD900E1D80C /* RSWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RSWindowController.swift; path = ../RSWindowController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -163,6 +167,7 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
+				66D2CF6C1E92EA030030FD54 /* UpdateListener.swift */,
 				668484861E09E6E400119C07 /* ResolutionsPlayground.playground */,
 				66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */,
 				66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */,
@@ -239,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */,
+				66D2CF6A1E92E8020030FD54 /* ResolutionMO+Resolutions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -377,6 +383,7 @@
 				662B928D1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift in Sources */,
 				66B3E01E1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift in Sources */,
 				66837E091E089C2700F70E8D /* ViewController.swift in Sources */,
+				66D2CF6D1E92EA030030FD54 /* UpdateListener.swift in Sources */,
 				66837E301E08A5BF00F70E8D /* AppRecord.swift in Sources */,
 				66E483C51E090BAF00C70A71 /* Resolution.swift in Sources */,
 				668484851E09E33F00119C07 /* GithubPoller.swift in Sources */,
@@ -384,6 +391,7 @@
 				6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */,
 				662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */,
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
+				66D2CF6B1E92E8020030FD54 /* ResolutionMO+Resolutions.swift in Sources */,
 				66B06C7E1E09B12000F203F6 /* RSPreferencesViewController.swift in Sources */,
 				66B37A651E92B02D00FDC343 /* DataModel.xcdatamodeld in Sources */,
 				662C5ACD1E92C22900D32B9C /* ResolutionMO.swift in Sources */,

@@ -6,9 +6,8 @@
 //  Copyright © 2016 Daniel Ma. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 import SwiftyJSON
-import GRDB
 
 func jsonDateToDate(_ jsonDate: String?) -> Date? {
   guard let jsonDate = jsonDate else { return nil }
@@ -22,9 +21,11 @@ class GithubPoller {
   let notificationsPoller: RequestPoller
   let eventsPoller: RequestPoller
   let userDefaults: UserDefaults
+  lazy var managedObjectContext: NSManagedObjectContext = {
+    return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+  }()
 
   static let forcedUpdateNotificationName = NSNotification.Name("githubPollerForceUpdate")
-
   static let sharedInstance = GithubPoller(defaults: UserDefaults.standard)
 
   init(defaults: UserDefaults) {
@@ -67,30 +68,37 @@ class GithubPoller {
   internal func handleNotification(_ notification: JSON) {
     let incomingResolution = Resolution(fromGithubNotification: notification)
 
-    dbQueue.inDatabase { db in
-      var resolution = try! Resolution
-        .filter(Column("remoteIdentifier") == incomingResolution.remoteIdentifier)
-        .fetchOne(db)
+    let resolutionFetch: NSFetchRequest<ResolutionMO> = ResolutionMO.fetchRequest()
+    resolutionFetch.predicate = NSPredicate(format: "remoteIdentifier == %@", incomingResolution.remoteIdentifier)
 
-      let updatedAt = jsonDateToDate(notification["updated_at"].string)
+    var resolution: ResolutionMO?
 
-      if let resolution = resolution {
-        if let updatedAt = updatedAt, resolution.updatedAt! < updatedAt {
-          resolution.completedAt = nil
-        }
-      } else {
-        resolution = incomingResolution
-        resolution!.createdAt = updatedAt
-      }
-
-      if let updatedAt = updatedAt {
-        resolution?.updatedAt = updatedAt
-      }
-      
-      if resolution!.hasPersistentChangedValues {
-        try! resolution!.save(db)
-      }
+    do {
+      let fetched = try managedObjectContext.fetch(resolutionFetch)
+      resolution = fetched.first
+    } catch {
+      fatalError("failed to fetch resolution with remoteIdentifier \(incomingResolution.remoteIdentifier)")
     }
+
+    let updatedAt = jsonDateToDate(notification["updated_at"].string)
+
+    if let resolution = resolution {
+      if let updatedAt = updatedAt, (resolution.updateDate as! Date) < updatedAt {
+        resolution.completedDate = nil
+      }
+    } else {
+      resolution = ResolutionMO()
+//      resolution = incomingResolution
+//      resolution!.insertDate = updatedAt
+    }
+
+//    if let updatedAt = updatedAt {
+//      resolution?.updatedAt = updatedAt
+//    }
+//    
+//    if resolution!.hasPersistentChangedValues {
+//      try! resolution!.save(db)
+//    }
   }
 
   internal func handleEvent(_ event: JSON) {
@@ -181,9 +189,9 @@ class GithubUserEvent {
     self.event = event
     createdAt = jsonDateToDate(event["created_at"].stringValue)!
 
-    dbQueue.inDatabase { db in
-      resolution = try! Resolution.filter(Column("remoteIdentifier") == issueIdentifier).fetchOne(db)
-    }
+//    dbQueue.inDatabase { db in
+//      resolution = try! Resolution.filter(Column("remoteIdentifier") == issueIdentifier).fetchOne(db)
+//    }
   }
 
   func commentIncludesMagicValue(_ magicValue: String?) -> Bool {

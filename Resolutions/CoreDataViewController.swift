@@ -16,25 +16,30 @@ class CoreDataViewController: NSViewController {
 
 //  @IBOutlet var resolutionsArrayController: NSArrayController!
 
-//  override func viewDidLoad() {
-//    super.viewDidLoad()
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    if !isTestMode {
+      GithubPoller.sharedInstance.start()
+    }
 
 //
-//    let repo = GithubRepoMO(context: moc)
-//    let resolution = ResolutionMO(context: moc)
-//
-//    repo.name = "ministrycentered/giving"
-//    repo.url = "https://github.com/ministrycentered/giving"
-//
-//    resolution.name = "Superdude"
-//    resolution.remoteIdentifier = "kappa"
-//    resolution.repo = repo
-//
-//    do {
-//      try moc.save()
-//    } catch {
-//      fatalError("Failure to save contexxt: \(error)")
-//    }
+    let repo = GithubRepoMO(context: managedObjectContext)
+    let resolution = ResolutionMO(context: managedObjectContext)
+
+    repo.name = "ministrycentered/giving"
+    repo.url = "https://github.com/ministrycentered/giving"
+
+    resolution.name = "The new Hotness"
+    resolution.remoteIdentifier = "shepa"
+    resolution.repo = repo
+
+    do {
+      print("create object")
+      try managedObjectContext.save()
+    } catch {
+      fatalError("Failure to save contexxt: \(error)")
+    }
 
 //    let resolutionsFetch: NSFetchRequest<ResolutionMO> = NSFetchRequest(entityName: "Resolution")
 //
@@ -48,4 +53,5 @@ class CoreDataViewController: NSViewController {
 //
 //    resolutionsArrayController.content = fetchedResolutions
 //  }
+  }
 }
