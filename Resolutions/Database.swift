@@ -16,7 +16,7 @@ var dbQueue: DatabaseQueue {
   return _dbQueue
 }
 
-let isTestMode = ProcessInfo.processInfo.environment["TESTING"] != nil
+//let isTestMode = ProcessInfo.processInfo.environment["TESTING"] != nil
 
 var appPath: URL = {
   var appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String
