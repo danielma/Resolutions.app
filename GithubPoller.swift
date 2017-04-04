@@ -66,18 +66,15 @@ class GithubPoller {
   }
 
   internal func handleNotification(_ notification: JSON) {
-    let incomingResolution = ResolutionMO.fromGithubNotification(notification, context: managedObjectContext)
-    let resolution = ResolutionMO.fetchBy(remoteIdentifier: incomingResolution.remoteIdentifier!)
+    let resolution = ResolutionMO.fromGithubNotification(notification, context: managedObjectContext)
+    let updatedAt = jsonDateToDate(notification["updated_at"].string)!
 
-    let updatedAt = jsonDateToDate(notification["updated_at"].string)
-
-    if let resolution = resolution {
-      if let updatedAt = updatedAt,
-        let updateDate = resolution.updateDate,
-        updateDate.compare(updatedAt) == .orderedAscending {
-        resolution.completedDate = nil
-      }
+    if let updateDate = resolution.updateDate,
+      updateDate.compare(updatedAt) == .orderedAscending {
+      resolution.completedDate = nil
     }
+
+    resolution.updateDate = updatedAt as NSDate
   }
 
   internal func handleEvent(_ event: JSON) {
@@ -132,8 +129,7 @@ class GithubPoller {
       let issueIdentifier = payload["pull_request", "issue_url"].stringValue
       let event = GithubUserEvent(event: event, issueIdentifier: issueIdentifier)
 
-      guard event.isValid, let resolution = event.resolution
-      else { return }
+      guard event.isValid, let resolution = event.resolution else { return }
 
       if payload["action"].stringValue == "closed" {
           resolution.completedDate = event.createdAt as NSDate

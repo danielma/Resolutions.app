@@ -17,7 +17,6 @@ extension ResolutionMO {
     }
 
     @NSManaged public var completedDate: NSDate?
-    @NSManaged public var insertDate: NSDate?
     @NSManaged public var name: String?
     @NSManaged public var remoteIdentifier: String?
     @NSManaged public var updateDate: NSDate?

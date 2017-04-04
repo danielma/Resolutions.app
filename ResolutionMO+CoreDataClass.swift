@@ -69,6 +69,8 @@ public class ResolutionMO: NSManagedObject {
       return false
     }
     set {
+      updateDate = NSDate()
+      
       if (newValue) {
         completedDate = NSDate()
       } else {
