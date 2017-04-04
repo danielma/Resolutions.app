@@ -73,30 +73,12 @@ class Resolution {
   }
 }
 
-fileprivate func cleanGithubNotificationRemoteIdentifier(_ identifier: String) -> String {
-  let githubPullRequestRegex = try! NSRegularExpression(
-    pattern: "api\\.github\\.com/repos/([^/]+)/([^/]+)/pulls/(\\w+)",
-    options: .caseInsensitive
-  )
-
-  if githubPullRequestRegex.hasMatch(identifier) {
-    return githubPullRequestRegex.stringByReplacingMatches(
-      in: identifier,
-      options: NSRegularExpression.MatchingOptions(),
-      range: NSMakeRange(0, identifier.characters.count),
-      withTemplate: "api.github.com/repos/$1/$2/issues/$3"
-    )
-  }
-
-  return identifier
-}
-
-extension Resolution {
-  convenience init(fromGithubNotification notification: JSON) {
-    let name = notification["subject", "title"].stringValue
-    let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
-    let grouping = notification["repository", "full_name"].string
-    
-    self.init(name: name, remoteIdentifier: remoteIdentifier, grouping: grouping)
-  }
-}
+//extension Resolution {
+//  convenience init(fromGithubNotification notification: JSON) {
+//    let name = notification["subject", "title"].stringValue
+//    let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
+//    let grouping = notification["repository", "full_name"].string
+//    
+//    self.init(name: name, remoteIdentifier: remoteIdentifier, grouping: grouping)
+//  }
+//}

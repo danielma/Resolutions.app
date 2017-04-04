@@ -12,7 +12,8 @@
 		662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */; };
 		662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */; };
 		662B928D1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */; };
-		662C5ACD1E92C22900D32B9C /* ResolutionMO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662C5ACC1E92C22900D32B9C /* ResolutionMO.swift */; };
+		66443AA11E931D0C006A269D /* ResolutionMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66443A9F1E931D0C006A269D /* ResolutionMO+CoreDataClass.swift */; };
+		66443AA21E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66443AA01E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift */; };
 		6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6646772B1E09A25F009C8156 /* GithubAPIClient.swift */; };
 		66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E061E089C2700F70E8D /* AppDelegate.swift */; };
 		66837E091E089C2700F70E8D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E081E089C2700F70E8D /* ViewController.swift */; };
@@ -42,7 +43,7 @@
 		66B37A651E92B02D00FDC343 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 66B37A631E92B02D00FDC343 /* DataModel.xcdatamodeld */; };
 		66B3E01E1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */; };
 		66CCD36A1E08B2B300F4134F /* ResolutionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */; };
-		66D2CF6B1E92E8020030FD54 /* ResolutionMO+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6A1E92E8020030FD54 /* ResolutionMO+Resolutions.swift */; };
+		66D2CF6B1E92E8020030FD54 /* GithubRepoMO+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6A1E92E8020030FD54 /* GithubRepoMO+Resolutions.swift */; };
 		66D2CF6D1E92EA030030FD54 /* UpdateListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6C1E92EA030030FD54 /* UpdateListener.swift */; };
 		66D2CF6F1E92FB7F0030FD54 /* GithubNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6E1E92FB7F0030FD54 /* GithubNotification.swift */; };
 		66E483C51E090BAF00C70A71 /* Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E483C41E090BAF00C70A71 /* Resolution.swift */; };
@@ -95,7 +96,8 @@
 		662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RSResolutionCheckboxCell.swift; path = ../RSResolutionCheckboxCell.swift; sourceTree = "<group>"; };
 		662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSourceViewController.swift; sourceTree = SOURCE_ROOT; };
 		662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsSplitViewController.swift; sourceTree = SOURCE_ROOT; };
-		662C5ACC1E92C22900D32B9C /* ResolutionMO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionMO.swift; sourceTree = "<group>"; };
+		66443A9F1E931D0C006A269D /* ResolutionMO+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ResolutionMO+CoreDataClass.swift"; path = "../ResolutionMO+CoreDataClass.swift"; sourceTree = "<group>"; };
+		66443AA01E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ResolutionMO+CoreDataProperties.swift"; path = "../ResolutionMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		6646772B1E09A25F009C8156 /* GithubAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubAPIClient.swift; sourceTree = "<group>"; };
 		66837E031E089C2700F70E8D /* Resolutions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Resolutions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66837E061E089C2700F70E8D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -127,7 +129,7 @@
 		66B37A641E92B02D00FDC343 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSRegularExpression+Resolutions.swift"; path = "../NSRegularExpression+Resolutions.swift"; sourceTree = "<group>"; };
 		66CCD3691E08B2B300F4134F /* ResolutionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolutionsViewController.swift; sourceTree = "<group>"; };
-		66D2CF6A1E92E8020030FD54 /* ResolutionMO+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ResolutionMO+Resolutions.swift"; sourceTree = "<group>"; };
+		66D2CF6A1E92E8020030FD54 /* GithubRepoMO+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GithubRepoMO+Resolutions.swift"; sourceTree = "<group>"; };
 		66D2CF6C1E92EA030030FD54 /* UpdateListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateListener.swift; sourceTree = "<group>"; };
 		66D2CF6E1E92FB7F0030FD54 /* GithubNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubNotification.swift; sourceTree = "<group>"; };
 		66E483C41E090BAF00C70A71 /* Resolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resolution.swift; sourceTree = "<group>"; };
@@ -220,7 +222,6 @@
 			isa = PBXGroup;
 			children = (
 				66B37A631E92B02D00FDC343 /* DataModel.xcdatamodeld */,
-				662C5ACC1E92C22900D32B9C /* ResolutionMO.swift */,
 				668484841E09E33F00119C07 /* GithubPoller.swift */,
 				6695D06C1E92CCD20057E54B /* Database.swift */,
 				66A77D051E09D4E2009602B7 /* RequestPoller.swift */,
@@ -234,8 +235,10 @@
 		66B37A5F1E92A9BD00FDC343 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				66443A9F1E931D0C006A269D /* ResolutionMO+CoreDataClass.swift */,
+				66443AA01E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift */,
 				66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */,
-				66D2CF6A1E92E8020030FD54 /* ResolutionMO+Resolutions.swift */,
+				66D2CF6A1E92E8020030FD54 /* GithubRepoMO+Resolutions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -383,10 +386,11 @@
 				6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */,
 				662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */,
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
-				66D2CF6B1E92E8020030FD54 /* ResolutionMO+Resolutions.swift in Sources */,
+				66D2CF6B1E92E8020030FD54 /* GithubRepoMO+Resolutions.swift in Sources */,
+				66443AA11E931D0C006A269D /* ResolutionMO+CoreDataClass.swift in Sources */,
 				66B06C7E1E09B12000F203F6 /* RSPreferencesViewController.swift in Sources */,
 				66B37A651E92B02D00FDC343 /* DataModel.xcdatamodeld in Sources */,
-				662C5ACD1E92C22900D32B9C /* ResolutionMO.swift in Sources */,
+				66443AA21E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift in Sources */,
 				66F4692A1E08FDD900E1D80C /* RSWindowController.swift in Sources */,
 				662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */,
 				66A77D061E09D4E2009602B7 /* RequestPoller.swift in Sources */,

@@ -14,8 +14,6 @@ class CoreDataViewController: NSViewController {
     return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
   }()
 
-//  @IBOutlet var resolutionsArrayController: NSArrayController!
-
   override func viewDidLoad() {
     super.viewDidLoad()
 

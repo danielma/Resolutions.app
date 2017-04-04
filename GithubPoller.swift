@@ -37,7 +37,6 @@ class GithubPoller {
       .map { notifications in
         DispatchQueue.global().async {
           notifications.arrayValue.reversed().forEach { self.handleNotification($0) }
-          try! self.managedObjectContext.save()
         }
       }
 
@@ -45,7 +44,6 @@ class GithubPoller {
       .map { events in
         DispatchQueue.global().async {
           events.arrayValue.reversed().forEach { self.handleEvent($0) }
-          try! self.managedObjectContext.save()
         }
       }
   }
