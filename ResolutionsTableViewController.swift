@@ -14,6 +14,8 @@ class ResolutionsTableViewController: NSViewController {
   lazy var managedObjectContext: NSManagedObjectContext = {
     return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
   }()
+  
+  @IBOutlet var arrayController: NSArrayController!
 
   static let coordinator: NSMutableDictionary = ["selectedObjects": []]
 
@@ -32,9 +34,9 @@ class ResolutionsTableViewController: NSViewController {
   }
 
   internal func handleSelectedObjectsChanged() {
-    guard let selectedObjects = ResolutionsTableViewController.coordinator.value(forKey: "selectedObjects") as? Array<Any> else { return }
+    guard let selectedObjects = ResolutionsTableViewController.coordinator.value(forKey: "selectedObjects") as? Array<RepoTreeNode> else { return }
     guard let selectedObject = selectedObjects.first else { return }
 
-    print(selectedObject)
+    arrayController.filterPredicate = NSPredicate(format: "repo = %@", argumentArray: [selectedObject.repo])
   }
 }

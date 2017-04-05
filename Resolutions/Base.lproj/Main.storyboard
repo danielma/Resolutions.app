@@ -1262,6 +1262,9 @@
                             </scrollView>
                         </subviews>
                     </view>
+                    <connections>
+                        <outlet property="arrayController" destination="I2Z-xM-52U" id="2U4-Rl-S1g"/>
+                    </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="-1295" y="1004"/>

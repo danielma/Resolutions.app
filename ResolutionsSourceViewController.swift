@@ -53,7 +53,7 @@ class ResolutionsSourceViewController: NSViewController {
   }
 }
 
-fileprivate class RepoTreeNode: NSObject {
+class RepoTreeNode: NSObject {
   let repo: GithubRepoMO
   let name: String?
   
