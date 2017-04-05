@@ -34,9 +34,24 @@ class ResolutionsTableViewController: NSViewController {
   }
 
   internal func handleSelectedObjectsChanged() {
-    guard let selectedObjects = ResolutionsTableViewController.coordinator.value(forKey: "selectedObjects") as? Array<RepoTreeNode> else { return }
-    guard let selectedObject = selectedObjects.first else { return }
+    guard let selectedObjects = ResolutionsTableViewController.coordinator.value(forKey: "selectedObjects") as? Array<Any> else { return }
 
-    arrayController.filterPredicate = NSPredicate(format: "repo = %@", argumentArray: [selectedObject.repo])
+    if let selectedTreeNodes = selectedObjects as? Array<RepoTreeNode> {
+      guard let selectedObject = selectedTreeNodes.first else { return }
+
+      arrayController.filterPredicate = NSPredicate(format: "repo = %@", argumentArray: [selectedObject.repo])
+    } else {
+      guard let selectedObject = selectedObjects[0] as? NSDictionary,
+        let name = selectedObject.value(forKey: "name") as? String
+        else { return }
+
+      let lowercaseName = name.lowercased()
+
+      if lowercaseName == "inbox" {
+        arrayController.filterPredicate = NSPredicate(format: "completedDate = nil")
+      } else if lowercaseName == "complete" {
+        arrayController.filterPredicate = NSPredicate(format: "completedDate != nil")
+      }
+    }
   }
 }
