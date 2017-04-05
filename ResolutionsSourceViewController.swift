@@ -6,6 +6,45 @@
 //  Copyright © 2016 Daniel Ma. All rights reserved.
 //
 
+import Cocoa
+
+class ResolutionsSourceViewController: NSViewController {
+  lazy var managedObjectContext: NSManagedObjectContext = {
+    return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+  }()
+
+  @IBOutlet var sourcesTreeController: NSTreeController!
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    let fetchRequest: NSFetchRequest<GithubRepoMO> = GithubRepoMO.fetchRequest()
+
+    let repos = try! managedObjectContext.fetch(fetchRequest)
+    let nodes = [
+      ["name": "Inbox"],
+      ["name": "Complete"],
+      ["name": "Github", "children": repos.map { TreeNode($0) }]
+    ]
+
+    sourcesTreeController.content = nodes
+  }
+}
+
+fileprivate class TreeNode: NSObject {
+  let repo: GithubRepoMO
+  let name: String?
+  
+  init(_ repo: GithubRepoMO) {
+    self.repo = repo
+    self.name = repo.name
+  }
+
+  var children: Array<TreeNode>? {
+    return nil
+  }
+}
+
 /*
 
 import Cocoa

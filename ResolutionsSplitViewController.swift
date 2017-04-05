@@ -9,7 +9,6 @@
 /*
 
 import Cocoa
-import GRDB
 
 class ResolutionsSplitViewController: NSSplitViewController {
   var fetchedResolutionsController: FetchedRecordsController<Resolution>!

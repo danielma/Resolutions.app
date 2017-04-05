@@ -9,11 +9,7 @@
 import Foundation
 import Cocoa
 
-class CoreDataViewController: NSViewController {
-  lazy var managedObjectContext: NSManagedObjectContext = {
-    return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
-  }()
-
+class MainWindowViewController: NSSplitViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 

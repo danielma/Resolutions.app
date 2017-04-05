@@ -24,6 +24,7 @@ public class ResolutionMO: NSManagedObject {
     } else {
       repo = GithubRepoMO(context: context)
       repo.name = repoName
+      repo.url = "FIXME: hi"
     }
 
     let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
@@ -70,7 +71,7 @@ public class ResolutionMO: NSManagedObject {
     }
     set {
       updateDate = NSDate()
-      
+
       if (newValue) {
         completedDate = NSDate()
       } else {
