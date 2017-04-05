@@ -10,6 +10,18 @@ fileprivate var myContext = 0
 
 import Cocoa
 
+public class UpcaseFormatter: Formatter {
+  override public func string(for obj: Any?) -> String? {
+    if let string = obj as? String {
+      return string.uppercased()
+    } else if let string = obj as? NSAttributedString {
+      return string.string.uppercased()
+    } else {
+      return nil
+    }
+  }
+}
+
 class ResolutionsTableViewController: NSViewController {
   lazy var managedObjectContext: NSManagedObjectContext = {
     return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext

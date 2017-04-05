@@ -1312,12 +1312,13 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="188" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Table View Cell" id="9h7-ur-gNP">
+                                                                        <customFormatter key="formatter" id="SMv-13-nGi" customClass="UpcaseFormatter" customModule="Resolutions" customModuleProvider="target"/>
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="XgU-kJ-Dzw" name="value" keyPath="objectValue.name" id="GBT-oj-7Oo"/>
+                                                                        <binding destination="XgU-kJ-Dzw" name="value" keyPath="objectValue.name" id="GdU-2t-Yyb"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
@@ -1355,7 +1356,7 @@
                 <customObject id="0K7-WQ-c1P" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <treeController editable="NO" childrenKeyPath="children" avoidsEmptySelection="NO" id="zVa-BB-j91"/>
             </objects>
-            <point key="canvasLocation" x="-1654" y="1004"/>
+            <point key="canvasLocation" x="-1654.5" y="1004"/>
         </scene>
     </scenes>
     <resources>
