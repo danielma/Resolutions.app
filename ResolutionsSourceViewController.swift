@@ -34,6 +34,7 @@ class ResolutionsSourceViewController: NSViewController {
 
     sourcesTreeController.content = nodes
     sourcesTreeController.addObserver(self, forKeyPath: #keyPath(NSTreeController.selectionIndexPaths), options: .new, context: &myContext)
+    outlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
   }
 
   override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
