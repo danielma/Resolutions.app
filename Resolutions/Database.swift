@@ -5,7 +5,7 @@
 //  Created by Daniel Ma on 11/5/16.
 //  Copyright © 2016 Daniel Ma. All rights reserved.
 //
-
+/*
 import GRDB
 
 // The shared database queue.
@@ -16,7 +16,7 @@ var dbQueue: DatabaseQueue {
   return _dbQueue
 }
 
-let isTestMode = ProcessInfo.processInfo.environment["TESTING"] != nil
+//let isTestMode = ProcessInfo.processInfo.environment["TESTING"] != nil
 
 var appPath: URL = {
   var appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String
@@ -74,3 +74,4 @@ func deleteDatabase() throws {
   try! FileManager.default.removeItem(at: dbPath)
   databaseSetup = false
 }
+*/

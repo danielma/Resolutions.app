@@ -7,17 +7,13 @@
 //
 
 import Foundation
-import GRDB
 import SwiftyJSON
 
-class Resolution: AppRecord {
-  override class var databaseTableName: String { return "resolutions" }
-
+class Resolution {
   static let githubIssueRegex = try! NSRegularExpression(
     pattern: "api\\.github\\.com/repos/([^/]+)/([^/]+)/issues/(\\w+)",
     options: .caseInsensitive
   )
-  
   
   enum Kind {
     case GithubIssue
@@ -29,21 +25,11 @@ class Resolution: AppRecord {
   var name: String
   var grouping: String?
 
-  required init(row: Row) {
-    completedAt = row.value(named: "completedAt")
-    remoteIdentifier = row.value(named: "remoteIdentifier")
-    name = row.value(named: "name")
-    grouping = row.value(named: "grouping")
-
-    super.init(row: row)
-  }
-
   init(name: String, remoteIdentifier: String, completedAt: Date? = nil, grouping: String? = nil) {
     self.name = name
     self.remoteIdentifier = remoteIdentifier
     self.completedAt = completedAt
     self.grouping = grouping
-    super.init()
   }
 
   var completed: Bool {
@@ -85,41 +71,14 @@ class Resolution: AppRecord {
       return nil
     }
   }
-
-  override var appRecordDictionary: [String : DatabaseValueConvertible?] {
-    return [
-      "completedAt": completedAt,
-      "remoteIdentifier": remoteIdentifier,
-      "name": name,
-      "grouping": grouping,
-    ]
-  }
 }
 
-fileprivate func cleanGithubNotificationRemoteIdentifier(_ identifier: String) -> String {
-  let githubPullRequestRegex = try! NSRegularExpression(
-    pattern: "api\\.github\\.com/repos/([^/]+)/([^/]+)/pulls/(\\w+)",
-    options: .caseInsensitive
-  )
-
-  if githubPullRequestRegex.hasMatch(identifier) {
-    return githubPullRequestRegex.stringByReplacingMatches(
-      in: identifier,
-      options: NSRegularExpression.MatchingOptions(),
-      range: NSMakeRange(0, identifier.characters.count),
-      withTemplate: "api.github.com/repos/$1/$2/issues/$3"
-    )
-  }
-
-  return identifier
-}
-
-extension Resolution {
-  convenience init(fromGithubNotification notification: JSON) {
-    let name = notification["subject", "title"].stringValue
-    let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
-    let grouping = notification["repository", "full_name"].string
-    
-    self.init(name: name, remoteIdentifier: remoteIdentifier, grouping: grouping)
-  }
-}
+//extension Resolution {
+//  convenience init(fromGithubNotification notification: JSON) {
+//    let name = notification["subject", "title"].stringValue
+//    let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
+//    let grouping = notification["repository", "full_name"].string
+//    
+//    self.init(name: name, remoteIdentifier: remoteIdentifier, grouping: grouping)
+//  }
+//}

@@ -7,9 +7,73 @@
 //
 
 import Cocoa
+
+private var myContext = 0
+
+class ResolutionsSourceViewController: NSViewController {
+  lazy var managedObjectContext: NSManagedObjectContext = {
+    return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+  }()
+
+  @IBOutlet var sourcesTreeController: NSTreeController!
+  @IBOutlet weak var outlineView: NSOutlineView!
+
+  let coordinator = ResolutionsTableViewController.coordinator
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    let fetchRequest: NSFetchRequest<GithubRepoMO> = GithubRepoMO.fetchRequest()
+
+    let repos = try! managedObjectContext.fetch(fetchRequest)
+    let nodes = [
+      ["name": "Inbox"],
+      ["name": "Complete"],
+      ["name": "Github", "children": repos.map { RepoTreeNode($0) }]
+    ]
+
+    sourcesTreeController.content = nodes
+    sourcesTreeController.addObserver(self, forKeyPath: #keyPath(NSTreeController.selectionIndexPaths), options: .new, context: &myContext)
+    outlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
+  }
+
+  override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    if context == &myContext {
+      handleChangedSelection()
+    } else {
+      super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+    }
+  }
+
+  internal func handleChangedSelection() {
+    coordinator.setValue(sourcesTreeController.selectedObjects, forKey: "selectedObjects")
+  }
+
+  deinit {
+    sourcesTreeController.removeObserver(self, forKeyPath: #keyPath(NSTreeController.selectionIndexPaths))
+  }
+}
+
+class RepoTreeNode: NSObject {
+  let repo: GithubRepoMO
+  let name: String?
+  
+  init(_ repo: GithubRepoMO) {
+    self.repo = repo
+    self.name = repo.name
+  }
+
+  var children: Array<RepoTreeNode>? {
+    return nil
+  }
+}
+
+/*
+
+import Cocoa
 import GRDB
 
-typealias GroupedGroupingList = (String, [String])
+typealias GroupedroupingList = (String, [String])
 
 class ResolutionsSourceViewController: NSViewController {
   @IBOutlet weak var reloadButton: NSButton!
@@ -159,3 +223,5 @@ class ResolutionsSourceTableRowView: NSTableRowView {
     path.fill()
   }
 }
+
+ */

@@ -6,6 +6,8 @@
 //  Copyright © 2016 Daniel Ma. All rights reserved.
 //
 
+/*
+
 import Cocoa
 import GRDB
 
@@ -162,3 +164,5 @@ class RSResolutionGroupingCell: NSButtonCell {
     return NSSize(width: original.width + CGFloat(RSResolutionGroupingCell.padding * 2), height: original.height)
   }
 }
+
+ */
