@@ -12,33 +12,30 @@ import SwiftyJSON
 
 @objc(ResolutionMO)
 public class ResolutionMO: NSManagedObject {
-  static func fromGithubNotification(_ notification: JSON, context: NSManagedObjectContext) -> ResolutionMO {
-    let repoName = notification["repository", "full_name"].stringValue
-    let repo: GithubRepoMO!
+  static func fromGithubEvent(_ event: GithubEvent) -> ResolutionMO? {
+    let context = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
 
-
-    let existingRepo = GithubRepoMO.fetchBy(name: repoName)
-
-    if let existingRepo = existingRepo {
-      repo = existingRepo
-    } else {
-      repo = GithubRepoMO(context: context)
-      repo.name = repoName
-      repo.url = "FIXME: hi"
+    guard let payloadEvent = event.payloadEvent else {
+      debugPrint("Can't create resolutionMO from github event \(event)")
+      return nil
     }
+//    let repoName = event.repo notification["repository", "full_name"].stringValue
+    
+    let repo = GithubRepoMO.fromGithubEvent(event)
+    let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(payloadEvent.issueIdentifier)
+    let resolution: ResolutionMO
 
-    let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
-
-    if let resolution = ResolutionMO.fetchBy(remoteIdentifier: remoteIdentifier, context: context) {
-      return resolution
+    if let existingResolution = ResolutionMO.fetchBy(remoteIdentifier: remoteIdentifier, context: context) {
+      resolution = existingResolution
     } else {
-      let resolution = ResolutionMO(context: context)
-      resolution.name = notification["subject", "title"].stringValue
-      resolution.remoteIdentifier = cleanGithubNotificationRemoteIdentifier(notification["subject", "url"].stringValue)
+      resolution = ResolutionMO(context: context)
+      resolution.remoteIdentifier = cleanGithubNotificationRemoteIdentifier(payloadEvent.issueIdentifier)
       resolution.repo = repo
-
-      return resolution
     }
+
+    resolution.name = payloadEvent.issueName
+
+    return resolution
   }
 
   static func fetchBy(remoteIdentifier: String, context: NSManagedObjectContext? = nil) -> ResolutionMO? {

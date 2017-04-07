@@ -27,6 +27,7 @@
 		668484851E09E33F00119C07 /* GithubPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668484841E09E33F00119C07 /* GithubPoller.swift */; };
 		6695D06D1E92CCD20057E54B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6695D06C1E92CCD20057E54B /* Database.swift */; };
 		6695D06F1E92CDAE0057E54B /* MainWindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6695D06E1E92CDAE0057E54B /* MainWindowViewController.swift */; };
+		669AE2AD1E98258D0060FF3D /* GithubActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669AE2AC1E98258D0060FF3D /* GithubActor.swift */; };
 		66A77D061E09D4E2009602B7 /* RequestPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A77D051E09D4E2009602B7 /* RequestPoller.swift */; };
 		66AF24E31E0DBB23003E604C /* issueCommentEvents.json in Resources */ = {isa = PBXBuildFile; fileRef = 66AF24E21E0DBB23003E604C /* issueCommentEvents.json */; };
 		66AF24E51E0DCE56003E604C /* magicIssueCommentEvents.json in Resources */ = {isa = PBXBuildFile; fileRef = 66AF24E41E0DCE56003E604C /* magicIssueCommentEvents.json */; };
@@ -119,6 +120,7 @@
 		668484861E09E6E400119C07 /* ResolutionsPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ResolutionsPlayground.playground; sourceTree = "<group>"; };
 		6695D06C1E92CCD20057E54B /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		6695D06E1E92CDAE0057E54B /* MainWindowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainWindowViewController.swift; path = Resolutions/MainWindowViewController.swift; sourceTree = "<group>"; };
+		669AE2AC1E98258D0060FF3D /* GithubActor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubActor.swift; sourceTree = "<group>"; };
 		66A77D051E09D4E2009602B7 /* RequestPoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestPoller.swift; path = ../RequestPoller.swift; sourceTree = "<group>"; };
 		66AF24E21E0DBB23003E604C /* issueCommentEvents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = issueCommentEvents.json; path = fixtures/issueCommentEvents.json; sourceTree = "<group>"; };
 		66AF24E41E0DCE56003E604C /* magicIssueCommentEvents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = magicIssueCommentEvents.json; path = fixtures/magicIssueCommentEvents.json; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
+				669AE2AC1E98258D0060FF3D /* GithubActor.swift */,
 				662ED6341E95A48C007E0E39 /* GithubEvent.swift */,
 				66443AA51E94625F006A269D /* ResolutionsTableViewController.swift */,
 				66D2CF6E1E92FB7F0030FD54 /* GithubNotification.swift */,
@@ -402,6 +405,7 @@
 				66443AA11E931D0C006A269D /* ResolutionMO+CoreDataClass.swift in Sources */,
 				66B06C7E1E09B12000F203F6 /* RSPreferencesViewController.swift in Sources */,
 				66B37A651E92B02D00FDC343 /* DataModel.xcdatamodeld in Sources */,
+				669AE2AD1E98258D0060FF3D /* GithubActor.swift in Sources */,
 				66443AA21E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift in Sources */,
 				66F4692A1E08FDD900E1D80C /* RSWindowController.swift in Sources */,
 				662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */,

@@ -65,6 +65,7 @@ class RequestPoller<Element> {
     _ = iteration().then { _ in self.enqueueNextIteration() }
   }
 
+  @discardableResult
   internal func iteration() -> Promise<Void> {
     return performRequest(self.lastData)
       .then { data -> Void in

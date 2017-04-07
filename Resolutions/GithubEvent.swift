@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-class GithubEvent: NSObject {
+class GithubEvent {
   let source: JSON
   let eventType: EventType
 
@@ -59,54 +59,101 @@ class GithubEvent: NSObject {
     return Int(source["id"].stringValue)!
   }
 
-  var actor: JSON {
-    return source["actor"]
-  }
+  lazy var actor: GithubActor = {
+    return GithubActor(self.source["actor"])
+  }()
 
-  var repo: JSON {
-    return source["repo"]
-  }
-
-  var payload: JSON {
-    return source["payload"]
-  }
+  lazy var repo: GithubRepo = {
+    return GithubRepo(self.source["repo"])
+  }()
 
   var createdAt: Date {
     return jsonDateToDate(source["created_at"].stringValue)!
   }
 
-  var issueIdentifier: String? {
-    switch eventType {
-    case .IssueCommentEvent:
-      return payload["issue", "url"].string
+  lazy var payloadEvent: GithubPayloadEventImplementation? = {
+    switch self.eventType {
     case .PullRequestEvent:
-      return payload["pull_request", "issue_url"].string
+      return GithubPullRequestEvent(self)
     case .PullRequestReviewCommentEvent:
-      return payload["pull_request", "issue_url"].string
+      return GithubPullRequestReviewCommentEvent(self)
+    case .IssuesEvent:
+      return GithubIssuesEvent(self)
+    case .IssueCommentEvent:
+      return GithubIssueCommentEvent(self)
     default:
-      debugPrint("can't find issue identifier for \(self)")
       return nil
     }
+  }()
+
+  var issueIdentifier: String? {
+    if let event = payloadEvent {
+      return event.issueIdentifier
+    }
+
+    debugPrint("can't find issue identifier for \(self)")
+    return nil
   }
 
-  lazy var afterResolutionUpdatedAt: Bool = {
+  func updateResolution() {
+    if let event = payloadEvent {
+      event.updateResolution()
+    } else {
+      debugPrint("no action for event type: \(eventType)")
+    }
+  }
+}
+
+protocol GithubPayloadEventImplementation {
+  var issueName: String { get }
+  var issueIdentifier: String { get }
+  var githubEvent: GithubEvent { get }
+  func updateResolution() -> Void
+}
+
+extension GithubPayloadEventImplementation {
+  var resolution: ResolutionMO? {
+    return ResolutionMO.fetchBy(remoteIdentifier: self.issueIdentifier)
+  }
+
+  var afterResolutionUpdatedAt: Bool {
     if let resolution = self.resolution {
-      return !resolution.completed && resolution.updateDate!.compare(self.createdAt) == .orderedAscending
+      if let updateDate = resolution.updateDate {
+        return !resolution.completed && updateDate.compare(self.createdAt as Date) == .orderedAscending
+      } else {
+        return true
+      }
     }
 
     return false
-  }()
-  
-  lazy var resolution: ResolutionMO? = {
-    if let id = self.issueIdentifier {
-      return ResolutionMO.fetchBy(remoteIdentifier: id)
-    }
+  }
 
-    return nil
+  var createdAt: NSDate {
+    return githubEvent.createdAt as NSDate
+  }
+}
+
+class GithubPayloadEvent {
+  let githubEvent: GithubEvent
+
+  init(_ githubEvent: GithubEvent) {
+    self.githubEvent = githubEvent
+  }
+
+  var payload: JSON {
+    return githubEvent.source["payload"]
+  }
+
+  func createResolution() {
+    _ = ResolutionMO.fromGithubEvent(githubEvent)
+  }
+  
+  lazy var actor: GithubActor = {
+    return self.githubEvent.actor
   }()
 }
 
-class GithubPullRequestEvent: GithubEvent {
+class GithubPullRequestEvent: GithubPayloadEvent, GithubPayloadEventImplementation {
   enum ActionType: String {
     case assigned
     case unassigned
@@ -119,9 +166,137 @@ class GithubPullRequestEvent: GithubEvent {
     case closed
     case reopened
   }
-  
+
   var action: ActionType {
     return ActionType(rawValue: payload["action"].stringValue)!
+  }
+
+  var issueIdentifier: String {
+    return payload["pull_request", "issue_url"].string!
+  }
+
+  var issueName: String {
+    return payload["pull_request", "title"].string!
+  }
+
+  func updateResolution() {
+    switch action {
+    case .closed:
+      if afterResolutionUpdatedAt {
+        resolution!.completedDate = createdAt
+      }
+    default:
+      if let resolution = resolution {
+        if afterResolutionUpdatedAt {
+          resolution.updateDate = createdAt
+          resolution.completedDate = actor.isCurrentUser ? createdAt : nil
+        }
+      } else {
+        createResolution()
+      }
+    }
+  }
+}
+
+class GithubIssuesEvent: GithubPayloadEvent, GithubPayloadEventImplementation {
+  enum ActionType: String {
+    case assigned
+    case unassigned
+    case labeled
+    case unlabeled
+    case opened
+    case edited
+    case milestoned
+    case demilestoned
+    case closed
+    case reopened
+  }
+
+  var action: ActionType {
+    return ActionType(rawValue: payload["action"].stringValue)!
+  }
+
+  var issueIdentifier: String {
+    return payload["issue", "url"].string!
+  }
+
+  var issueName: String {
+    return payload["issue", "title"].string!
+  }
+
+  func updateResolution() {
+    switch action {
+    case .closed:
+      if afterResolutionUpdatedAt {
+        resolution!.completedDate = createdAt
+      }
+    default:
+      if let resolution = resolution {
+        if afterResolutionUpdatedAt {
+          resolution.updateDate = createdAt
+          resolution.completedDate = actor.isCurrentUser ? createdAt : nil
+        }
+      } else {
+        createResolution()
+      }
+    }
+  }
+}
+
+class GithubIssueCommentEvent: GithubPayloadEvent, GithubPayloadEventImplementation {
+  enum ActionType: String {
+    case created
+    case edited
+    case deleted
+  }
+
+  var action: ActionType {
+    return ActionType(rawValue: payload["action"].stringValue)!
+  }
+
+  var issueIdentifier: String {
+    return payload["issue", "url"].string!
+  }
+
+  var issueName: String {
+    return payload["issue", "title"].string!
+  }
+
+  func updateResolution() {
+    guard afterResolutionUpdatedAt else { return }
+
+    resolution!.completedDate = createdAt
+  }
+}
+
+class GithubPullRequestReviewCommentEvent: GithubPayloadEvent, GithubPayloadEventImplementation {
+  enum ActionType: String {
+    case created
+    case edited
+    case deleted
+  }
+
+  var action: ActionType {
+    return ActionType(rawValue: payload["action"].stringValue)!
+  }
+
+  var issueIdentifier: String {
+    return payload["pull_request", "issue_url"].string!
+  }
+
+  var issueName: String {
+    return payload["pull_request", "title"].string!
+  }
+
+  func updateResolution() {
+    guard afterResolutionUpdatedAt else { return }
+    
+//      if userDefaults.bool(forKey: "githubUseMagicComments") {
+//          let magicValue = userDefaults.string(forKey: "githubMagicCommentString")
+//          guard !event.commentIncludesMagicValue(magicValue) else { return }
+//      }
+
+    resolution!.completedDate = createdAt
   }
 }
 

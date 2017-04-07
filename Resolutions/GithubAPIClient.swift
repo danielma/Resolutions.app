@@ -52,7 +52,7 @@ class GithubAPIClient {
     return (UserDefaults.standard.value(forKey: "githubToken") as? String) ?? ""
   }
 
-  private var username: String {
+  var username: String {
     return (UserDefaults.standard.value(forKey: "githubUsername") as? String) ?? ""
   }
 
@@ -66,6 +66,11 @@ class GithubAPIClient {
       .then { events in events.arrayValue.map { GithubEvent($0) } }
   }
 
+  func receivedEvents(page: Int = 1) -> Promise<[GithubEvent]> {
+    return get("users/\(username)/received_events", parameters: ["per_page": "60", "page": String(page)])
+      .then { events in events.arrayValue.map { GithubEvent($0) } }
+  }
+
   internal func paginatedRequest<T>(
     initialData: [T] = [],
     page: Int = 1,
@@ -74,18 +79,36 @@ class GithubAPIClient {
     if shouldPerformNextRequest(initialData) {
       return request(page)
         .then { data -> Promise<[T]> in
-          return self.paginatedRequest(
-            initialData: initialData + data,
-            page: page + 1,
-            shouldPerformNextRequest: shouldPerformNextRequest,
-            request: request
-          )
+          if data.count > 0 {
+            return self.paginatedRequest(
+              initialData: initialData + data,
+              page: page + 1,
+              shouldPerformNextRequest: shouldPerformNextRequest,
+              request: request
+            )
+          } else {
+            return Promise(value: initialData)
+          }
         }
     } else {
       return Promise(value: initialData)
     }
   }
 
+  func allReceivedEvents(since eventId: Int? = nil) -> Promise<[GithubEvent]> {
+    debugPrint("allReceivedEvents since \(eventId)")
+    if let eventId = eventId {
+      return paginatedRequest(
+        shouldPerformNextRequest: { events in
+          return !events.contains { $0.id < eventId }
+        }
+      ) { page in self.receivedEvents(page: page) }
+        .then { events in Array(events.reversed().drop { $0.id <= eventId }) }
+    } else {
+      return receivedEvents()
+    }
+  }
+  
   func allUserEvents(since eventId: Int? = nil) -> Promise<[GithubEvent]> {
     debugPrint("allUserEvents since \(eventId)")
     if let eventId = eventId {
@@ -100,21 +123,6 @@ class GithubAPIClient {
     }
   }
 
-  func pollUserEvents(since: Int? = nil) -> GithubRequestPoller {
-    debugPrint("polling since \(since)")
-    return GithubRequestPoller(performRequest: { lastData in
-      let usefulSince: Int?
-
-      if let lastData = lastData {
-        usefulSince = lastData.first?.id ?? nil
-      } else {
-        usefulSince = since
-      }
-
-      return self.allUserEvents(since: usefulSince)
-    })
-  }
-
   private func request(_ url: String, parameters: Params = [:], headers: HTTPHeaders = [:]) -> DataRequest {
     var headers = headers
 
@@ -126,7 +134,6 @@ class GithubAPIClient {
 
     let request = afSessionManager
       .request("\(baseUrl)\(url)", parameters: parameters, headers: headers)
-      .validate(statusCode: [200])
       .validate(contentType: ["application/json"])
 
     request.response().then { (_, response, _) -> Void in
@@ -143,9 +150,8 @@ class GithubAPIClient {
   private func get(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
     return request(url, parameters: parameters)
       .responseJSON()
-      .then { json in
-        return Promise(value: JSON(json))
-      }.catch { error in
+      .then { json in JSON(json) }
+      .catch { error in
         debugPrint(error)
       }
   }

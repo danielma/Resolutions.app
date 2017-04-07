@@ -655,6 +655,7 @@
                         <tabViewItem label="Credentials" identifier="" id="CIh-wv-ug6"/>
                         <tabViewItem label="Magic Comments" identifier="" id="VnD-QG-eka"/>
                         <tabViewItem label="Dock Icon" id="uGU-Nh-wEw"/>
+                        <tabViewItem id="jRo-DC-Ltb"/>
                     </tabViewItems>
                     <tabView key="tabView" type="noTabsBezelBorder" id="k2n-bc-bYn">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
@@ -666,6 +667,7 @@
                         <segue destination="6Lg-Hq-PZA" kind="relationship" relationship="tabItems" id="h2X-gt-zqM"/>
                         <segue destination="aem-aY-TPP" kind="relationship" relationship="tabItems" id="DRl-ed-Ay4"/>
                         <segue destination="eR7-Zk-8qR" kind="relationship" relationship="tabItems" id="NZr-1b-ALo"/>
+                        <segue destination="wVy-ZT-HR6" kind="relationship" relationship="tabItems" id="tIA-u5-wDf"/>
                     </connections>
                 </tabViewController>
                 <customObject id="JVF-LD-drd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -816,6 +818,39 @@
                 <userDefaultsController representsSharedInstance="YES" id="RSB-pa-HFz"/>
             </objects>
             <point key="canvasLocation" x="1987" y="749"/>
+        </scene>
+        <!--Advanced-->
+        <scene sceneID="w0v-K2-DtI">
+            <objects>
+                <viewController title="Advanced" id="wVy-ZT-HR6" sceneMemberID="viewController">
+                    <view key="view" id="7tN-1Y-bQO">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aa5-c9-wWl">
+                                <rect key="frame" x="20" y="258" width="410" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="dg3-Kv-8bM">
+                                    <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="HXT-rI-3H6"/>
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="71f-tE-wMw" name="value" keyPath="values.githubLastEventReadId" id="7BN-NQ-YYT">
+                                        <dictionary key="options">
+                                            <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="sop-BS-Gsi" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController id="71f-tE-wMw"/>
+            </objects>
+            <point key="canvasLocation" x="1957" y="1110"/>
         </scene>
         <!--Resolutions Split View Controller-->
         <scene sceneID="Bze-6O-6EL">
