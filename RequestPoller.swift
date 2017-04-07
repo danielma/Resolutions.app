@@ -23,7 +23,6 @@ class RequestPoller<Element> {
   var pollInterval: Int
   var running = false
   var callback: Callback<Element>!
-  var cancelNext = false
   var lastData: [Element]?
 
   init(pollInterval: Int = defaultInterval, performRequest: @escaping Requestor<Element>) {
@@ -42,14 +41,12 @@ class RequestPoller<Element> {
   func start() -> RequestPoller {
     running = true
 
-    iteration()
+    timedIteration()
 
     return self
   }
 
   func forceRequest() {
-    cancelNext = true
-
     iteration()
   }
 
@@ -60,28 +57,26 @@ class RequestPoller<Element> {
 
   internal func enqueueNextIteration() {
     _ = after(interval: TimeInterval(self.pollInterval)).then { _ -> Void in
-      if self.cancelNext {
-        self.cancelNext = false
-        return
-      }
-
-      if self.running { self.iteration() }
+      if self.running { self.timedIteration() }
     }
   }
 
-  internal func iteration() {
-    _ = performRequest(self.lastData)
-      .then { (data) -> Void in
-        self.handleRequestData(data: data)
+  internal func timedIteration() {
+    _ = iteration().then { _ in self.enqueueNextIteration() }
+  }
+
+  internal func iteration() -> Promise<Void> {
+    return performRequest(self.lastData)
+      .then { data -> Void in
+        self.handleRequestData(data)
     }
   }
 
-  internal func handleRequestData(data: [Element]) {
+  internal func handleRequestData(_ data: [Element]) {
     if data.count > 0 {
       lastData = data
     }
     pollInterval = updateIntervalAfterResponse() ?? pollInterval
-    enqueueNextIteration()
     callback(data)
   }
 
