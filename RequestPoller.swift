@@ -12,27 +12,27 @@ import Alamofire
 import PromiseKit
 import PMKAlamofire
 
-typealias Requestor = (HTTPURLResponse?) -> DataRequest
 
-fileprivate func defaultCallback(_ value: JSON) { }
+let defaultInterval = 60
 
-class RequestPoller {
-  static let defaultInterval = 60
+class RequestPoller<Element> {
+  typealias Requestor<T> = ([T]?) -> Promise<[T]>
+  typealias Callback<T> = ([T]) -> Void
 
-  let request: Requestor
+  let performRequest: Requestor<Element>
   var pollInterval: Int
   var running = false
-  var callback: (JSON) -> Void = defaultCallback
+  var callback: Callback<Element>!
   var cancelNext = false
-  var lastResponse: HTTPURLResponse?
+  var lastData: [Element]?
 
-  init(pollInterval: Int = RequestPoller.defaultInterval, request: @escaping Requestor) {
+  init(pollInterval: Int = defaultInterval, performRequest: @escaping Requestor<Element>) {
     self.pollInterval = pollInterval
-    self.request = request
+    self.performRequest = performRequest
   }
 
   @discardableResult
-  func map(_ callback: @escaping (JSON) -> Void) -> RequestPoller {
+  func map(_ callback: @escaping (Callback<Element>)) -> RequestPoller {
     self.callback = callback
 
     return self
@@ -70,26 +70,20 @@ class RequestPoller {
   }
 
   internal func iteration() {
-    _ = request(self.lastResponse)
-      .response()
-      .then { (request, response, data) -> Void in
-        self.handleRequestResponse(request: request, response: response, data: data)
+    _ = performRequest(self.lastData)
+      .then { (data) -> Void in
+        self.handleRequestData(data: data)
     }
   }
 
-  internal func handleRequestResponse(request: URLRequest, response: HTTPURLResponse, data: Data) {
-    lastResponse = response
-    updateIntervalFromResponse(response)
+  internal func handleRequestData(data: [Element]) {
+    lastData = data
+    pollInterval = updateIntervalAfterResponse() ?? pollInterval
     enqueueNextIteration()
-    if (shouldExecuteCallback(request: request, response: response, data: data)) {
-      callback(JSON(data: data))
-    }
+    callback(data)
   }
 
-  internal func updateIntervalFromResponse(_ response: HTTPURLResponse) {
-  }
-
-  internal func shouldExecuteCallback(request: URLRequest, response: HTTPURLResponse, data: Data) -> Bool {
-    return true
+  internal func updateIntervalAfterResponse() -> Int? {
+    return nil
   }
 }

@@ -1119,7 +1119,7 @@
         <!--Resolutions-->
         <scene sceneID="aca-Do-rcR">
             <objects>
-                <splitViewController title="Resolutions" id="jpU-oB-elV" sceneMemberID="viewController">
+                <splitViewController title="Resolutions" id="jpU-oB-elV" customClass="MainWindowViewController" customModule="Resolutions" customModuleProvider="target" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="Dol-eM-UQ3"/>
                         <splitViewItem id="CuM-n9-st3"/>
@@ -1311,7 +1311,7 @@
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nUN-Ez-Ob4">
                                                                     <rect key="frame" x="0.0" y="0.0" width="188" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Table View Cell" id="9h7-ur-gNP">
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" id="9h7-ur-gNP">
                                                                         <customFormatter key="formatter" id="SMv-13-nGi" customClass="UpcaseFormatter" customModule="Resolutions" customModuleProvider="target"/>
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>

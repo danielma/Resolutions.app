@@ -14,15 +14,14 @@ import PMKAlamofire
 
 typealias Params = Dictionary<String, String>
 
-class GithubRequestPoller: RequestPoller {
-  override internal func updateIntervalFromResponse(_ response: HTTPURLResponse) {
-    if let responsePollInterval = response.allHeaderFields["X-Poll-Interval"] as? String {
-      pollInterval = Int(responsePollInterval) ?? pollInterval
-    }
-  }
+struct EventPollState {
+  var lastEvent: Int
+  var lastData: [GithubEvent]
+}
 
-  override internal func shouldExecuteCallback(request: URLRequest, response: HTTPURLResponse, data: Data) -> Bool {
-    return response.statusCode != 304
+class GithubRequestPoller: RequestPoller<GithubEvent> {
+  override internal func updateIntervalAfterResponse() -> Int {
+    return GithubAPIClient.sharedInstance.pollInterval
   }
 }
 
@@ -41,12 +40,7 @@ class GithubAPIClient {
   static let sharedInstance = GithubAPIClient()
 
   let baseUrl = "https://api.github.com/"
-
-  lazy var afSessionManager: SessionManager = {
-    let configuration = URLSessionConfiguration.default.copy() as! URLSessionConfiguration
-    configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
-    return SessionManager(configuration: configuration)
-  }()
+  var pollInterval = 60
 
   private var token: String {
     return (UserDefaults.standard.value(forKey: "githubToken") as? String) ?? ""
@@ -61,51 +55,56 @@ class GithubAPIClient {
     return get("notifications", parameters: ["all": allParam])
   }
 
-  func pollNotifications() -> RequestPoller {
-    return GithubRequestPoller { lastResponse in
-      var headers: HTTPHeaders = [:]
+  func userEvents(page: Int = 1) -> Promise<[GithubEvent]> {
+    return get("users/\(username)/events", parameters: ["per_page": "60", "page": String(page)])
+      .then { events in events.arrayValue.map { GithubEvent($0) } }
+  }
 
-      if let lastResponse = lastResponse,
-         let date = lastResponse.allHeaderFields["Date"] as? String {
-        headers["If-Modified-Since"] = date
-      }
-
-      debugPrint("request with headers", headers)
-
-      return self.request("notifications", parameters: ["all": "true"], headers: headers)
+  internal func paginatedRequest<T>(
+    initialData: [T] = [],
+    page: Int = 1,
+    shouldPerformNextRequest: @escaping ([T]) -> Bool,
+    request: @escaping (Int) -> Promise<[T]>) -> Promise<[T]> {
+    if shouldPerformNextRequest(initialData) {
+      return request(page)
+        .then { data -> Promise<[T]> in
+          return self.paginatedRequest(
+            initialData: initialData + data,
+            page: page + 1,
+            shouldPerformNextRequest: shouldPerformNextRequest,
+            request: request
+          )
+        }
+    } else {
+      return Promise(value: initialData)
     }
   }
 
-  func userEvents() -> Promise<JSON> {
-    return get("users/\(username)/events")
-  }
-
-  func pollUserEvents() -> RequestPoller {
-    return GithubRequestPoller { lastResponse in
-      var headers: HTTPHeaders = [:]
-
-      if let lastResponse = lastResponse,
-         let etag = lastResponse.allHeaderFields["Etag"] as? String {
-        headers["If-None-Match"] = etag
-      }
-
-      debugPrint("request with headers", "events", headers)
-
-      return self.request("users/\(self.username)/events", headers: headers)
+  func allUserEvents(since eventId: Int? = nil) -> Promise<[GithubEvent]> {
+    if let eventId = eventId {
+      return paginatedRequest(
+        shouldPerformNextRequest: { events in
+          return !events.contains { $0.id < eventId }
+        }
+      ) { page in self.userEvents(page: page) }
+        .then { events in Array(events.reversed().drop { $0.id <= eventId }) }
+    } else {
+      return userEvents()
     }
   }
 
-  internal func poll(_ url: String, parameters: Params = [:]) -> RequestPoller {
-    return GithubRequestPoller { lastResponse in
-      var headers: HTTPHeaders = [:]
+  func pollUserEvents(since: Int? = nil) -> GithubRequestPoller {
+    return GithubRequestPoller(performRequest: { lastData in
+      let usefulSince: Int?
 
-      if let lastResponse = lastResponse,
-         let date = lastResponse.allHeaderFields["Date"] as? String {
-        headers["If-Modified-Since"] = date
+      if let lastData = lastData {
+        usefulSince = lastData.first?.id ?? nil
+      } else {
+        usefulSince = since
       }
 
-      return self.request(url, parameters: parameters, headers: headers)
-    }
+      return self.allUserEvents(since: usefulSince)
+    })
   }
 
   private func request(_ url: String, parameters: Params = [:], headers: HTTPHeaders = [:]) -> DataRequest {
@@ -115,10 +114,21 @@ class GithubAPIClient {
       headers[authorizationHeader.key] = authorizationHeader.value
     }
 
-    return afSessionManager
+    debugPrint("request", url, parameters)
+
+    let request = Alamofire
       .request("\(baseUrl)\(url)", parameters: parameters, headers: headers)
-      .validate(statusCode: [200, 304])
+      .validate(statusCode: [200])
       .validate(contentType: ["application/json"])
+
+    request.response().then { (_, response, _) -> Void in
+      if let xPollInterval = response.allHeaderFields["X-Poll-Interval"] as? String,
+        let asInt = Int(xPollInterval) {
+        self.pollInterval = asInt
+      }
+    }
+    
+    return request
   }
 
   private func get(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
