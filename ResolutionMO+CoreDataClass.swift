@@ -34,6 +34,7 @@ public class ResolutionMO: NSManagedObject {
     }
 
     resolution.name = payloadEvent.issueName
+    resolution.updateDate = NSDate()
 
     return resolution
   }
