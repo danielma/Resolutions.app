@@ -21,7 +21,7 @@ class GithubPoller {
 
   init(defaults: UserDefaults) {
     userDefaults = defaults
-    eventsPoller = GithubAPIClient.sharedInstance.pollUserEvents()
+    eventsPoller = GithubAPIClient.sharedInstance.pollUserEvents(since: userDefaults.value(forKey: "githubLastEventReadId") as? Int)
 
     eventsPoller
       .map { events in
@@ -58,6 +58,8 @@ class GithubPoller {
   }
 
   internal func handleEvent(_ event: GithubEvent) {
+    debugPrint("received event \(event.id): \(event.eventType)")
+
     switch event.eventType {
     case .IssueCommentEvent:
       handleIssueCommentEvent(event)
@@ -69,7 +71,7 @@ class GithubPoller {
       debugPrint("unhandled event: \(event.eventType)")
     }
     
-    UserDefaults.standard.set(event.id, forKey: "githubLastEventReadId")
+    userDefaults.set(event.id, forKey: "githubLastEventReadId")
   }
 
   internal func handleIssueCommentEvent(_ event: GithubEvent) {

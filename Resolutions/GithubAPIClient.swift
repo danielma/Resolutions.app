@@ -81,6 +81,7 @@ class GithubAPIClient {
   }
 
   func allUserEvents(since eventId: Int? = nil) -> Promise<[GithubEvent]> {
+    debugPrint("allUserEvents since \(eventId)")
     if let eventId = eventId {
       return paginatedRequest(
         shouldPerformNextRequest: { events in
@@ -94,6 +95,7 @@ class GithubAPIClient {
   }
 
   func pollUserEvents(since: Int? = nil) -> GithubRequestPoller {
+    debugPrint("polling since \(since)")
     return GithubRequestPoller(performRequest: { lastData in
       let usefulSince: Int?
 

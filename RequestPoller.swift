@@ -77,7 +77,9 @@ class RequestPoller<Element> {
   }
 
   internal func handleRequestData(data: [Element]) {
-    lastData = data
+    if data.count > 0 {
+      lastData = data
+    }
     pollInterval = updateIntervalAfterResponse() ?? pollInterval
     enqueueNextIteration()
     callback(data)
