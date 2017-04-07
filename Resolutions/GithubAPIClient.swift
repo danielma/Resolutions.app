@@ -42,6 +42,12 @@ class GithubAPIClient {
   let baseUrl = "https://api.github.com/"
   var pollInterval = 60
 
+  lazy var afSessionManager: SessionManager = {
+    let configuration = URLSessionConfiguration.default.copy() as! URLSessionConfiguration
+    configuration.requestCachePolicy = .reloadRevalidatingCacheData
+    return SessionManager(configuration: configuration)
+  }()
+
   private var token: String {
     return (UserDefaults.standard.value(forKey: "githubToken") as? String) ?? ""
   }
@@ -118,12 +124,13 @@ class GithubAPIClient {
 
     debugPrint("request", url, parameters)
 
-    let request = Alamofire
+    let request = afSessionManager
       .request("\(baseUrl)\(url)", parameters: parameters, headers: headers)
       .validate(statusCode: [200])
       .validate(contentType: ["application/json"])
 
     request.response().then { (_, response, _) -> Void in
+      debugPrint("response from \(response.url)")
       if let xPollInterval = response.allHeaderFields["X-Poll-Interval"] as? String,
         let asInt = Int(xPollInterval) {
         self.pollInterval = asInt
