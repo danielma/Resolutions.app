@@ -22,12 +22,13 @@ public class UpcaseFormatter: Formatter {
   }
 }
 
-class ResolutionsTableViewController: NSViewController {
+class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
   lazy var managedObjectContext: NSManagedObjectContext = {
     return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
   }()
   
   @IBOutlet var arrayController: NSArrayController!
+  @IBOutlet weak var tableView: NSTableView!
 
   static let coordinator: NSMutableDictionary = ["selectedObjects": []]
 
@@ -35,6 +36,9 @@ class ResolutionsTableViewController: NSViewController {
     super.viewDidLoad()
 
     ResolutionsTableViewController.coordinator.addObserver(self, forKeyPath: "selectedObjects", options: .new, context: &myContext)
+
+    tableView.delegate = self
+    tableView.target = self
   }
 
   override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -66,4 +70,7 @@ class ResolutionsTableViewController: NSViewController {
       }
     }
   }
+}
+
+extension ResolutionsTableViewController {
 }

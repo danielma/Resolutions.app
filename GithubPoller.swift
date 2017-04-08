@@ -20,6 +20,7 @@ class GithubPoller {
   static let forcedUpdateNotificationName = NSNotification.Name("githubPollerForceUpdate")
   static let lastEventKey = "githubLastEventReadId"
   static let sharedInstance = GithubPoller(defaults: UserDefaults.standard)
+  static let queue = DispatchQueue(label: "com.resolutions.githubPollerQueue")
 
   init(defaults: UserDefaults) {
     userDefaults = defaults
@@ -49,14 +50,14 @@ class GithubPoller {
 
     eventsPoller
       .map { events in
-        DispatchQueue.global().async {
+        GithubPoller.queue.sync {
           events.forEach { self.handleEvent($0) }
         }
     }
 
     receivedEventsPoller
       .map { events in
-        DispatchQueue.global().async {
+        GithubPoller.queue.sync {
           events.forEach { self.handleEvent($0) }
         }
     }

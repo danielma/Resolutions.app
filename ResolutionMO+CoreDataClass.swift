@@ -12,6 +12,21 @@ import SwiftyJSON
 
 @objc(ResolutionMO)
 public class ResolutionMO: NSManagedObject {
+  enum Status: String {
+    case open
+    case closed
+    case merged
+  }
+
+  var status: Status? {
+    get {
+      return Status(rawValue: statusString ?? "")
+    }
+    set {
+      statusString = newValue?.rawValue
+    }
+  }
+  
   static func fromGithubEvent(_ event: GithubEvent) -> ResolutionMO? {
     let context = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
 
@@ -19,7 +34,6 @@ public class ResolutionMO: NSManagedObject {
       debugPrint("Can't create resolutionMO from github event \(event)")
       return nil
     }
-//    let repoName = event.repo notification["repository", "full_name"].stringValue
     
     let repo = GithubRepoMO.fromGithubEvent(event)
     let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(payloadEvent.issueIdentifier)

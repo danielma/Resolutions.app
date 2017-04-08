@@ -9,11 +9,12 @@
         <attribute name="completedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="remoteIdentifier" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="statusString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="repo" maxCount="1" deletionRule="Nullify" destinationEntity="GithubRepo" inverseName="resolutions" inverseEntity="GithubRepo" syncable="YES"/>
     </entity>
     <elements>
         <element name="GithubRepo" positionX="-63" positionY="-120" width="128" height="90"/>
-        <element name="Resolution" positionX="-54" positionY="-9" width="128" height="120"/>
+        <element name="Resolution" positionX="-54" positionY="-9" width="128" height="135"/>
     </elements>
 </model>

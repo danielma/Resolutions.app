@@ -104,6 +104,12 @@ class GithubEvent {
   }
 }
 
+enum GithubIssueState: String {
+  case open
+  case closed
+  case merged
+}
+
 protocol GithubPayloadEventImplementation {
   var issueName: String { get }
   var issueIdentifier: String { get }
@@ -171,6 +177,14 @@ class GithubPullRequestEvent: GithubPayloadEvent, GithubPayloadEventImplementati
     return ActionType(rawValue: payload["action"].stringValue)!
   }
 
+  var state: GithubIssueState {
+    if action == .closed && payload["pull_request", "merged"].boolValue {
+      return .merged
+    } else {
+      return GithubIssueState(rawValue: payload["pull_request", "state"].stringValue)!
+    }
+  }
+
   var issueIdentifier: String {
     return payload["pull_request", "issue_url"].string!
   }
@@ -195,6 +209,10 @@ class GithubPullRequestEvent: GithubPayloadEvent, GithubPayloadEventImplementati
         createResolution()
       }
     }
+
+    if let resolution = resolution {
+      resolution.status = ResolutionMO.Status(rawValue: state.rawValue)!
+    }
   }
 }
 
@@ -214,6 +232,10 @@ class GithubIssuesEvent: GithubPayloadEvent, GithubPayloadEventImplementation {
 
   var action: ActionType {
     return ActionType(rawValue: payload["action"].stringValue)!
+  }
+
+  var state: GithubIssueState {
+    return GithubIssueState(rawValue: payload["issue", "state"].stringValue)!
   }
 
   var issueIdentifier: String {
@@ -239,6 +261,10 @@ class GithubIssuesEvent: GithubPayloadEvent, GithubPayloadEventImplementation {
       } else {
         createResolution()
       }
+    }
+
+    if let resolution = resolution {
+      resolution.status = ResolutionMO.Status(rawValue: state.rawValue)!
     }
   }
 }

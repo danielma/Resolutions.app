@@ -21,5 +21,5 @@ extension ResolutionMO {
     @NSManaged public var remoteIdentifier: String?
     @NSManaged public var updateDate: NSDate?
     @NSManaged public var repo: GithubRepoMO?
-
+  @NSManaged public var statusString: String?
 }
