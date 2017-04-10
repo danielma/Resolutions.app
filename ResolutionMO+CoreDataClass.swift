@@ -36,19 +36,19 @@ public class ResolutionMO: NSManagedObject {
     }
     
     let repo = GithubRepoMO.fromGithubEvent(event)
-    let remoteIdentifier = cleanGithubNotificationRemoteIdentifier(payloadEvent.issueIdentifier)
+    let remoteIdentifier = payloadEvent.issueIdentifier
     let resolution: ResolutionMO
 
     if let existingResolution = ResolutionMO.fetchBy(remoteIdentifier: remoteIdentifier, context: context) {
       resolution = existingResolution
     } else {
       resolution = ResolutionMO(context: context)
-      resolution.remoteIdentifier = cleanGithubNotificationRemoteIdentifier(payloadEvent.issueIdentifier)
+      resolution.remoteIdentifier = remoteIdentifier
       resolution.repo = repo
     }
 
     resolution.name = payloadEvent.issueName
-    resolution.updateDate = NSDate()
+    resolution.updateDate = event.createdAt as NSDate
 
     return resolution
   }
@@ -90,6 +90,18 @@ public class ResolutionMO: NSManagedObject {
         completedDate = nil
       }
     }
+  }
+
+  func completeAt(_ date: NSDate?) {
+    completedDate = date
+    updateDate = date ?? NSDate()
+  }
+
+  public var touchDate: NSDate? {
+    guard let updateDate = updateDate else { return completedDate }
+    guard let completedDate = completedDate else { return updateDate }
+
+    return (updateDate as Date) > (completedDate as Date) ? updateDate : completedDate
   }
 }
 

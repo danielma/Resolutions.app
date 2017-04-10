@@ -124,8 +124,8 @@ extension GithubPayloadEventImplementation {
 
   var afterResolutionUpdatedAt: Bool {
     if let resolution = self.resolution {
-      if let updateDate = resolution.updateDate {
-        return !resolution.completed && updateDate.compare(self.createdAt as Date) == .orderedAscending
+      if let touchDate = resolution.touchDate {
+        return (touchDate as Date) <= (self.createdAt as Date)
       } else {
         return true
       }
@@ -194,25 +194,22 @@ class GithubPullRequestEvent: GithubPayloadEvent, GithubPayloadEventImplementati
   }
 
   func updateResolution() {
+    if resolution == nil { createResolution() }
+
+    guard let resolution = resolution else { fatalError("couldn't find or create resolution") }
+
     switch action {
     case .closed:
       if afterResolutionUpdatedAt {
-        resolution!.completedDate = createdAt
+        resolution.completeAt(createdAt)
       }
     default:
-      if let resolution = resolution {
-        if afterResolutionUpdatedAt {
-          resolution.updateDate = createdAt
-          resolution.completedDate = actor.isCurrentUser ? createdAt : nil
-        }
-      } else {
-        createResolution()
+      if afterResolutionUpdatedAt {
+        resolution.completeAt(actor.isCurrentUser ? createdAt : nil)
       }
     }
 
-    if let resolution = resolution {
-      resolution.status = ResolutionMO.Status(rawValue: state.rawValue)!
-    }
+    resolution.status = ResolutionMO.Status(rawValue: state.rawValue)!
   }
 }
 
@@ -247,25 +244,24 @@ class GithubIssuesEvent: GithubPayloadEvent, GithubPayloadEventImplementation {
   }
 
   func updateResolution() {
+    if resolution == nil {
+      createResolution()
+    }
+
+    guard let resolution = resolution else { fatalError("couldn't find or create resolution") }
+    
     switch action {
     case .closed:
       if afterResolutionUpdatedAt {
-        resolution!.completedDate = createdAt
+        resolution.completeAt(createdAt)
       }
     default:
-      if let resolution = resolution {
-        if afterResolutionUpdatedAt {
-          resolution.updateDate = createdAt
-          resolution.completedDate = actor.isCurrentUser ? createdAt : nil
-        }
-      } else {
-        createResolution()
+      if afterResolutionUpdatedAt {
+        resolution.completeAt(actor.isCurrentUser ? createdAt : nil)
       }
     }
 
-    if let resolution = resolution {
-      resolution.status = ResolutionMO.Status(rawValue: state.rawValue)!
-    }
+    resolution.status = ResolutionMO.Status(rawValue: state.rawValue)!
   }
 }
 
@@ -289,9 +285,14 @@ class GithubIssueCommentEvent: GithubPayloadEvent, GithubPayloadEventImplementat
   }
 
   func updateResolution() {
+    if resolution == nil {
+      createResolution()
+    }
+
+    guard let resolution = resolution else { fatalError("couldn't find or create resolution") }
     guard afterResolutionUpdatedAt else { return }
 
-    resolution!.completedDate = createdAt
+    resolution.completeAt(actor.isCurrentUser ? createdAt : nil)
   }
 }
 
@@ -315,14 +316,19 @@ class GithubPullRequestReviewCommentEvent: GithubPayloadEvent, GithubPayloadEven
   }
 
   func updateResolution() {
+    if resolution == nil {
+      createResolution()
+    }
+
+    guard let resolution = resolution else { fatalError("couldn't find or create resolution") }
     guard afterResolutionUpdatedAt else { return }
-    
+
 //      if userDefaults.bool(forKey: "githubUseMagicComments") {
 //          let magicValue = userDefaults.string(forKey: "githubMagicCommentString")
 //          guard !event.commentIncludesMagicValue(magicValue) else { return }
 //      }
 
-    resolution!.completedDate = createdAt
+    resolution.completeAt(actor.isCurrentUser ? createdAt : nil)
   }
 }
 

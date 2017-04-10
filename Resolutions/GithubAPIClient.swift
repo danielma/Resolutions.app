@@ -130,6 +130,8 @@ class GithubAPIClient {
       headers[authorizationHeader.key] = authorizationHeader.value
     }
 
+    headers["Accept"] = "application/vnd.github.black-cat-preview+json"
+
     debugPrint("request", url, parameters)
 
     let request = afSessionManager
