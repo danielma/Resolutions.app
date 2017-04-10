@@ -19,7 +19,7 @@ struct EventPollState {
   var lastData: [GithubEvent]
 }
 
-class GithubRequestPoller: RequestPoller<GithubEvent> {
+class GithubRequestPoller<T>: RequestPoller<T> {
   override internal func updateIntervalAfterResponse() -> Int {
     return GithubAPIClient.sharedInstance.pollInterval
   }
@@ -42,9 +42,15 @@ class GithubAPIClient {
   let baseUrl = "https://api.github.com/"
   var pollInterval = 60
 
-  lazy var afSessionManager: SessionManager = {
+  lazy var cachingSessionManager: SessionManager = {
     let configuration = URLSessionConfiguration.default.copy() as! URLSessionConfiguration
     configuration.requestCachePolicy = .reloadRevalidatingCacheData
+    return SessionManager(configuration: configuration)
+  }()
+
+  lazy var noCachingSessionManager: SessionManager = {
+    let configuration = URLSessionConfiguration.default.copy() as! URLSessionConfiguration
+    configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
     return SessionManager(configuration: configuration)
   }()
 
@@ -56,9 +62,25 @@ class GithubAPIClient {
     return (UserDefaults.standard.value(forKey: "githubUsername") as? String) ?? ""
   }
 
-  func notifications(all: Bool = true) -> Promise<JSON> {
+  var notificationsLastAccessedDate: String?
+
+  func notifications(all: Bool = true, page: Int = 1, headers: HTTPHeaders?) -> Promise<[GithubNotification]> {
     let allParam = all ? "true" : "false"
-    return get("notifications", parameters: ["all": allParam])
+    return request("notifications", parameters: ["all": allParam, "page": String(page)], headers: headers, useCaching: false)
+      .then { (_, response, data) in
+        if let date = response.allHeaderFields["Date"] as? String {
+          self.notificationsLastAccessedDate = date
+        }
+
+        return Promise(value: JSON(data: data).arrayValue.map { GithubNotification($0) })
+      }
+  }
+
+  func allNotifications(headers: HTTPHeaders? = nil) -> Promise<[GithubNotification]> {
+    return paginatedRequest(
+      shouldPerformNextRequest: { _ in return true },
+      request: { page in self.notifications(page: page, headers: headers) }
+    )
   }
 
   func userEvents(page: Int = 1) -> Promise<[GithubEvent]> {
@@ -69,30 +91,6 @@ class GithubAPIClient {
   func receivedEvents(page: Int = 1) -> Promise<[GithubEvent]> {
     return get("users/\(username)/received_events", parameters: ["per_page": "60", "page": String(page)])
       .then { events in events.arrayValue.map { GithubEvent($0) } }
-  }
-
-  internal func paginatedRequest<T>(
-    initialData: [T] = [],
-    page: Int = 1,
-    shouldPerformNextRequest: @escaping ([T]) -> Bool,
-    request: @escaping (Int) -> Promise<[T]>) -> Promise<[T]> {
-    if shouldPerformNextRequest(initialData) {
-      return request(page)
-        .then { data -> Promise<[T]> in
-          if data.count > 0 {
-            return self.paginatedRequest(
-              initialData: initialData + data,
-              page: page + 1,
-              shouldPerformNextRequest: shouldPerformNextRequest,
-              request: request
-            )
-          } else {
-            return Promise(value: initialData)
-          }
-        }
-    } else {
-      return Promise(value: initialData)
-    }
   }
 
   func allReceivedEvents(since eventId: Int? = nil) -> Promise<[GithubEvent]> {
@@ -123,8 +121,33 @@ class GithubAPIClient {
     }
   }
 
-  private func request(_ url: String, parameters: Params = [:], headers: HTTPHeaders = [:]) -> DataRequest {
-    var headers = headers
+  internal func paginatedRequest<T>(
+    initialData: [T] = [],
+    page: Int = 1,
+    shouldPerformNextRequest: @escaping ([T]) -> Bool,
+    request: @escaping (Int) -> Promise<[T]>) -> Promise<[T]> {
+    if shouldPerformNextRequest(initialData) {
+      return request(page)
+        .then { data -> Promise<[T]> in
+          if data.count > 0 {
+            return self.paginatedRequest(
+              initialData: initialData + data,
+              page: page + 1,
+              shouldPerformNextRequest: shouldPerformNextRequest,
+              request: request
+            )
+          } else {
+            return Promise(value: initialData)
+          }
+        }
+    } else {
+      return Promise(value: initialData)
+    }
+  }
+
+  typealias RequestPromise = Promise<(URLRequest, HTTPURLResponse, Data)>
+  private func request(_ url: String, parameters: Params = [:], headers: HTTPHeaders? = nil, useCaching: Bool = true) -> RequestPromise {
+    var headers = headers ?? [:]
 
     if let authorizationHeader = Request.authorizationHeader(user: username, password: token) {
       headers[authorizationHeader.key] = authorizationHeader.value
@@ -132,29 +155,37 @@ class GithubAPIClient {
 
     headers["Accept"] = "application/vnd.github.black-cat-preview+json"
 
-    debugPrint("request", url, parameters)
+    debugPrint("request", url, parameters, headers)
 
-    let request = afSessionManager
+    return (useCaching ? cachingSessionManager : noCachingSessionManager)
       .request("\(baseUrl)\(url)", parameters: parameters, headers: headers)
       .validate(contentType: ["application/json"])
+      .validate(statusCode: 200..<300)
+      .response()
+      .then { info -> RequestPromise in
+        let response = info.1
+        debugPrint("response from \(response.url?.absoluteString ?? "")", response.statusCode, response.allHeaderFields)
+        if let xPollInterval = response.allHeaderFields["X-Poll-Interval"] as? String,
+          let asInt = Int(xPollInterval) {
+          self.pollInterval = asInt
+        }
 
-    request.response().then { (_, response, _) -> Void in
-      debugPrint("response from \(response.url)")
-      if let xPollInterval = response.allHeaderFields["X-Poll-Interval"] as? String,
-        let asInt = Int(xPollInterval) {
-        self.pollInterval = asInt
+        return Promise(value: info)
       }
+      .catch { error in
+        if let alamofireError = error as? AFError, alamofireError.isResponseValidationError, alamofireError.responseCode == 304 {
+          debugPrint("swallowing 304")
+        } else {
+          debugPrint("error in request", error)
+        }
     }
-    
-    return request
   }
 
   private func get(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
     return request(url, parameters: parameters)
-      .responseJSON()
-      .then { json in JSON(json) }
+      .then { (_, _, data) in JSON(data: data) }
       .catch { error in
-        debugPrint(error)
+        debugPrint("error in get", error)
       }
   }
 }

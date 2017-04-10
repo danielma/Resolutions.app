@@ -78,6 +78,7 @@ class RequestPoller<Element> {
       lastData = data
     }
     pollInterval = updateIntervalAfterResponse() ?? pollInterval
+    
     callback(data)
   }
 
