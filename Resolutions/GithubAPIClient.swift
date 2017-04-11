@@ -62,8 +62,15 @@ class GithubAPIClient {
     return (UserDefaults.standard.value(forKey: "githubUsername") as? String) ?? ""
   }
 
-  var notificationsLastAccessedDate: String?
+  func issue(fromAbsoluteURL url: String) -> Promise<GithubIssue> {
+    return absoluteGet(url).then { GithubIssue($0) }
+  }
 
+  func pullRequest(fromAbsoluteURL url: String) -> Promise<GithubPullRequest> {
+    return absoluteGet(url).then { GithubPullRequest($0) }
+  }
+
+  var notificationsLastAccessedDate: String?
   func notifications(all: Bool = true, page: Int = 1, headers: HTTPHeaders?) -> Promise<[GithubNotification]> {
     let allParam = all ? "true" : "false"
     return request("notifications", parameters: ["all": allParam, "page": String(page)], headers: headers, useCaching: false)
@@ -147,6 +154,10 @@ class GithubAPIClient {
 
   typealias RequestPromise = Promise<(URLRequest, HTTPURLResponse, Data)>
   private func request(_ url: String, parameters: Params = [:], headers: HTTPHeaders? = nil, useCaching: Bool = true) -> RequestPromise {
+    return absoluteRequest("\(baseUrl)\(url)", parameters: parameters, headers: headers, useCaching: useCaching)
+  }
+  
+  private func absoluteRequest(_ url: String, parameters: Params = [:], headers: HTTPHeaders? = nil, useCaching: Bool = true) -> RequestPromise {
     var headers = headers ?? [:]
 
     if let authorizationHeader = Request.authorizationHeader(user: username, password: token) {
@@ -158,7 +169,7 @@ class GithubAPIClient {
     debugPrint("request", url, parameters, headers)
 
     return (useCaching ? cachingSessionManager : noCachingSessionManager)
-      .request("\(baseUrl)\(url)", parameters: parameters, headers: headers)
+      .request(url, parameters: parameters, headers: headers)
       .validate(contentType: ["application/json"])
       .validate(statusCode: 200..<300)
       .response()
@@ -182,7 +193,11 @@ class GithubAPIClient {
   }
 
   private func get(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
-    return request(url, parameters: parameters)
+    return absoluteGet(url, parameters: parameters)
+  }
+
+  private func absoluteGet(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
+    return absoluteRequest(url, parameters: parameters)
       .then { (_, _, data) in JSON(data: data) }
       .catch { error in
         debugPrint("error in get", error)

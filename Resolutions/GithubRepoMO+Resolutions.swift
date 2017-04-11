@@ -49,4 +49,19 @@ extension GithubRepoMO {
 
     return repo
   }
+
+  static func fromGithubNotification(_ notification: GithubNotification) -> GithubRepoMO {
+    let moc = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+    let repo: GithubRepoMO
+
+    if let existingRepo = GithubRepoMO.fetchBy(name: notification.repo.name) {
+      repo = existingRepo
+    } else {
+      repo = GithubRepoMO(context: moc)
+      repo.name = notification.repo.name
+      repo.url = notification.repo.url
+    }
+
+    return repo
+  }
 }

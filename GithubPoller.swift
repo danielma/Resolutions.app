@@ -73,7 +73,7 @@ class GithubPoller {
 
     notificationsPoller
       .map { notifications in
-        notifications.forEach { debugPrint($0) }
+        notifications.forEach { self.handleNotification($0) }
     }
   }
 
@@ -103,5 +103,11 @@ class GithubPoller {
     event.updateResolution()
     
     userDefaults.set(event.id, forKey: GithubPoller.lastEventKey)
+  }
+
+  internal func handleNotification(_ notification: GithubNotification) {
+    debugPrint("received notification \(notification.id): \(notification.type)")
+
+    notification.updateResolution()
   }
 }

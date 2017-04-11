@@ -53,6 +53,27 @@ public class ResolutionMO: NSManagedObject {
     return resolution
   }
 
+  static func fromGithubNotification(_ notification: GithubNotification) -> ResolutionMO? {
+    let context = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+
+    let repo = GithubRepoMO.fromGithubNotification(notification)
+    let remoteIdentifier = notification.issueIdentifier
+    let resolution: ResolutionMO
+
+    if let existingResolution = ResolutionMO.fetchBy(remoteIdentifier: remoteIdentifier, context: context) {
+      resolution = existingResolution
+    } else {
+      resolution = ResolutionMO(context: context)
+      resolution.remoteIdentifier = remoteIdentifier
+      resolution.repo = repo
+    }
+
+    resolution.name = notification.subjectTitle
+    resolution.updateDate = notification.updatedAt as NSDate
+
+    return resolution
+  }
+
   static func fetchBy(remoteIdentifier: String, context: NSManagedObjectContext? = nil) -> ResolutionMO? {
     let moc: NSManagedObjectContext
 
@@ -103,22 +124,4 @@ public class ResolutionMO: NSManagedObject {
 
     return (updateDate as Date) > (completedDate as Date) ? updateDate : completedDate
   }
-}
-
-fileprivate func cleanGithubNotificationRemoteIdentifier(_ identifier: String) -> String {
-  let githubPullRequestRegex = try! NSRegularExpression(
-    pattern: "api\\.github\\.com/repos/([^/]+)/([^/]+)/pulls/(\\w+)",
-    options: .caseInsensitive
-  )
-
-  if githubPullRequestRegex.hasMatch(identifier) {
-    return githubPullRequestRegex.stringByReplacingMatches(
-      in: identifier,
-      options: NSRegularExpression.MatchingOptions(),
-      range: NSMakeRange(0, identifier.characters.count),
-      withTemplate: "api.github.com/repos/$1/$2/issues/$3"
-    )
-  }
-
-  return identifier
 }
