@@ -81,7 +81,7 @@ class GithubNotification {
             resolution.status = status
 
             if (updateDate as Date) <= self.updatedAt {
-              resolution.completeAt(status == .merged ? self.updatedAt as NSDate : nil)
+              resolution.completeAt(status == .merged || status == .closed ? self.updatedAt as NSDate : nil)
             }
           }
           .catch { error in debugPrint("couldn't set status", error) }
