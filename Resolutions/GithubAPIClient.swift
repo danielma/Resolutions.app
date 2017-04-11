@@ -72,15 +72,17 @@ class GithubAPIClient {
   }
 
   var notificationsLastAccessedDate: String?
-  func notifications(all: Bool = true, page: Int = 1, headers: HTTPHeaders?) -> Promise<[GithubNotification]> {
+  func notifications(all: Bool = true, page: Int = 1, headers: HTTPHeaders?) -> Promise<GithubArrayResponse<GithubNotification>> {
     let allParam = all ? "true" : "false"
     return request("notifications", parameters: ["all": allParam, "page": String(page)], headers: headers, useCaching: false)
-      .then { (_, response, data) in
-        if let date = response.allHeaderFields["Date"] as? String {
+      .tap {
+        if case let .fulfilled(info) = $0,
+          let date = info.1.allHeaderFields["Date"] as? String {
           self.notificationsLastAccessedDate = date
         }
-
-        return Promise(value: JSON(data: data).arrayValue.map { GithubNotification($0) })
+      }
+      .then { (_, response, data) in
+        GithubArrayResponse(response: response, elements: JSON(data: data).arrayValue.map { GithubNotification($0) })
       }
   }
 
@@ -91,30 +93,13 @@ class GithubAPIClient {
     )
   }
 
-  func userEvents(page: Int = 1) -> Promise<[GithubEvent]> {
-    return get("users/\(username)/events", parameters: ["per_page": "60", "page": String(page)])
-      .then { events in events.arrayValue.map { GithubEvent($0) } }
+  func userEvents(page: Int = 1) -> Promise<GithubArrayResponse<GithubEvent>> {
+    return request("users/\(username)/events", parameters: ["per_page": "60", "page": String(page)])
+      .then { (_, response, data) in
+        GithubArrayResponse(response: response, elements: JSON(data: data).arrayValue.map { GithubEvent($0) })
+      }
   }
 
-  func receivedEvents(page: Int = 1) -> Promise<[GithubEvent]> {
-    return get("users/\(username)/received_events", parameters: ["per_page": "60", "page": String(page)])
-      .then { events in events.arrayValue.map { GithubEvent($0) } }
-  }
-
-  func allReceivedEvents(since eventId: Int? = nil) -> Promise<[GithubEvent]> {
-    debugPrint("allReceivedEvents since \(eventId)")
-    if let eventId = eventId {
-      return paginatedRequest(
-        shouldPerformNextRequest: { events in
-          return !events.contains { $0.id < eventId }
-        }
-      ) { page in self.receivedEvents(page: page) }
-        .then { events in Array(events.reversed().drop { $0.id <= eventId }) }
-    } else {
-      return receivedEvents()
-    }
-  }
-  
   func allUserEvents(since eventId: Int? = nil) -> Promise<[GithubEvent]> {
     debugPrint("allUserEvents since \(eventId)")
     if let eventId = eventId {
@@ -125,7 +110,7 @@ class GithubAPIClient {
       ) { page in self.userEvents(page: page) }
         .then { events in Array(events.reversed().drop { $0.id <= eventId }) }
     } else {
-      return userEvents()
+      return userEvents().then { $0.elements }
     }
   }
 
@@ -133,19 +118,20 @@ class GithubAPIClient {
     initialData: [T] = [],
     page: Int = 1,
     shouldPerformNextRequest: @escaping ([T]) -> Bool,
-    request: @escaping (Int) -> Promise<[T]>) -> Promise<[T]> {
+    request: @escaping (Int) -> Promise<GithubArrayResponse<T>>
+  ) -> Promise<[T]> {
     if shouldPerformNextRequest(initialData) {
       return request(page)
         .then { data -> Promise<[T]> in
-          if data.count > 0 {
+          if data.pageLinks?.next != nil {
             return self.paginatedRequest(
-              initialData: initialData + data,
+              initialData: initialData + data.elements,
               page: page + 1,
               shouldPerformNextRequest: shouldPerformNextRequest,
               request: request
             )
           } else {
-            return Promise(value: initialData)
+            return Promise(value: initialData + data.elements)
           }
         }
     } else {
@@ -167,16 +153,14 @@ class GithubAPIClient {
 
     headers["Accept"] = "application/vnd.github.black-cat-preview+json"
 
-    debugPrint("request", url, parameters, headers)
-
     activeRequestCount += 1
 
-    return after(interval: TimeInterval(activeRequestCount > 0 ? 1 : 0))
+    return after(interval: TimeInterval(activeRequestCount / 10))
       .then { _ -> RequestPromise in
+        debugPrint("request", url, parameters, headers)
         return (useCaching ? self.cachingSessionManager : self.noCachingSessionManager)
           .request(url, parameters: parameters, headers: headers)
           .validate(contentType: ["application/json"])
-          .validate(statusCode: 200..<300)
           .response()
       }
       .then { info -> RequestPromise in
@@ -193,12 +177,8 @@ class GithubAPIClient {
         self.activeRequestCount -= 1
       }
       .catch { error in
-        if let alamofireError = error as? AFError, alamofireError.isResponseValidationError, alamofireError.responseCode == 304 {
-          debugPrint("swallowing 304")
-        } else {
-          debugPrint("error in request", error)
+        debugPrint("error in request", error)
       }
-    }
   }
 
   private func get(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
@@ -207,9 +187,74 @@ class GithubAPIClient {
 
   private func absoluteGet(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
     return absoluteRequest(url, parameters: parameters)
+      .then { info -> RequestPromise in
+        let response = info.1
+
+        if (200..<300).contains(response.statusCode) { return Promise(value: info) }
+
+        debugPrint(JSON(data: info.2))
+        throw AFError.responseValidationFailed(reason: .unacceptableStatusCode(code: response.statusCode))
+      }
       .then { (_, _, data) in JSON(data: data) }
       .catch { error in
         debugPrint("error in get", error)
       }
   }
+}
+
+class PageLinks {
+  let linkHeader: String
+  let links: [String:String]
+
+  init?(_ response: HTTPURLResponse) {
+    guard let lh = response.allHeaderFields["Link"] as? String else { return nil }
+
+    linkHeader = lh
+    links = linkHeader
+      .components(separatedBy: ",")
+      .reduce([:]) { result, element in
+        var result = result
+        let parts = element.trimmingCharacters(in: .whitespaces).components(separatedBy: ";")
+
+        let wrappedUrl = parts[0]
+        let start = wrappedUrl.index(wrappedUrl.startIndex, offsetBy: 1)
+        let end = wrappedUrl.index(wrappedUrl.endIndex, offsetBy: -1)
+        let url = wrappedUrl.substring(with: start..<end)
+
+        let rel = parts[1].components(separatedBy: "\"")[1]
+
+        result[rel] = url
+        return result
+    }
+  }
+
+  lazy var next: String? = {
+    return self.links["next"]
+  }()
+  
+  lazy var prev: String? = {
+    return self.links["prev"]
+  }()
+
+  lazy var last: String? = {
+    return self.links["last"]
+  }()
+  
+  lazy var first: String? = {
+    return self.links["first"]
+  }()
+}
+
+class GithubArrayResponse<Element> {
+  let elements: [Element]
+  let response: HTTPURLResponse
+
+  init(response: HTTPURLResponse, elements: [Element]) {
+    self.response = response
+    self.elements = elements
+  }
+
+  lazy var pageLinks: PageLinks? = {
+    return PageLinks(self.response)
+  }()
 }
