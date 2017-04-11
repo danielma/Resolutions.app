@@ -27,15 +27,13 @@ public class ResolutionMO: NSManagedObject {
     }
   }
   
-  static func fromGithubEvent(_ event: GithubEvent) -> ResolutionMO? {
-    let context = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
-
+  static func fromGithubEvent(_ event: GithubEvent, context: NSManagedObjectContext) -> ResolutionMO? {
     guard let payloadEvent = event.payloadEvent else {
       debugPrint("Can't create resolutionMO from github event \(event)")
       return nil
     }
     
-    let repo = GithubRepoMO.fromGithubEvent(event)
+    let repo = GithubRepoMO.fromGithubEvent(event, context: context)
     let remoteIdentifier = payloadEvent.issueIdentifier
     let resolution: ResolutionMO
 
@@ -53,10 +51,9 @@ public class ResolutionMO: NSManagedObject {
     return resolution
   }
 
-  static func fromGithubNotification(_ notification: GithubNotification) -> ResolutionMO? {
-    let context = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+  static func fromGithubNotification(_ notification: GithubNotification, context: NSManagedObjectContext) -> ResolutionMO? {
 
-    let repo = GithubRepoMO.fromGithubNotification(notification)
+    let repo = GithubRepoMO.fromGithubNotification(notification, context: context)
     let remoteIdentifier = notification.issueIdentifier
     let resolution: ResolutionMO
 

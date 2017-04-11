@@ -24,27 +24,25 @@ struct GithubRepo {
 }
 
 extension GithubRepoMO {
-  static func fetchBy(name: String) -> GithubRepoMO? {
-    let moc = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+  static func fetchBy(name: String, context: NSManagedObjectContext) -> GithubRepoMO? {
     let resolutionFetch: NSFetchRequest<GithubRepoMO> = GithubRepoMO.fetchRequest()
     resolutionFetch.predicate = NSPredicate(format: "name == %@", name)
 
     do {
-      let fetched = try moc.fetch(resolutionFetch)
+      let fetched = try context.fetch(resolutionFetch)
       return fetched.first
     } catch {
       fatalError("failed to fetch resolution with remoteIdentifier \(name)")
     }
   }
 
-  static func fromGithubEvent(_ event: GithubEvent) -> GithubRepoMO {
-    let moc = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+  static func fromGithubEvent(_ event: GithubEvent, context: NSManagedObjectContext) -> GithubRepoMO {
     let repo: GithubRepoMO
 
-    if let existingRepo = GithubRepoMO.fetchBy(name: event.repo.name) {
+    if let existingRepo = GithubRepoMO.fetchBy(name: event.repo.name, context: context) {
       repo = existingRepo
     } else {
-      repo = GithubRepoMO(context: moc)
+      repo = GithubRepoMO(context: context)
       repo.name = event.repo.name
       repo.url = event.repo.url
       repo.remoteIdentifier = event.repo.remoteIdentifier
@@ -53,14 +51,13 @@ extension GithubRepoMO {
     return repo
   }
 
-  static func fromGithubNotification(_ notification: GithubNotification) -> GithubRepoMO {
-    let moc = (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+  static func fromGithubNotification(_ notification: GithubNotification, context: NSManagedObjectContext) -> GithubRepoMO {
     let repo: GithubRepoMO
 
-    if let existingRepo = GithubRepoMO.fetchBy(name: notification.repo.name) {
+    if let existingRepo = GithubRepoMO.fetchBy(name: notification.repo.name, context: context) {
       repo = existingRepo
     } else {
-      repo = GithubRepoMO(context: moc)
+      repo = GithubRepoMO(context: context)
       repo.name = notification.repo.name
       repo.url = notification.repo.url
       repo.remoteIdentifier = notification.repo.remoteIdentifier

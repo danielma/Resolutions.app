@@ -8,6 +8,7 @@
 
 import SwiftyJSON
 import PromiseKit
+import CoreData
 
 class GithubNotification {
   let source: JSON
@@ -69,16 +70,16 @@ class GithubNotification {
     return nil
   }()
 
-  lazy var resolution: ResolutionMO? = {
-    return ResolutionMO.fromGithubNotification(self)
-  }()
+  private func getResolution(context: NSManagedObjectContext) -> ResolutionMO? {
+    return ResolutionMO.fromGithubNotification(self, context: context)
+  }
 
-  func updateResolution() {
-    issuePromise
-      .then { issue -> Void in
-        guard let resolution = self.resolution, let updateDate = resolution.updateDate else {
+  func updateResolution(context: NSManagedObjectContext) -> Promise<Void> {
+    return issuePromise
+      .then { issue in
+        guard let resolution = self.getResolution(context: context), let updateDate = resolution.updateDate else {
           debugPrint("unable to create resolution from \(self)")
-          return
+          throw GithubNotification.NotificationError.NoResolution(issue)
         }
 
         resolution.url = issue.htmlUrl
@@ -87,7 +88,7 @@ class GithubNotification {
           resolution.completeAt(issue.state == .closed ? self.updatedAt as NSDate : nil)
         }
 
-        self.statusPromise
+        return self.statusPromise
           .then { status -> Void in
             resolution.status = status
           }
@@ -130,6 +131,7 @@ class GithubNotification {
 
   enum NotificationError: Error {
     case NoIssue(String)
+    case NoResolution(GithubIssue)
   }
 }
 

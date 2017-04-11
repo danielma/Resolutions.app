@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import CoreData
 
 class GithubEvent {
   let source: JSON
@@ -95,9 +96,9 @@ class GithubEvent {
     return nil
   }
 
-  func updateResolution() {
+  func updateResolution(context: NSManagedObjectContext) {
     if let event = payloadEvent {
-      event.updateResolution()
+      event.updateResolution(context: context)
     } else {
       debugPrint("no action for event type: \(eventType)")
     }
@@ -114,16 +115,16 @@ protocol GithubPayloadEventImplementation {
   var issueName: String { get }
   var issueIdentifier: String { get }
   var githubEvent: GithubEvent { get }
-  func updateResolution() -> Void
+  func updateResolution(context: NSManagedObjectContext) -> Void
 }
 
 extension GithubPayloadEventImplementation {
-  var resolution: ResolutionMO? {
+  var existingResolution: ResolutionMO? {
     return ResolutionMO.fetchBy(remoteIdentifier: self.issueIdentifier)
   }
 
   var afterResolutionUpdatedAt: Bool {
-    if let resolution = self.resolution {
+    if let resolution = self.existingResolution {
       if let touchDate = resolution.touchDate {
         return (touchDate as Date) <= (self.createdAt as Date)
       } else {
@@ -150,8 +151,8 @@ class GithubPayloadEvent {
     return githubEvent.source["payload"]
   }
 
-  func createResolution() {
-    _ = ResolutionMO.fromGithubEvent(githubEvent)
+  func createResolution(context: NSManagedObjectContext) -> ResolutionMO? {
+    return ResolutionMO.fromGithubEvent(githubEvent, context: context)
   }
   
   lazy var actor: GithubActor = {
@@ -193,10 +194,11 @@ class GithubPullRequestEvent: GithubPayloadEvent, GithubPayloadEventImplementati
     return payload["pull_request", "title"].string!
   }
 
-  func updateResolution() {
-    if resolution == nil { createResolution() }
-
-    guard let resolution = resolution else { fatalError("couldn't find or create resolution") }
+  func updateResolution(context: NSManagedObjectContext) {
+    guard let resolution = existingResolution ?? createResolution(context: context)
+      else {
+        fatalError("can't create or update resolution")
+    }
 
     switch action {
     case .closed:
@@ -243,12 +245,11 @@ class GithubIssuesEvent: GithubPayloadEvent, GithubPayloadEventImplementation {
     return payload["issue", "title"].string!
   }
 
-  func updateResolution() {
-    if resolution == nil {
-      createResolution()
+  func updateResolution(context: NSManagedObjectContext) {
+    guard let resolution = existingResolution ?? createResolution(context: context)
+      else {
+        fatalError("can't create or update resolution")
     }
-
-    guard let resolution = resolution else { fatalError("couldn't find or create resolution") }
     
     switch action {
     case .closed:
@@ -284,12 +285,12 @@ class GithubIssueCommentEvent: GithubPayloadEvent, GithubPayloadEventImplementat
     return payload["issue", "title"].string!
   }
 
-  func updateResolution() {
-    if resolution == nil {
-      createResolution()
+  func updateResolution(context: NSManagedObjectContext) {
+    guard let resolution = existingResolution ?? createResolution(context: context)
+      else {
+        fatalError("can't create or update resolution")
     }
 
-    guard let resolution = resolution else { fatalError("couldn't find or create resolution") }
     guard afterResolutionUpdatedAt else { return }
 
     resolution.completeAt(actor.isCurrentUser ? createdAt : nil)
@@ -315,12 +316,12 @@ class GithubPullRequestReviewCommentEvent: GithubPayloadEvent, GithubPayloadEven
     return payload["pull_request", "title"].string!
   }
 
-  func updateResolution() {
-    if resolution == nil {
-      createResolution()
+  func updateResolution(context: NSManagedObjectContext) {
+    guard let resolution = existingResolution ?? createResolution(context: context)
+      else {
+        fatalError("can't create or update resolution")
     }
 
-    guard let resolution = resolution else { fatalError("couldn't find or create resolution") }
     guard afterResolutionUpdatedAt else { return }
 
 //      if userDefaults.bool(forKey: "githubUseMagicComments") {

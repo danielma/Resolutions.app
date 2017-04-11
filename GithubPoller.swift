@@ -8,13 +8,19 @@
 
 import Cocoa
 import SwiftyJSON
+import PromiseKit
 
 class GithubPoller {
   let eventsPoller: GithubRequestPoller<GithubEvent>
   let notificationsPoller: GithubRequestPoller<GithubNotification>
   let userDefaults: UserDefaults
+  lazy var appDelegate: AppDelegate = {
+    return NSApplication.shared().delegate as! AppDelegate
+  }()
   lazy var managedObjectContext: NSManagedObjectContext = {
-    return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
+    let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+    context.parent = self.appDelegate.managedObjectContext
+    return context
   }()
 
   static let forcedUpdateNotificationName = NSNotification.Name("githubPollerForceUpdate")
@@ -48,15 +54,27 @@ class GithubPoller {
 
     eventsPoller
       .map { events in
-        events.forEach { event in
-          GithubPoller.queue.sync { self.handleEvent(event) }
+        GithubPoller.queue.sync {
+          events.forEach { self.handleEvent($0) }
+          do {
+            try self.managedObjectContext.save()
+          } catch let error {
+            debugPrint(error)
+          }
         }
     }
 
     notificationsPoller
       .map { notifications in
-        notifications.forEach { notification in
-          GithubPoller.queue.sync { self.handleNotification(notification) }
+        GithubPoller.queue.sync {
+          when(resolved: notifications.map { self.handleNotification($0) })
+            .always {
+              do {
+                try self.managedObjectContext.save()
+              } catch let error {
+                debugPrint(error)
+              }
+          }
         }
     }
   }
@@ -82,14 +100,14 @@ class GithubPoller {
   internal func handleEvent(_ event: GithubEvent) {
     debugPrint("received event \(event.id): \(event.eventType)")
 
-    event.updateResolution()
+    event.updateResolution(context: managedObjectContext)
     
     userDefaults.set(event.id, forKey: GithubPoller.lastEventKey)
   }
 
-  internal func handleNotification(_ notification: GithubNotification) {
+  internal func handleNotification(_ notification: GithubNotification) -> Promise<Void> {
     debugPrint("received notification \(notification.id): \(notification.type)")
 
-    notification.updateResolution()
+    return notification.updateResolution(context: managedObjectContext)
   }
 }
