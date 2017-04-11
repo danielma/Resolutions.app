@@ -101,7 +101,7 @@ class GithubAPIClient {
   }
 
   func allUserEvents(since eventId: Int? = nil) -> Promise<[GithubEvent]> {
-    debugPrint("allUserEvents since \(eventId)")
+    debugPrint("allUserEvents since \(String(describing: eventId))")
     if let eventId = eventId {
       return paginatedRequest(
         shouldPerformNextRequest: { events in

@@ -19,7 +19,12 @@ class ResolutionsSourceViewController: NSViewController {
   @IBOutlet weak var outlineView: NSOutlineView!
 
   let coordinator = ResolutionsTableViewController.coordinator
-  let reposFetchRequest: NSFetchRequest<GithubRepoMO> = GithubRepoMO.fetchRequest()
+  lazy var reposFetchRequest: NSFetchRequest<GithubRepoMO> = {
+    let fetchRequest: NSFetchRequest<GithubRepoMO> = GithubRepoMO.fetchRequest()
+    let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+    fetchRequest.sortDescriptors = [sortDescriptor]
+    return fetchRequest
+  }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
