@@ -1308,7 +1308,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="nwC-K6-ffp" name="value" keyPath="objectValue.remoteIdentifier" id="0AU-uE-VLR"/>
+                                                                        <binding destination="nwC-K6-ffp" name="value" keyPath="objectValue.url" id="vDV-Ah-ktE"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>

@@ -13,11 +13,13 @@ struct GithubRepo {
   let source: JSON
   let name: String
   let url: String
+  let remoteIdentifier: String
 
-  init(_ source: JSON) {
+  init(_ source: JSON, name: String? = nil, url: String? = nil, remoteIdentifier: String? = nil) {
     self.source = source
-    self.name = source["name"].string!
-    self.url = source["url"].string!
+    self.name = name ?? source["name"].string!
+    self.url = url ?? source["html_url"].string!
+    self.remoteIdentifier = remoteIdentifier ?? source["url"].string!
   }
 }
 
@@ -45,6 +47,7 @@ extension GithubRepoMO {
       repo = GithubRepoMO(context: moc)
       repo.name = event.repo.name
       repo.url = event.repo.url
+      repo.remoteIdentifier = event.repo.remoteIdentifier
     }
 
     return repo
@@ -60,6 +63,7 @@ extension GithubRepoMO {
       repo = GithubRepoMO(context: moc)
       repo.name = notification.repo.name
       repo.url = notification.repo.url
+      repo.remoteIdentifier = notification.repo.remoteIdentifier
     }
 
     return repo

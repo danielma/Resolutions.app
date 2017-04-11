@@ -52,8 +52,13 @@ class GithubNotification {
     }
   }()
 
+  lazy var htmlUrlPromise: Promise<String> = {
+    return self.issuePromise.then { $0.htmlUrl }
+  }()
+
   lazy var repo: GithubRepo = {
-    return GithubRepo(self.source["repository"])
+    let repository = self.source["repository"]
+    return GithubRepo(repository, name: repository["full_name"].string!)
   }()
 
   lazy var issueNumber: Int? = {
@@ -76,13 +81,15 @@ class GithubNotification {
           return
         }
 
+        resolution.url = issue.htmlUrl
+
+        if (updateDate as Date) <= self.updatedAt {
+          resolution.completeAt(issue.state == .closed ? self.updatedAt as NSDate : nil)
+        }
+
         self.statusPromise
           .then { status -> Void in
             resolution.status = status
-
-            if (updateDate as Date) <= self.updatedAt {
-              resolution.completeAt(status == .merged || status == .closed ? self.updatedAt as NSDate : nil)
-            }
           }
           .catch { error in debugPrint("couldn't set status", error) }
       }

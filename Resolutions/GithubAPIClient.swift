@@ -165,7 +165,8 @@ class GithubAPIClient {
       }
       .then { info -> RequestPromise in
         let response = info.1
-        debugPrint("response from \(response.url?.absoluteString ?? "")", response.statusCode, response.allHeaderFields)
+//        debugPrint("response from \(response.url?.absoluteString ?? "")", response.statusCode, response.allHeaderFields)
+        debugPrint("response from \(response.url?.absoluteString ?? "")", response.statusCode)
         if let xPollInterval = response.allHeaderFields["X-Poll-Interval"] as? String,
           let asInt = Int(xPollInterval) {
           self.pollInterval = asInt

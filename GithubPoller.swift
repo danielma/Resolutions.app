@@ -24,6 +24,7 @@ class GithubPoller {
 
   init(defaults: UserDefaults) {
     userDefaults = defaults
+
     eventsPoller = GithubRequestPoller { lastData in
       let usefulSince: Int?
 
@@ -45,48 +46,29 @@ class GithubPoller {
       return GithubAPIClient.sharedInstance.allNotifications()
     }
 
-//    receivedEventsPoller = GithubRequestPoller { lastData in
-//      let usefulSince: Int?
-//
-//      if let lastData = lastData {
-//        usefulSince = lastData.last?.id ?? nil
-//      } else {
-//        usefulSince = defaults.value(forKey: GithubPoller.lastEventKey) as? Int
-//      }
-//
-//      return GithubAPIClient.sharedInstance.allReceivedEvents(since: usefulSince)
-//    }
-
     eventsPoller
       .map { events in
-        GithubPoller.queue.sync {
-          events.forEach { self.handleEvent($0) }
+        events.forEach { event in
+          GithubPoller.queue.sync { self.handleEvent(event) }
         }
     }
 
-//    receivedEventsPoller
-//      .map { events in
-//        GithubPoller.queue.sync {
-//          events.forEach { self.handleEvent($0) }
-//        }
-//    }
-
     notificationsPoller
       .map { notifications in
-        notifications.forEach { self.handleNotification($0) }
+        notifications.forEach { notification in
+          GithubPoller.queue.sync { self.handleNotification(notification) }
+        }
     }
   }
 
   func start() {
     eventsPoller.start()
     notificationsPoller.start()
-//    receivedEventsPoller.start()
   }
 
   func forceUpdate() {
     eventsPoller.forceRequest()
     notificationsPoller.forceRequest()
-//    receivedEventsPoller.forceRequest()
 
     NotificationCenter.default.post(name: GithubPoller.forcedUpdateNotificationName, object: self)
   }

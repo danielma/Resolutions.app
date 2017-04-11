@@ -24,6 +24,10 @@ class GithubIssue: JSONBacked {
 
     return nil
   }()
+
+  lazy var htmlUrl: String = {
+    return self.source["html_url"].string!
+  }()
 }
 
 class GithubPullRequest: JSONBacked {
