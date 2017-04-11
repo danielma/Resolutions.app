@@ -65,7 +65,7 @@ class GithubEvent {
   }()
 
   lazy var repo: GithubRepo = {
-    return GithubRepo(self.source["repo"])
+    return GithubRepo(self.source["repo"], name: self.source["repo", "name"].string!)
   }()
 
   var createdAt: Date {

@@ -71,6 +71,12 @@ class GithubAPIClient {
     return absoluteGet(url).then { GithubPullRequest($0) }
   }
 
+  func repo(fromAbsoluteURL url: String) -> Promise<GithubRepo> {
+    return absoluteGet(url).then { source in
+      GithubRepo(source, name: source["full_name"].string!)
+    }
+  }
+
   var notificationsLastAccessedDate: String?
   func notifications(all: Bool = true, page: Int = 1, headers: HTTPHeaders?) -> Promise<GithubArrayResponse<GithubNotification>> {
     let allParam = all ? "true" : "false"

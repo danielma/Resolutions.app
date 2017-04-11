@@ -101,13 +101,19 @@ class GithubPoller {
     debugPrint("received event \(event.id): \(event.eventType)")
 
     event.updateResolution(context: managedObjectContext)
-    
+
     userDefaults.set(event.id, forKey: GithubPoller.lastEventKey)
   }
 
   internal func handleNotification(_ notification: GithubNotification) -> Promise<Void> {
     debugPrint("received notification \(notification.id): \(notification.type)")
 
-    return notification.updateResolution(context: managedObjectContext)
+    let promise = notification.updateResolution(context: managedObjectContext)
+
+    if let promise = promise {
+      return promise.then { _ in return }
+    } else {
+      return Promise(value: Void())
+    }
   }
 }

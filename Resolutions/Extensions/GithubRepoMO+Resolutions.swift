@@ -12,13 +12,13 @@ import SwiftyJSON
 struct GithubRepo {
   let source: JSON
   let name: String
-  let url: String
+  let url: String?
   let remoteIdentifier: String
 
-  init(_ source: JSON, name: String? = nil, url: String? = nil, remoteIdentifier: String? = nil) {
+  init(_ source: JSON, name: String, url: String? = nil, remoteIdentifier: String? = nil) {
     self.source = source
-    self.name = name ?? source["name"].string!
-    self.url = url ?? source["html_url"].string!
+    self.name = name
+    self.url = url ?? source["html_url"].string
     self.remoteIdentifier = remoteIdentifier ?? source["url"].string!
   }
 }
@@ -44,7 +44,11 @@ extension GithubRepoMO {
     } else {
       repo = GithubRepoMO(context: context)
       repo.name = event.repo.name
-      repo.url = event.repo.url
+      if let repoUrl = event.repo.url {
+        repo.url = repoUrl
+      } else {
+        repo.refreshFromGithub()
+      }
       repo.remoteIdentifier = event.repo.remoteIdentifier
     }
 
@@ -64,5 +68,13 @@ extension GithubRepoMO {
     }
 
     return repo
+  }
+
+  func refreshFromGithub() {
+    guard let remoteIdentifier = remoteIdentifier else { return }
+
+    _ = GithubAPIClient.sharedInstance.repo(fromAbsoluteURL: remoteIdentifier)
+      .then { self.url = $0.url }
+      .then { try self.managedObjectContext?.save() }
   }
 }

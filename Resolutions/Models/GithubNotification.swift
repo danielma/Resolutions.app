@@ -33,30 +33,6 @@ class GithubNotification {
     return NotificationType(rawValue: source["subject", "type"].stringValue) ?? NotificationType.unknown
   }
 
-  lazy var issuePromise: Promise<GithubIssue> = {
-    if self.type == .PullRequest || self.type == .Issue {
-      return GithubAPIClient.sharedInstance.issue(fromAbsoluteURL: self.issueIdentifier)
-    }
-
-    return Promise(error: NotificationError.NoIssue(self.subjectUrl))
-  }()
-
-  lazy var statusPromise: Promise<ResolutionMO.Status> = {
-    return self.issuePromise.then { issue in
-      if let pullRequestPromise = issue.pullRequestPromise {
-        return pullRequestPromise.then { pullRequest in
-          return ResolutionMO.Status(rawValue: pullRequest.state.rawValue)!
-        }
-      } else {
-        return Promise(value: ResolutionMO.Status(rawValue: issue.state.rawValue)!)
-      }
-    }
-  }()
-
-  lazy var htmlUrlPromise: Promise<String> = {
-    return self.issuePromise.then { $0.htmlUrl }
-  }()
-
   lazy var repo: GithubRepo = {
     let repository = self.source["repository"]
     return GithubRepo(repository, name: repository["full_name"].string!)
@@ -74,28 +50,22 @@ class GithubNotification {
     return ResolutionMO.fromGithubNotification(self, context: context)
   }
 
-  func updateResolution(context: NSManagedObjectContext) -> Promise<Void> {
-    return issuePromise
-      .then { issue in
-        guard let resolution = self.getResolution(context: context), let updateDate = resolution.updateDate else {
-          debugPrint("unable to create resolution from \(self)")
-          throw GithubNotification.NotificationError.NoResolution(issue)
-        }
+  func updateResolution(context: NSManagedObjectContext) -> Promise<ResolutionMO>? {
+    guard type != .unknown else {
+      debugPrint("unable to create resolution from \(self)")
+      return Promise(error: GithubNotification.NotificationError.NoResolutionForType(type))
+    }
+    guard let resolution = self.getResolution(context: context) else {
+      debugPrint("unable to create resolution from \(self)")
+      return Promise(error: GithubNotification.NotificationError.NoResolutionForNotification(self))
+    }
 
-        resolution.url = issue.htmlUrl
+    let updateDate = resolution.updateDate as Date? ?? Date(timeIntervalSince1970: 0)
 
-        if (updateDate as Date) <= self.updatedAt {
-          resolution.completeAt(issue.state == .closed ? self.updatedAt as NSDate : nil)
-        }
-
-        return self.statusPromise
-          .then { status -> Void in
-            resolution.status = status
-          }
-          .catch { error in debugPrint("couldn't set status", error) }
-      }
+    return resolution
+      .refreshFromGithub(canComplete: self.updatedAt >= updateDate)
       .catch { error in
-        debugPrint("notification can't update resolution", error)
+        debugPrint("notification could not update resolution", error, self)
     }
   }
 
@@ -131,7 +101,9 @@ class GithubNotification {
 
   enum NotificationError: Error {
     case NoIssue(String)
-    case NoResolution(GithubIssue)
+    case NoResolutionForIssue(GithubIssue)
+    case NoResolutionForNotification(GithubNotification)
+    case NoResolutionForType(NotificationType)
   }
 }
 

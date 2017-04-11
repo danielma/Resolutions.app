@@ -28,6 +28,14 @@ class GithubIssue: JSONBacked {
   lazy var htmlUrl: String = {
     return self.source["html_url"].string!
   }()
+
+  lazy var updatedAt: Date = {
+    return jsonDateToDate(self.source["updated_at"].stringValue)!
+  }()
+
+  lazy var labels: [GithubLabel] = {
+    return self.source["labels"].arrayValue.map { GithubLabel($0) }
+  }()
 }
 
 class GithubPullRequest: JSONBacked {

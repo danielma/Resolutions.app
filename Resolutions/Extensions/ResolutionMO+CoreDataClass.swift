@@ -9,6 +9,7 @@
 import Cocoa
 import CoreData
 import SwiftyJSON
+import PromiseKit
 
 @objc(ResolutionMO)
 public class ResolutionMO: NSManagedObject {
@@ -115,10 +116,83 @@ public class ResolutionMO: NSManagedObject {
     updateDate = date ?? NSDate()
   }
 
+  var isRefreshing = false
+  var refreshCanComplete = false
+  func refreshFromGithub(canComplete: Bool) -> Promise<ResolutionMO> {
+    refreshCanComplete = refreshCanComplete || canComplete
+    
+    guard !isRefreshing else {
+      return Promise(error: ResolutionError.AlreadyRefreshingResolution(self))
+    }
+    
+    isRefreshing = true
+
+    return when(fulfilled: refreshIssueFromGithub().asVoid(), refreshStatusFromGithub().asVoid(), refreshLabelsFromGithub().asVoid())
+      .then { _, _, _ in self }
+      .always {
+        self.isRefreshing = false
+        self.refreshCanComplete = false
+      }
+  }
+
+  private func refreshIssueFromGithub() -> Promise<GithubIssue> {
+    return issuePromise
+      .then { issue in
+        self.url = issue.htmlUrl
+
+        if self.refreshCanComplete {
+          self.completeAt(issue.state == .closed ? issue.updatedAt as NSDate : nil)
+        } else {
+          self.updateDate = issue.updatedAt as NSDate
+        }
+
+        return Promise(value: issue)
+      }
+  }
+
+  private func refreshStatusFromGithub() -> Promise<Status> {
+    return statusPromise.then { status in
+      self.status = status
+      return Promise(value: status)
+    }
+  }
+
+  private func refreshLabelsFromGithub() -> Promise<[LabelMO]> {
+    return issuePromise
+      .then { issue in
+        issue.labels.map { LabelMO.fromGithubLabel($0, context: self.managedObjectContext!) }
+    }
+  }
+
+  lazy var issuePromise: Promise<GithubIssue> = {
+    if let remoteIdentifier = self.remoteIdentifier {
+      return GithubAPIClient.sharedInstance.issue(fromAbsoluteURL: remoteIdentifier)
+    }
+
+    return Promise(error: ResolutionError.MissingRemoteIdentifier(self))
+  }()
+
+  lazy var statusPromise: Promise<Status> = {
+    return self.issuePromise.then { issue in
+      if let pullRequestPromise = issue.pullRequestPromise {
+        return pullRequestPromise.then { pullRequest in
+          return ResolutionMO.Status(rawValue: pullRequest.state.rawValue)!
+        }
+      } else {
+        return Promise(value: ResolutionMO.Status(rawValue: issue.state.rawValue)!)
+      }
+    }
+  }()
+
   public var touchDate: NSDate? {
     guard let updateDate = updateDate else { return completedDate }
     guard let completedDate = completedDate else { return updateDate }
 
     return (updateDate as Date) > (completedDate as Date) ? updateDate : completedDate
+  }
+
+  enum ResolutionError: Error {
+    case MissingRemoteIdentifier(ResolutionMO)
+    case AlreadyRefreshingResolution(ResolutionMO)
   }
 }
