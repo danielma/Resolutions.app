@@ -41,6 +41,7 @@ class GithubAPIClient {
 
   let baseUrl = "https://api.github.com/"
   var pollInterval = 60
+  var activeRequestCount = 0
 
   lazy var cachingSessionManager: SessionManager = {
     let configuration = URLSessionConfiguration.default.copy() as! URLSessionConfiguration
@@ -168,11 +169,16 @@ class GithubAPIClient {
 
     debugPrint("request", url, parameters, headers)
 
-    return (useCaching ? cachingSessionManager : noCachingSessionManager)
-      .request(url, parameters: parameters, headers: headers)
-      .validate(contentType: ["application/json"])
-      .validate(statusCode: 200..<300)
-      .response()
+    activeRequestCount += 1
+
+    return after(interval: TimeInterval(activeRequestCount > 0 ? 1 : 0))
+      .then { _ -> RequestPromise in
+        return (useCaching ? self.cachingSessionManager : self.noCachingSessionManager)
+          .request(url, parameters: parameters, headers: headers)
+          .validate(contentType: ["application/json"])
+          .validate(statusCode: 200..<300)
+          .response()
+      }
       .then { info -> RequestPromise in
         let response = info.1
         debugPrint("response from \(response.url?.absoluteString ?? "")", response.statusCode, response.allHeaderFields)
@@ -183,17 +189,20 @@ class GithubAPIClient {
 
         return Promise(value: info)
       }
+      .always {
+        self.activeRequestCount -= 1
+      }
       .catch { error in
         if let alamofireError = error as? AFError, alamofireError.isResponseValidationError, alamofireError.responseCode == 304 {
           debugPrint("swallowing 304")
         } else {
           debugPrint("error in request", error)
-        }
+      }
     }
   }
 
   private func get(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
-    return absoluteGet(url, parameters: parameters)
+    return absoluteGet("\(baseUrl)\(url)", parameters: parameters)
   }
 
   private func absoluteGet(_ url: String, parameters: Params = [:]) -> Promise<JSON> {
