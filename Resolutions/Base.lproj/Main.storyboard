@@ -1382,6 +1382,7 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
+                                                <action trigger="doubleAction" selector="doubleClicked:" target="rM6-Tc-lTF" id="zuL-lW-Sf1"/>
                                                 <binding destination="I2Z-xM-52U" name="content" keyPath="arrangedObjects" id="KBd-P6-N2W"/>
                                                 <binding destination="I2Z-xM-52U" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="KBd-P6-N2W" id="3xI-hL-pV8"/>
                                             </connections>
