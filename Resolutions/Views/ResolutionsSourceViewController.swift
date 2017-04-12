@@ -10,7 +10,7 @@ import Cocoa
 
 private var myContext = 0
 
-class ResolutionsSourceViewController: NSViewController {
+class ResolutionsSourceViewController: NSViewController, NSOutlineViewDelegate {
   lazy var managedObjectContext: NSManagedObjectContext = {
     return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
   }()
@@ -34,6 +34,7 @@ class ResolutionsSourceViewController: NSViewController {
     sourcesTreeController.content = treeContent()
     sourcesTreeController.addObserver(self, forKeyPath: #keyPath(NSTreeController.selectionIndexPaths), options: .new, context: &myContext)
     outlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
+    outlineView.delegate = self
   }
 
   override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -53,24 +54,40 @@ class ResolutionsSourceViewController: NSViewController {
   }
 
   func contextChange() {
+    let currentSelection = sourcesTreeController.selectionIndexPath
     sourcesTreeController.content = treeContent()
+    sourcesTreeController.setSelectionIndexPath(currentSelection)
   }
 
   internal func treeContent() -> [NSDictionary] {
     let repos = try! managedObjectContext.fetch(reposFetchRequest)
 
     return [
-      ["name": "Inbox"],
-      ["name": "Complete"],
-      ["name": "Github", "children": repos.map { RepoTreeNode($0) }]
+      ["name": "INBOX"],
+      ["name": "COMPLETE"],
+      ["name": "GITHUB", "children": repos.map { RepoTreeNode($0) }]
     ]
+  }
+
+  // MARK: outline view
+
+  func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView? {
+    return ResolutionsSourceTableRowView()
+  }
+
+  func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
+    if let item = item as? NSTreeNode, item.representedObject as? RepoTreeNode != nil {
+      return outlineView.make(withIdentifier: "RegularView", owner: self)
+    } else {
+      return outlineView.make(withIdentifier: "HeaderView", owner: self)
+    }
   }
 }
 
 class RepoTreeNode: NSObject {
   let repo: GithubRepoMO
   let name: String?
-  
+
   init(_ repo: GithubRepoMO) {
     self.repo = repo
     self.name = repo.name
@@ -81,32 +98,19 @@ class RepoTreeNode: NSObject {
   }
 }
 
+class ResolutionsSourceTableRowView: NSTableRowView {
+  override func drawSelection(in dirtyRect: NSRect) {
+    NSColor(hue:0.56, saturation:0.66, brightness:0.88, alpha:1.00).setFill()
+    let path = NSBezierPath(rect: dirtyRect)
+    path.fill()
+  }
+}
+
 /*
 
-import Cocoa
-import GRDB
-
-typealias GroupedroupingList = (String, [String])
-
 class ResolutionsSourceViewController: NSViewController {
-  @IBOutlet weak var reloadButton: NSButton!
-  @IBAction func reloadButtonClicked(_ sender: Any) {
-    GithubPoller.sharedInstance.forceUpdate()
-    animateReloadButton()
-  }
-
-  @IBOutlet weak var outlineView: NSOutlineView!
-
-  var groupings: [String] = []
-  var groupedGroupings: [GroupedGroupingList] = []
 
   override func viewDidLoad() {
-    super.viewDidLoad()
-    // Do view setup here.
-
-    outlineView.dataSource = self
-    outlineView.delegate = self
-
     NotificationCenter.default.addObserver(forName: GithubPoller.forcedUpdateNotificationName, object: nil, queue: nil) { (_) in
       self.animateReloadButton()
     }
@@ -130,64 +134,6 @@ class ResolutionsSourceViewController: NSViewController {
 }
 
 extension ResolutionsSourceViewController: ResolutionsSplitViewControllerChild {
-  func fetchGroupings() -> [String] {
-    return dbQueue.inDatabase { db in
-      return try! String.fetchAll(db, "SELECT DISTINCT grouping FROM resolutions ORDER BY LOWER(grouping)")
-    }
-  }
-
-  func fetchedResolutionsControllerDidPopulate(_ controller: FetchedRecordsController<Resolution>) {
-    groupings = fetchGroupings()
-
-    groupedGroupings = [("All", ["Inbox", "Completed"]), ("Github", groupings)]
-
-    outlineView.reloadData()
-    outlineView.expandItem(nil, expandChildren: true)
-
-    let inboxRow = outlineView.row(forItem: "Inbox")
-    let indexSet = IndexSet(integer: inboxRow)
-    outlineView.selectRowIndexes(indexSet, byExtendingSelection: true)
-  }
-  
-  func fetchedResolutionsControllerDidChange(_ controller: FetchedRecordsController<Resolution>) {
-    let newGroupings = fetchGroupings()
-
-    guard groupings != newGroupings else { return }
-
-    fetchedResolutionsControllerDidPopulate(controller)
-  }
-}
-
-extension ResolutionsSourceViewController: NSOutlineViewDataSource {
-  func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-    if item == nil {
-      return groupedGroupings.count
-    } else if let item = item as? GroupedGroupingList {
-      return item.1.count
-    } else {
-      return 0
-    }
-  }
-
-  func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-    if item == nil {
-      return groupedGroupings[index]
-    } else if let item = item as? GroupedGroupingList {
-      return item.1[index]
-    } else {
-      return ""
-    }
-  }
-
-  func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-    if let item = item as? GroupedGroupingList {
-      return item.1.count > 0
-    }
-
-    return false
-  }
-}
-
 extension ResolutionsSourceViewController: NSOutlineViewDelegate {
   func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
     if let item = item as? String {
@@ -228,13 +174,4 @@ extension ResolutionsSourceViewController: NSOutlineViewDelegate {
     }
   }
 }
-
-class ResolutionsSourceTableRowView: NSTableRowView {
-  override func drawSelection(in dirtyRect: NSRect) {
-    NSColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.2).setFill()
-    let path = NSBezierPath(rect: dirtyRect)
-    path.fill()
-  }
-}
-
- */
+*/
