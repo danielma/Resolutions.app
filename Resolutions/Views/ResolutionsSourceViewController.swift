@@ -33,7 +33,9 @@ class ResolutionsSourceViewController: NSViewController, NSOutlineViewDelegate {
 
     sourcesTreeController.content = treeContent()
     sourcesTreeController.addObserver(self, forKeyPath: #keyPath(NSTreeController.selectionIndexPaths), options: .new, context: &myContext)
+
     outlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
+    sourcesTreeController.setSelectionIndexPath(IndexPath(index: 0))
     outlineView.delegate = self
   }
 

@@ -24,7 +24,7 @@
     </entity>
     <elements>
         <element name="GithubRepo" positionX="-63" positionY="-120" width="128" height="105"/>
-        <element name="Resolution" positionX="-54" positionY="-9" width="128" height="165"/>
         <element name="Label" positionX="-54" positionY="-9" width="128" height="105"/>
+        <element name="Resolution" positionX="-54" positionY="-9" width="128" height="165"/>
     </elements>
 </model>

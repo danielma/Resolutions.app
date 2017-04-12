@@ -33,6 +33,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Insert code here to tear down your application
   }
 
+  override init() {
+    ValueTransformer.setValueTransformer(StatusStringImageTransformer(), forName: NSValueTransformerName(rawValue: "StateStringImageTransformer"))
+
+    super.init()
+  }
+
   func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
     if (flag) { return false }
     
