@@ -38,6 +38,9 @@ public class ResolutionMO: NSManagedObject {
       return false
     }
     set {
+      managedObjectContext?.undoManager?.beginUndoGrouping()
+      managedObjectContext?.undoManager?.setActionName("Complete Resolution")
+
       updateDate = NSDate()
 
       if (newValue) {
@@ -45,6 +48,8 @@ public class ResolutionMO: NSManagedObject {
       } else {
         completedDate = nil
       }
+
+      managedObjectContext?.undoManager?.endUndoGrouping()
     }
   }
 

@@ -36,6 +36,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   override init() {
     ValueTransformer.setValueTransformer(StatusStringImageTransformer(), forName: NSValueTransformerName(rawValue: "StateStringImageTransformer"))
 
+
+
     super.init()
   }
 
@@ -126,6 +128,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let coordinator = self.persistentStoreCoordinator
     var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     managedObjectContext.persistentStoreCoordinator = coordinator
+    managedObjectContext.undoManager = UndoManager()
     return managedObjectContext
   }()
 
