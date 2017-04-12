@@ -42,7 +42,8 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
   @IBOutlet var arrayController: NSArrayController!
   @IBOutlet weak var tableView: NSTableView!
   @IBAction func doubleClicked(_ sender: Any) {
-    guard let objects = arrayController.arrangedObjects as? [ResolutionMO] else {
+    guard let objects = arrayController.arrangedObjects as? [ResolutionMO],
+      tableView.clickedRow > -1 else {
       return
     }
     let selectedObject = objects[tableView.clickedRow]
