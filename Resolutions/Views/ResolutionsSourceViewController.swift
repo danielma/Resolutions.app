@@ -19,20 +19,19 @@ class ResolutionsSourceViewController: NSViewController {
   @IBOutlet weak var outlineView: NSOutlineView!
 
   let coordinator = ResolutionsTableViewController.coordinator
+  lazy var reposFetchRequest: NSFetchRequest<GithubRepoMO> = {
+    let fetchRequest: NSFetchRequest<GithubRepoMO> = GithubRepoMO.fetchRequest()
+    let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+    fetchRequest.sortDescriptors = [sortDescriptor]
+    return fetchRequest
+  }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let fetchRequest: NSFetchRequest<GithubRepoMO> = GithubRepoMO.fetchRequest()
+    NotificationCenter.default.addObserver(self, selector: #selector(contextChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: managedObjectContext)
 
-    let repos = try! managedObjectContext.fetch(fetchRequest)
-    let nodes = [
-      ["name": "Inbox"],
-      ["name": "Complete"],
-      ["name": "Github", "children": repos.map { RepoTreeNode($0) }]
-    ]
-
-    sourcesTreeController.content = nodes
+    sourcesTreeController.content = treeContent()
     sourcesTreeController.addObserver(self, forKeyPath: #keyPath(NSTreeController.selectionIndexPaths), options: .new, context: &myContext)
     outlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
   }
@@ -51,6 +50,20 @@ class ResolutionsSourceViewController: NSViewController {
 
   deinit {
     sourcesTreeController.removeObserver(self, forKeyPath: #keyPath(NSTreeController.selectionIndexPaths))
+  }
+
+  func contextChange() {
+    sourcesTreeController.content = treeContent()
+  }
+
+  internal func treeContent() -> [NSDictionary] {
+    let repos = try! managedObjectContext.fetch(reposFetchRequest)
+
+    return [
+      ["name": "Inbox"],
+      ["name": "Complete"],
+      ["name": "Github", "children": repos.map { RepoTreeNode($0) }]
+    ]
   }
 }
 

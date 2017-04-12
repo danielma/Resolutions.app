@@ -2,18 +2,29 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="GithubRepo" representedClassName="GithubRepoMO" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="remoteIdentifier" attributeType="String" syncable="YES"/>
         <attribute name="url" attributeType="String" syncable="YES"/>
         <relationship name="resolutions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Resolution" inverseName="repo" inverseEntity="Resolution" syncable="YES"/>
+    </entity>
+    <entity name="Label" representedClassName="LabelMO" syncable="YES" codeGenerationType="class">
+        <attribute name="color" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="remoteIdentifier" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="resolution" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Resolution" inverseName="labels" inverseEntity="Resolution" syncable="YES"/>
     </entity>
     <entity name="Resolution" representedClassName="ResolutionMO" syncable="YES">
         <attribute name="completedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="remoteIdentifier" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="statusString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="url" attributeType="String" syncable="YES"/>
+        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Label" inverseName="resolution" inverseEntity="Label" syncable="YES"/>
         <relationship name="repo" maxCount="1" deletionRule="Nullify" destinationEntity="GithubRepo" inverseName="resolutions" inverseEntity="GithubRepo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="GithubRepo" positionX="-63" positionY="-120" width="128" height="90"/>
-        <element name="Resolution" positionX="-54" positionY="-9" width="128" height="120"/>
+        <element name="GithubRepo" positionX="-63" positionY="-120" width="128" height="105"/>
+        <element name="Resolution" positionX="-54" positionY="-9" width="128" height="165"/>
+        <element name="Label" positionX="-54" positionY="-9" width="128" height="105"/>
     </elements>
 </model>

@@ -22,12 +22,26 @@ public class UpcaseFormatter: Formatter {
   }
 }
 
-class ResolutionsTableViewController: NSViewController {
+public class LabelFormatter: Formatter {
+  public override func string(for obj: Any?) -> String? {
+    if let labels = obj as? Set<LabelMO> {
+      return labels.map { $0.name ?? "" }.joined(separator: ", ")
+    } else if obj != nil {
+      print(obj)
+      return "HALP"
+    } else {
+      return nil
+    }
+  }
+}
+
+class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
   lazy var managedObjectContext: NSManagedObjectContext = {
     return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
   }()
   
   @IBOutlet var arrayController: NSArrayController!
+  @IBOutlet weak var tableView: NSTableView!
 
   static let coordinator: NSMutableDictionary = ["selectedObjects": []]
 
@@ -35,6 +49,9 @@ class ResolutionsTableViewController: NSViewController {
     super.viewDidLoad()
 
     ResolutionsTableViewController.coordinator.addObserver(self, forKeyPath: "selectedObjects", options: .new, context: &myContext)
+
+    tableView.delegate = self
+    tableView.target = self
   }
 
   override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -66,4 +83,7 @@ class ResolutionsTableViewController: NSViewController {
       }
     }
   }
+}
+
+extension ResolutionsTableViewController {
 }
