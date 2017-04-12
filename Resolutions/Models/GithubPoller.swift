@@ -111,7 +111,7 @@ class GithubPoller {
     let promise = notification.updateResolution(context: managedObjectContext)
 
     if let promise = promise {
-      return promise.then { _ in return }
+      return promise.asVoid()
     } else {
       return Promise(value: Void())
     }

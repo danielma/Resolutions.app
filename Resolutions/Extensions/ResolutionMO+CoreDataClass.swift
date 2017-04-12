@@ -129,6 +129,9 @@ public class ResolutionMO: NSManagedObject {
 
     return when(fulfilled: refreshIssueFromGithub().asVoid(), refreshStatusFromGithub().asVoid(), refreshLabelsFromGithub().asVoid())
       .then { _, _, _ in self }
+      .catch { error in
+        debugPrint("couldn't refresh from github", self)
+      }
       .always {
         self.isRefreshing = false
         self.refreshCanComplete = false
@@ -160,7 +163,9 @@ public class ResolutionMO: NSManagedObject {
   private func refreshLabelsFromGithub() -> Promise<[LabelMO]> {
     return issuePromise
       .then { issue in
-        issue.labels.map { LabelMO.fromGithubLabel($0, context: self.managedObjectContext!) }
+        let labels = issue.labels.map { LabelMO.fromGithubLabel($0, context: self.managedObjectContext!) }
+        self.labels = Set(labels)
+        return Promise(value: labels)
     }
   }
 

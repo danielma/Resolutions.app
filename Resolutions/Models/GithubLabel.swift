@@ -18,7 +18,7 @@ class GithubLabel: JSONBacked {
   lazy var name: String = {
     return self.source["name"].string!
   }()
-  
+
   lazy var color: String = {
     return self.source["color"].string!
   }()
@@ -36,7 +36,7 @@ extension LabelMO {
       fatalError("Failed to fetch label with remoteIdentifier \(remoteIdentifier)")
     }
   }
-  
+
   static func fromGithubLabel(_ ghl: GithubLabel, context: NSManagedObjectContext) -> LabelMO {
     let label: LabelMO
 

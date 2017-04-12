@@ -22,6 +22,19 @@ public class UpcaseFormatter: Formatter {
   }
 }
 
+public class LabelFormatter: Formatter {
+  public override func string(for obj: Any?) -> String? {
+    if let labels = obj as? Set<LabelMO> {
+      return labels.map { $0.name ?? "" }.joined(separator: ", ")
+    } else if obj != nil {
+      print(obj)
+      return "HALP"
+    } else {
+      return nil
+    }
+  }
+}
+
 class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
   lazy var managedObjectContext: NSManagedObjectContext = {
     return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
