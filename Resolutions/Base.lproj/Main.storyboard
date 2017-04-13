@@ -608,7 +608,7 @@
                     <window key="window" title="Resolutions" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="ResolutionsWindow" animationBehavior="default" id="IQv-IB-iLA" customClass="RSWindow" customModule="Resolutions" customModuleProvider="target">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+                        <rect key="contentRect" x="237" y="267" width="600" height="350"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1440"/>
                         <value key="minSize" type="size" width="200" height="200"/>
                         <toolbar key="toolbar" implicitIdentifier="8D123258-B4E2-433E-8144-8B24CB1E4E8D" displayMode="iconOnly" sizeMode="regular" id="hHC-h4-D56">

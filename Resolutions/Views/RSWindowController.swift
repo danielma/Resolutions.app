@@ -24,6 +24,12 @@ class RSWindowController: NSWindowController {
   }
 
   let syncButtonLayer = CALayer()
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.windowFrameAutosaveName = "RSWindowAutosave"
+  }
   
   override func windowDidLoad() {
     super.windowDidLoad()
@@ -33,6 +39,8 @@ class RSWindowController: NSWindowController {
     (NSApp.delegate as! AppDelegate).mainWindowController = self
     window?.titleVisibility = .hidden
     window?.isOpaque = false
+    window?.contentView?.wantsLayer = true
+    window?.contentView?.layer?.masksToBounds = true
 //    window?.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)!
 
 //    window?.titlebarAppearsTransparent = true
