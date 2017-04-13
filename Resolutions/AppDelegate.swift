@@ -96,7 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
       let url = self.applicationDocumentsDirectory.appendingPathComponent("resolutions.storedata")
       do {
-        try coordinator!.addPersistentStore(ofType: NSXMLStoreType, configurationName: nil, at: url, options: mOptions)
+        try coordinator!.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: mOptions)
       } catch {
         // Replace this implementation with code to handle the error appropriately.
 

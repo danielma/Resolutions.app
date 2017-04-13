@@ -102,5 +102,14 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
   }
 }
 
-extension ResolutionsTableViewController {
+class ResolutionsTableView: NSTableView {
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    
+  }
+  override var allowsVibrancy: Bool {
+    set {}
+    get { return false }
+  }
+
 }

@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "fold-16.png",
+      "filename" : "fold-16-16.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "fold-32.png",
+      "filename" : "fold-32-32.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "fold-48.png",
+      "filename" : "fold-48-48.png",
       "scale" : "3x"
     }
   ],

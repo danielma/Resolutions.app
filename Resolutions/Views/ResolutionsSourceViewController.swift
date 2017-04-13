@@ -37,6 +37,11 @@ class ResolutionsSourceViewController: NSViewController, NSOutlineViewDelegate {
     outlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
     sourcesTreeController.setSelectionIndexPath(IndexPath(index: 0))
     outlineView.delegate = self
+
+//    let visualEffectView = NSVisualEffectView(frame: NSMakeRect(0, 0, 0, 0))
+//    visualEffectView.material = .dark
+//    visualEffectView.blendingMode = .behindWindow
+//    visualEffectView.state = .active
   }
 
   override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -100,12 +105,51 @@ class RepoTreeNode: NSObject {
   }
 }
 
+class ResolutionsSourceView: NSOutlineView {
+//  override var allowsVibrancy: Bool {
+//    set {}
+//    get { return true }
+//  }
+//  override var appearance: NSAppearance? {
+//    set {}
+//    get {
+//      return NSAppearance(named: NSAppearanceNameVibrantDark)!
+//    }
+//  }
+//  override var effectiveAppearance: NSAppearance {
+//    set {}
+//    get {
+//      return NSAppearance(named: NSAppearanceNameVibrantDark)!
+//    }
+//  }
+}
+
 class ResolutionsSourceTableRowView: NSTableRowView {
-  override func drawSelection(in dirtyRect: NSRect) {
-    NSColor(hue:0.56, saturation:0.66, brightness:0.88, alpha:1.00).setFill()
-    let path = NSBezierPath(rect: dirtyRect)
-    path.fill()
-  }
+//  override func drawSelection(in dirtyRect: NSRect) {
+//    NSColor(hue:0.56, saturation:0.66, brightness:0.88, alpha:1.00).setFill()
+//    let path = NSBezierPath(rect: dirtyRect)
+//    path.fill()
+//  }
+//  override var isEmphasized: Bool {
+//    set {}
+//    get { return true }
+//  }
+//  override var allowsVibrancy: Bool {
+//    set {}
+//    get { return true }
+//  }
+//  override var appearance: NSAppearance? {
+//    set {}
+//    get {
+//      return NSAppearance(named: NSAppearanceNameVibrantDark)!
+//    }
+//  }
+//  override var effectiveAppearance: NSAppearance {
+//    set {}
+//    get {
+//      return NSAppearance(named: NSAppearanceNameVibrantDark)!
+//    }
+//  }
 }
 
 /*

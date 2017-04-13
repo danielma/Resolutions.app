@@ -23,7 +23,9 @@ class GithubPoller {
     return context
   }()
 
-  static let forcedUpdateNotificationName = NSNotification.Name("githubPollerForceUpdate")
+  static let updateStartedNotificationName = NSNotification.Name("githubPollerUpdateStarted")
+  static let updateFinishedNotificationName = NSNotification.Name("githubPollerUpdateFinished")
+  
   static let lastEventKey = "githubLastEventReadId"
   static let sharedInstance = GithubPoller(defaults: UserDefaults.standard)
   static let queue = DispatchQueue(label: "com.resolutions.githubPollerQueue")
@@ -54,9 +56,11 @@ class GithubPoller {
 
     eventsPoller
       .map { events in
+        NotificationCenter.default.post(name: GithubPoller.updateStartedNotificationName, object: self)
         GithubPoller.queue.sync {
           events.forEach { self.handleEvent($0) }
           do {
+            NotificationCenter.default.post(name: GithubPoller.updateFinishedNotificationName, object: self)
             try self.managedObjectContext.save()
           } catch let error {
             debugPrint(error)
@@ -66,9 +70,11 @@ class GithubPoller {
 
     notificationsPoller
       .map { notifications in
+        NotificationCenter.default.post(name: GithubPoller.updateStartedNotificationName, object: self)
         GithubPoller.queue.sync {
           when(resolved: notifications.map { self.handleNotification($0) })
             .always {
+              NotificationCenter.default.post(name: GithubPoller.updateFinishedNotificationName, object: self)
               do {
                 try self.managedObjectContext.save()
               } catch let error {
@@ -80,15 +86,15 @@ class GithubPoller {
   }
 
   func start() {
-    eventsPoller.start()
     notificationsPoller.start()
+    eventsPoller.start()
   }
 
   func forceUpdate() {
-    eventsPoller.forceRequest()
     notificationsPoller.forceRequest()
+    eventsPoller.forceRequest()
 
-    NotificationCenter.default.post(name: GithubPoller.forcedUpdateNotificationName, object: self)
+    NotificationCenter.default.post(name: GithubPoller.updateStartedNotificationName, object: self)
   }
 
   deinit {
