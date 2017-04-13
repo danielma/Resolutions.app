@@ -36,8 +36,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   override init() {
     ValueTransformer.setValueTransformer(StatusStringImageTransformer(), forName: NSValueTransformerName(rawValue: "StateStringImageTransformer"))
 
-
-
+    LabelContainer.exposeBinding("labels")
+    
     super.init()
   }
 

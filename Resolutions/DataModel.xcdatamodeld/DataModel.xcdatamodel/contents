@@ -19,7 +19,7 @@
         <attribute name="statusString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updateDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="url" attributeType="String" syncable="YES"/>
-        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Label" inverseName="resolution" inverseEntity="Label" syncable="YES"/>
+        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Label" inverseName="resolution" inverseEntity="Label" syncable="YES"/>
         <relationship name="repo" maxCount="1" deletionRule="Nullify" destinationEntity="GithubRepo" inverseName="resolutions" inverseEntity="GithubRepo" syncable="YES"/>
     </entity>
     <elements>

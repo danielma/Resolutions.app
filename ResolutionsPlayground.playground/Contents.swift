@@ -2,27 +2,26 @@
 
 import Cocoa
 
+let x = [1,2,3]
 
-enum Kind: String {
-  case Dude
-  case Girl
-}
+x[0]
 
-extension NSRegularExpression {
-  func hasMatch(_ string: String, options: NSRegularExpression.MatchingOptions = NSRegularExpression.MatchingOptions()) -> Bool {
-    let range = NSMakeRange(0, string.characters.count)
-    return firstMatch(in: string, options: options, range: range) != nil
+func hexToNs(_ hex: String) -> NSColor {
+  guard let hex = Int(hex, radix: 16) else {
+    return NSColor.clear
   }
+
+  let red = Double((hex >> 16 & 0xFF))
+  let green = Double((hex >> 8 & 0xFF))
+  let blue = Double((hex >> 0 & 0xFF))
+
+  return NSColor(
+    red: CGFloat(red / 255.0),
+    green: CGFloat(green / 255.0),
+    blue: CGFloat(blue / 255.0),
+    alpha: 1
+  )
 }
 
-let x = Kind(rawValue: "heeeey")
-let b = Kind(rawValue: "Dude")
-
-
-let githubIssueRegex = try! NSRegularExpression(
-  pattern: "api\\.github\\.com/repos/([^/]+)/([^/]+)/issues/(\\w+)",
-  options: .caseInsensitive
-)
-let remoteIdentifier = "https://api.github.com/repos/danielma/Resolutions.app/pulls/3"
-
-githubIssueRegex.hasMatch(remoteIdentifier)
+hexToNs("CC9C00")
+hexToNs("00FA00")

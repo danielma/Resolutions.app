@@ -171,7 +171,7 @@ public class ResolutionMO: NSManagedObject {
     return issuePromise
       .then { issue in
         let labels = issue.labels.map { LabelMO.fromGithubLabel($0, context: self.managedObjectContext!) }
-        self.labels = Set(labels)
+        self.labels = NSOrderedSet(array: labels)
         return Promise(value: labels)
     }
   }
