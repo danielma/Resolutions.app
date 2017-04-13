@@ -7,9 +7,11 @@
 //
 
 import Cocoa
+fileprivate var myContext = 1
 
 class RSWindowController: NSWindowController {
   @IBOutlet weak var syncButton: NSButton!
+  @IBOutlet weak var currentViewLabel: NSTextField!
   @IBAction func syncButtonClicked(_ sender: Any) {
     GithubPoller.sharedInstance.forceUpdate()
   }
@@ -44,6 +46,8 @@ class RSWindowController: NSWindowController {
       self.stopAnimateSyncButton()
     }
 
+    ResolutionsTableViewController.coordinator.addObserver(self, forKeyPath: "selectedObjects", options: .new, context: &myContext)
+
     let reloadImage = #imageLiteral(resourceName: "reload")
     syncButton.wantsLayer = true
     syncButtonLayer.contents = reloadImage
@@ -61,6 +65,31 @@ class RSWindowController: NSWindowController {
 
   func windowWillReturnUndoManager(_ window: NSWindow) -> UndoManager? {
     return (NSApplication.shared().delegate as! AppDelegate).windowWillReturnUndoManager(window: window)
+  }
+
+  override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    if context == &myContext && keyPath == "selectedObjects" {
+      handleSelectedObjectsChanged()
+    } else {
+      super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+    }
+  }
+
+  private func handleSelectedObjectsChanged() {
+    guard let selectedObjects = ResolutionsTableViewController.coordinator.value(forKey: "selectedObjects") as? Array<Any> else { return }
+    
+    if let selectedTreeNodes = selectedObjects as? Array<RepoTreeNode> {
+      guard let selectedObject = selectedTreeNodes.first,
+        let name = selectedObject.repo.name else { return }
+
+      currentViewLabel.stringValue = name
+    } else {
+      guard let selectedObject = selectedObjects[0] as? NSDictionary,
+        let name = selectedObject.value(forKey: "name") as? String
+        else { return }
+
+      currentViewLabel.stringValue = name
+    }
   }
 
   var buttonIsRotating = false
