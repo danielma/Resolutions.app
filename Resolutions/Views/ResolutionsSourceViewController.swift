@@ -29,7 +29,7 @@ class ResolutionsSourceViewController: NSViewController, NSOutlineViewDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    NotificationCenter.default.addObserver(self, selector: #selector(contextChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: managedObjectContext)
+    NotificationCenter.default.addObserver(self, selector: #selector(contextChange(sender:)), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: managedObjectContext)
 
     sourcesTreeController.content = treeContent()
     sourcesTreeController.addObserver(self, forKeyPath: #keyPath(NSTreeController.selectionIndexPaths), options: .new, context: &myContext)
@@ -60,10 +60,17 @@ class ResolutionsSourceViewController: NSViewController, NSOutlineViewDelegate {
     sourcesTreeController.removeObserver(self, forKeyPath: #keyPath(NSTreeController.selectionIndexPaths))
   }
 
-  func contextChange() {
-    let currentSelection = sourcesTreeController.selectionIndexPath
-    sourcesTreeController.content = treeContent()
-    sourcesTreeController.setSelectionIndexPath(currentSelection)
+  func contextChange(sender: Notification) {
+    guard let userInfo = sender.userInfo else { return }
+
+    let updated = userInfo["updated"] as? Set<NSManagedObject> ?? Set<NSManagedObject>()
+    let inserted = userInfo["inserted"] as? Set<NSManagedObject> ?? Set<NSManagedObject>()
+
+    if (inserted.union(updated)).contains(where: { $0.isKind(of: GithubRepoMO.self) }) {
+      let currentSelection = sourcesTreeController.selectionIndexPath
+      sourcesTreeController.content = treeContent()
+      sourcesTreeController.setSelectionIndexPath(currentSelection)
+    }
   }
 
   internal func treeContent() -> [NSDictionary] {
