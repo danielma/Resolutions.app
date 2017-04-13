@@ -126,13 +126,14 @@ class ResolutionsSourceView: NSOutlineView {
 
 class ResolutionsSourceTableRowView: NSTableRowView {
 //  override func drawSelection(in dirtyRect: NSRect) {
-//    NSColor(hue:0.56, saturation:0.66, brightness:0.88, alpha:1.00).setFill()
+//    NSColor(red:0.07, green:0.42, blue:0.84, alpha:1.00).setFill()
+//    NSColor(hue:0.56, saturation:0.66, brightness:0.88, alpha:0.70).setFill()
 //    let path = NSBezierPath(rect: dirtyRect)
 //    path.fill()
 //  }
 //  override var isEmphasized: Bool {
 //    set {}
-//    get { return true }
+//    get { return false }
 //  }
 //  override var allowsVibrancy: Bool {
 //    set {}
