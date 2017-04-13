@@ -38,7 +38,9 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
   lazy var managedObjectContext: NSManagedObjectContext = {
     return (NSApplication.shared().delegate as! AppDelegate).managedObjectContext
   }()
-  
+
+  static let dockIconShowSelectedViewCountKey = "dockIconShowSelectedViewCount"
+
   @IBOutlet var arrayController: NSArrayController!
   @IBOutlet weak var tableView: NSTableView!
   @IBAction func doubleClicked(_ sender: Any) {
@@ -70,6 +72,7 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
 
     ResolutionsTableViewController.coordinator.addObserver(self, forKeyPath: "selectedObjects", options: .new, context: &myContext)
     ResolutionsTableViewController.coordinator.addObserver(self, forKeyPath: "headersVisible", options: .new, context: &myContext)
+    NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
 
     tableView.delegate = self
     tableView.target = self
@@ -107,6 +110,33 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
         arrayController.filterPredicate = NSPredicate(format: "completedDate != nil")
       }
     }
+
+    updateDockIcon()
+  }
+}
+
+extension ResolutionsTableViewController {
+  internal func updateDockIcon() {
+    let showSelectedCount = UserDefaults.standard.value(forKey: ResolutionsTableViewController.dockIconShowSelectedViewCountKey) as? Bool ?? false
+
+    guard showSelectedCount,
+      let records = arrayController.arrangedObjects as? Array<ResolutionMO>
+      else { return emptyDockTile() }
+
+    let notCompletedRecords = records.filter({ !$0.completed })
+    let count = notCompletedRecords.count
+
+    guard count > 0 else { return emptyDockTile() }
+
+    NSApplication.shared().dockTile.badgeLabel = String(describing: count)
+  }
+
+  internal func emptyDockTile() {
+    NSApplication.shared().dockTile.badgeLabel = nil
+  }
+
+  internal func userDefaultsChanged() {
+    updateDockIcon()
   }
 }
 

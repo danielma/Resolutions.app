@@ -21,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       "githubLastEventReadId": 0,
       "githubUseMagicComments": false,
       "githubMagicCommentString": "",
-//      ResolutionsSplitViewController.dockIconShowSelectedViewCountKey: false,
+      ResolutionsTableViewController.dockIconShowSelectedViewCountKey: false,
     ])
   }
 

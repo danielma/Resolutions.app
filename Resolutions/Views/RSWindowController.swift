@@ -22,7 +22,7 @@ class RSWindowController: NSWindowController {
       ResolutionsTableViewController.coordinator["headersVisible"] = true
     }
   }
-  
+
   let syncButtonLayer = CALayer()
   
   override func windowDidLoad() {
