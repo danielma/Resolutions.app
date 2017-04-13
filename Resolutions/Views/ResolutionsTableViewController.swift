@@ -51,6 +51,14 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
       NSWorkspace.shared().open(url)
     }
   }
+  @IBAction func clickRepoButton(_ sender: Any) {
+    guard let button = sender as? NSButton,
+      let url = URL(string: button.alternateTitle) else {
+      return
+    }
+
+    NSWorkspace.shared().open(url)
+  }
 
   static let coordinator: NSMutableDictionary = ["selectedObjects": []]
 
