@@ -1194,7 +1194,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="700" height="390"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveName="resolutionsTable" rowHeight="60" headerView="jz7-jv-kzG" viewBased="YES" id="30r-W7-2ll">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="reverseSequential" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveName="resolutionsTable" rowHeight="60" headerView="jz7-jv-kzG" viewBased="YES" id="30r-W7-2ll">
                                             <rect key="frame" x="0.0" y="0.0" width="718" height="367"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -1266,7 +1266,7 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn width="454" minWidth="40" maxWidth="1000" id="po5-MU-eC5">
+                                                <tableColumn width="454" minWidth="40" maxWidth="10000" id="po5-MU-eC5">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Name">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1349,8 +1349,8 @@
                                                                     </buttonCell>
                                                                     <connections>
                                                                         <action selector="clickRepoButton:" target="rM6-Tc-lTF" id="j1X-Im-1kJ"/>
-                                                                        <binding destination="DEN-y0-uMW" name="alternateTitle" keyPath="objectValue.repo.url" id="yR5-U9-eSR"/>
                                                                         <binding destination="DEN-y0-uMW" name="title" keyPath="objectValue.repo.name" previousBinding="yR5-U9-eSR" id="r5F-cR-PfS"/>
+                                                                        <binding destination="DEN-y0-uMW" name="alternateTitle" keyPath="objectValue.repo.url" id="yR5-U9-eSR"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -1500,7 +1500,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="IssueClosed" width="40" height="40"/>
+        <image name="IssueClosed" width="20" height="20"/>
         <image name="reload" width="540" height="540"/>
     </resources>
 </document>

@@ -65,9 +65,9 @@ class ResolutionsSourceViewController: NSViewController, NSOutlineViewDelegate {
     let repos = try! managedObjectContext.fetch(reposFetchRequest)
 
     return [
-      ["name": "INBOX"],
-      ["name": "COMPLETE"],
-      ["name": "GITHUB", "children": repos.map { RepoTreeNode($0) }]
+      ["name": "Inbox"],
+      ["name": "Complete"],
+      ["name": "Github", "children": repos.map { RepoTreeNode($0) }]
     ]
   }
 
