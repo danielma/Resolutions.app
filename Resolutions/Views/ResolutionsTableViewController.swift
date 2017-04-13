@@ -60,12 +60,16 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
     NSWorkspace.shared().open(url)
   }
 
-  static let coordinator: NSMutableDictionary = ["selectedObjects": []]
+  static let coordinator: NSMutableDictionary = [
+    "selectedObjects": [],
+    "headersVisible": false,
+  ]
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     ResolutionsTableViewController.coordinator.addObserver(self, forKeyPath: "selectedObjects", options: .new, context: &myContext)
+    ResolutionsTableViewController.coordinator.addObserver(self, forKeyPath: "headersVisible", options: .new, context: &myContext)
 
     tableView.delegate = self
     tableView.target = self
@@ -73,7 +77,11 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
 
   override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
     if context == &myContext {
-      handleSelectedObjectsChanged()
+      if keyPath == "selectedObjects" {
+        handleSelectedObjectsChanged()
+      } else {
+        debugPrint("headers visible")
+      }
     } else {
       super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
     }

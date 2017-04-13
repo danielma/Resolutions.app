@@ -14,6 +14,13 @@ class RSWindowController: NSWindowController {
     GithubPoller.sharedInstance.forceUpdate()
   }
 
+  @IBAction func toggleHeaderClicked(_ sender: Any) {
+    if let button = sender as? NSButton {
+      button.image = #imageLiteral(resourceName: "Unfold")
+      ResolutionsTableViewController.coordinator["headersVisible"] = true
+    }
+  }
+  
   let syncButtonLayer = CALayer()
   
   override func windowDidLoad() {
