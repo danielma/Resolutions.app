@@ -13,13 +13,14 @@ import PromiseKit
 
 @objc(ResolutionMO)
 public class ResolutionMO: NSManagedObject {
-  enum Status: String {
+  public enum Status: String {
     case open
+    case openPullRequest
     case closed
     case merged
   }
 
-  var status: Status? {
+  public var status: Status? {
     get {
       return Status(rawValue: statusString ?? "")
     }
@@ -27,6 +28,31 @@ public class ResolutionMO: NSManagedObject {
       statusString = newValue?.rawValue
     }
   }
+
+  public var completed: Bool {
+    get {
+      if let completedDate = completedDate {
+        return (completedDate as Date) <= Date()
+      }
+
+      return false
+    }
+    set {
+      managedObjectContext?.undoManager?.beginUndoGrouping()
+      managedObjectContext?.undoManager?.setActionName("Complete Resolution")
+
+      updateDate = NSDate()
+
+      if (newValue) {
+        completedDate = NSDate()
+      } else {
+        completedDate = nil
+      }
+
+      managedObjectContext?.undoManager?.endUndoGrouping()
+    }
+  }
+
   
   static func fromGithubEvent(_ event: GithubEvent, context: NSManagedObjectContext) -> ResolutionMO? {
     guard let payloadEvent = event.payloadEvent else {
@@ -92,25 +118,6 @@ public class ResolutionMO: NSManagedObject {
     }
   }
 
-  public var completed: Bool {
-    get {
-      if let completedDate = completedDate {
-        return (completedDate as Date) <= Date()
-      }
-
-      return false
-    }
-    set {
-      updateDate = NSDate()
-
-      if (newValue) {
-        completedDate = NSDate()
-      } else {
-        completedDate = nil
-      }
-    }
-  }
-
   func completeAt(_ date: NSDate?) {
     completedDate = date
     updateDate = date ?? NSDate()
@@ -164,7 +171,7 @@ public class ResolutionMO: NSManagedObject {
     return issuePromise
       .then { issue in
         let labels = issue.labels.map { LabelMO.fromGithubLabel($0, context: self.managedObjectContext!) }
-        self.labels = Set(labels)
+        self.labels = NSOrderedSet(array: labels)
         return Promise(value: labels)
     }
   }
@@ -181,10 +188,14 @@ public class ResolutionMO: NSManagedObject {
     return self.issuePromise.then { issue in
       if let pullRequestPromise = issue.pullRequestPromise {
         return pullRequestPromise.then { pullRequest in
-          return ResolutionMO.Status(rawValue: pullRequest.state.rawValue)!
+          if pullRequest.state == .open {
+            return Promise(value: .openPullRequest)
+          } else {
+            return Promise(value: Status(rawValue: pullRequest.state.rawValue)!)
+          }
         }
       } else {
-        return Promise(value: ResolutionMO.Status(rawValue: issue.state.rawValue)!)
+        return Promise(value: Status(rawValue: issue.state.rawValue)!)
       }
     }
   }()
@@ -199,5 +210,34 @@ public class ResolutionMO: NSManagedObject {
   enum ResolutionError: Error {
     case MissingRemoteIdentifier(ResolutionMO)
     case AlreadyRefreshingResolution(ResolutionMO)
+  }
+}
+
+@objc(StatusStringImageTransformer)
+public class StatusStringImageTransformer: ValueTransformer {
+  public override class func transformedValueClass() -> AnyClass {
+    return NSImage.self
+  }
+
+  public override class func allowsReverseTransformation() -> Bool {
+    return false
+  }
+
+  public override func transformedValue(_ value: Any?) -> Any? {
+    if let value = value as? String {
+      switch ResolutionMO.Status(rawValue: value)! {
+      case .closed:
+        return #imageLiteral(resourceName: "IssueClosed")
+      case .merged:
+        return #imageLiteral(resourceName: "GitMerged")
+      case .open:
+        return #imageLiteral(resourceName: "IssueOpen")
+      case .openPullRequest:
+        return #imageLiteral(resourceName: "GitPullRequest")
+      }
+      
+    } else {
+      return nil
+    }
   }
 }

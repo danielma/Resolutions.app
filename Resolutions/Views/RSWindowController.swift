@@ -24,6 +24,10 @@ class RSWindowController: NSWindowController {
 //    window?.isMovableByWindowBackground = true
 //    window?.toolbar?.showsBaselineSeparator = false
   }
+
+  func windowWillReturnUndoManager(_ window: NSWindow) -> UndoManager? {
+    return (NSApplication.shared().delegate as! AppDelegate).windowWillReturnUndoManager(window: window)
+  }
 }
 
 extension RSWindowController: NSWindowDelegate {

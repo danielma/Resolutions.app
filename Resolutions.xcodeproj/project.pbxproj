@@ -17,8 +17,12 @@
 		66443AA21E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66443AA01E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift */; };
 		66443AA61E94625F006A269D /* ResolutionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66443AA51E94625F006A269D /* ResolutionsTableViewController.swift */; };
 		6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6646772B1E09A25F009C8156 /* GithubAPIClient.swift */; };
+		665CA80A1E9F64220013A8F5 /* ResolutionsSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 665CA8091E9F64220013A8F5 /* ResolutionsSplitView.swift */; };
 		6664C59F1E9D7FD70067C6E3 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 66B37A631E92B02D00FDC343 /* DataModel.xcdatamodeld */; };
 		6670B6921E9DA27300C83F6D /* GithubLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6670B6911E9DA27300C83F6D /* GithubLabel.swift */; };
+		667ECF4A1E9EEC5100D9CE80 /* LabelStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667ECF491E9EEC5100D9CE80 /* LabelStackView.swift */; };
+		667ECF4C1E9F03EA00D9CE80 /* LabelMO+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667ECF4B1E9F03EA00D9CE80 /* LabelMO+Resolutions.swift */; };
+		667ECF4E1E9F3C2C00D9CE80 /* NSColor+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667ECF4D1E9F3C2C00D9CE80 /* NSColor+Resolutions.swift */; };
 		66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66837E061E089C2700F70E8D /* AppDelegate.swift */; };
 		66837E0B1E089C2700F70E8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66837E0A1E089C2700F70E8D /* Assets.xcassets */; };
 		66837E0E1E089C2700F70E8D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66837E0C1E089C2700F70E8D /* Main.storyboard */; };
@@ -101,7 +105,11 @@
 		66443AA01E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ResolutionMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		66443AA51E94625F006A269D /* ResolutionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResolutionsTableViewController.swift; path = Resolutions/Views/ResolutionsTableViewController.swift; sourceTree = SOURCE_ROOT; };
 		6646772B1E09A25F009C8156 /* GithubAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubAPIClient.swift; sourceTree = "<group>"; };
-		6670B6911E9DA27300C83F6D /* GithubLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GithubLabel.swift; path = Resolutions/Models/GithubLabel.swift; sourceTree = "<group>"; };
+		665CA8091E9F64220013A8F5 /* ResolutionsSplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResolutionsSplitView.swift; path = Resolutions/Views/ResolutionsSplitView.swift; sourceTree = "<group>"; };
+		6670B6911E9DA27300C83F6D /* GithubLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubLabel.swift; sourceTree = "<group>"; };
+		667ECF491E9EEC5100D9CE80 /* LabelStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LabelStackView.swift; path = Resolutions/Views/LabelStackView.swift; sourceTree = "<group>"; };
+		667ECF4B1E9F03EA00D9CE80 /* LabelMO+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LabelMO+Resolutions.swift"; path = "Resolutions/Extensions/LabelMO+Resolutions.swift"; sourceTree = "<group>"; };
+		667ECF4D1E9F3C2C00D9CE80 /* NSColor+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSColor+Resolutions.swift"; path = "Resolutions/Extensions/NSColor+Resolutions.swift"; sourceTree = "<group>"; };
 		66837E031E089C2700F70E8D /* Resolutions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Resolutions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66837E061E089C2700F70E8D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		66837E0A1E089C2700F70E8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -161,7 +169,10 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
-				6670B6911E9DA27300C83F6D /* GithubLabel.swift */,
+				665CA8091E9F64220013A8F5 /* ResolutionsSplitView.swift */,
+				667ECF4D1E9F3C2C00D9CE80 /* NSColor+Resolutions.swift */,
+				667ECF4B1E9F03EA00D9CE80 /* LabelMO+Resolutions.swift */,
+				667ECF491E9EEC5100D9CE80 /* LabelStackView.swift */,
 				668484861E09E6E400119C07 /* ResolutionsPlayground.playground */,
 				66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */,
 				66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */,
@@ -220,6 +231,7 @@
 			children = (
 				66B37A631E92B02D00FDC343 /* DataModel.xcdatamodeld */,
 				668484841E09E33F00119C07 /* GithubPoller.swift */,
+				6670B6911E9DA27300C83F6D /* GithubLabel.swift */,
 				66A77D051E09D4E2009602B7 /* RequestPoller.swift */,
 				66D2CF6E1E92FB7F0030FD54 /* GithubNotification.swift */,
 				669AE2B01E9C503A0060FF3D /* JSONBacked.swift */,
@@ -375,15 +387,19 @@
 				6695D06F1E92CDAE0057E54B /* MainWindowViewController.swift in Sources */,
 				662ED6351E95A48C007E0E39 /* GithubEvent.swift in Sources */,
 				662B928D1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift in Sources */,
+				665CA80A1E9F64220013A8F5 /* ResolutionsSplitView.swift in Sources */,
 				6664C59F1E9D7FD70067C6E3 /* DataModel.xcdatamodeld in Sources */,
 				66B3E01E1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift in Sources */,
 				669AE2B11E9C503A0060FF3D /* JSONBacked.swift in Sources */,
 				668484851E09E33F00119C07 /* GithubPoller.swift in Sources */,
 				6670B6921E9DA27300C83F6D /* GithubLabel.swift in Sources */,
 				66D2CF6F1E92FB7F0030FD54 /* GithubNotification.swift in Sources */,
+				667ECF4E1E9F3C2C00D9CE80 /* NSColor+Resolutions.swift in Sources */,
 				66443AA61E94625F006A269D /* ResolutionsTableViewController.swift in Sources */,
+				667ECF4C1E9F03EA00D9CE80 /* LabelMO+Resolutions.swift in Sources */,
 				6646772C1E09A25F009C8156 /* GithubAPIClient.swift in Sources */,
 				662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */,
+				667ECF4A1E9EEC5100D9CE80 /* LabelStackView.swift in Sources */,
 				66837E071E089C2700F70E8D /* AppDelegate.swift in Sources */,
 				66D2CF6B1E92E8020030FD54 /* GithubRepoMO+Resolutions.swift in Sources */,
 				66443AA11E931D0C006A269D /* ResolutionMO+CoreDataClass.swift in Sources */,

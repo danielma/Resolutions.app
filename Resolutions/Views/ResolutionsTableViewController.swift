@@ -27,7 +27,6 @@ public class LabelFormatter: Formatter {
     if let labels = obj as? Set<LabelMO> {
       return labels.map { $0.name ?? "" }.joined(separator: ", ")
     } else if obj != nil {
-      print(obj)
       return "HALP"
     } else {
       return nil
@@ -42,6 +41,24 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
   
   @IBOutlet var arrayController: NSArrayController!
   @IBOutlet weak var tableView: NSTableView!
+  @IBAction func doubleClicked(_ sender: Any) {
+    guard let objects = arrayController.arrangedObjects as? [ResolutionMO],
+      tableView.clickedRow > -1 else {
+      return
+    }
+    let selectedObject = objects[tableView.clickedRow]
+    if let str = selectedObject.url, let url = URL(string: str) {
+      NSWorkspace.shared().open(url)
+    }
+  }
+  @IBAction func clickRepoButton(_ sender: Any) {
+    guard let button = sender as? NSButton,
+      let url = URL(string: button.alternateTitle) else {
+      return
+    }
+
+    NSWorkspace.shared().open(url)
+  }
 
   static let coordinator: NSMutableDictionary = ["selectedObjects": []]
 

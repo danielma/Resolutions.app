@@ -33,6 +33,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Insert code here to tear down your application
   }
 
+  override init() {
+    ValueTransformer.setValueTransformer(StatusStringImageTransformer(), forName: NSValueTransformerName(rawValue: "StateStringImageTransformer"))
+
+    LabelContainer.exposeBinding("labels")
+    
+    super.init()
+  }
+
   func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
     if (flag) { return false }
     
@@ -120,6 +128,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let coordinator = self.persistentStoreCoordinator
     var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     managedObjectContext.persistentStoreCoordinator = coordinator
+    managedObjectContext.undoManager = UndoManager()
     return managedObjectContext
   }()
 

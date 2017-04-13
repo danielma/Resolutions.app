@@ -23,5 +23,5 @@ extension ResolutionMO {
     @NSManaged public var repo: GithubRepoMO?
     @NSManaged public var statusString: String?
     @NSManaged public var url: String?
-    @NSManaged public var labels: Set<LabelMO>?
+    @NSManaged public var labels: NSOrderedSet?
 }
