@@ -37,11 +37,16 @@ func dateToHttp(_ date: Date) -> String {
 }
 
 class GithubAPIClient {
-  static let sharedInstance = GithubAPIClient()
+  static let sharedInstance = GithubAPIClient(userDefaults: UserDefaults.standard)
 
   let baseUrl = "https://api.github.com/"
+  let userDefaults: UserDefaults
   var pollInterval = 60
   var activeRequestCount = 0
+
+  init(userDefaults: UserDefaults) {
+    self.userDefaults = userDefaults
+  }
 
   lazy var cachingSessionManager: SessionManager = {
     let configuration = URLSessionConfiguration.default.copy() as! URLSessionConfiguration
@@ -77,7 +82,19 @@ class GithubAPIClient {
     }
   }
 
-  var notificationsLastAccessedDate: String?
+  static let notificationsLastAccessedKey = "notificationsLastAccessedAt"
+  var notificationsLastAccessedDate: String? {
+    get {
+      if let access = userDefaults.value(forKey: GithubAPIClient.notificationsLastAccessedKey) as? String {
+        return access
+      } else {
+        return nil
+      }
+    }
+    set {
+      userDefaults.set(newValue, forKey: GithubAPIClient.notificationsLastAccessedKey)
+    }
+  }
   func notifications(all: Bool = true, page: Int = 1, headers: HTTPHeaders?) -> Promise<GithubArrayResponse<GithubNotification>> {
     let allParam = all ? "true" : "false"
     return request("notifications", parameters: ["all": allParam, "page": String(page)], headers: headers, useCaching: false)
