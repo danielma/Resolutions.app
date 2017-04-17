@@ -65,6 +65,7 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
   static let coordinator: NSMutableDictionary = [
     "selectedObjects": [],
     "headersVisible": false,
+    "checkShouldRemove": true,
   ]
 
   override func viewDidLoad() {
@@ -96,6 +97,7 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
     if let selectedTreeNodes = selectedObjects as? Array<RepoTreeNode> {
       guard let selectedObject = selectedTreeNodes.first else { return }
 
+      ResolutionsTableViewController.coordinator["checkShouldRemove"] = false
       arrayController.filterPredicate = NSPredicate(format: "repo = %@", argumentArray: [selectedObject.repo])
     } else {
       guard let selectedObject = selectedObjects[0] as? NSDictionary,
@@ -105,8 +107,10 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
       let lowercaseName = name.lowercased()
 
       if lowercaseName == "inbox" {
+        ResolutionsTableViewController.coordinator["checkShouldRemove"] = true
         arrayController.filterPredicate = NSPredicate(format: "completedDate = nil")
       } else if lowercaseName == "complete" {
+        ResolutionsTableViewController.coordinator["checkShouldRemove"] = true
         arrayController.filterPredicate = NSPredicate(format: "completedDate != nil")
       }
     }
@@ -150,4 +154,43 @@ class ResolutionsTableView: NSTableView {
     get { return false }
   }
 
+}
+
+class CheckboxTableCell: NSTableCellView {
+  var completed: Bool {
+    get {
+      if let resolution = objectValue as? ResolutionMO {
+        return resolution.completed
+      } else {
+        return false
+      }
+    }
+    set {
+      guard let resolution = objectValue as? ResolutionMO,
+        (ResolutionsTableViewController.coordinator["checkShouldRemove"] as? Bool) == true
+        else { return }
+
+      if let rowView = (superview as? NSTableRowView),
+        let tableView = rowView.superview as? NSTableView {
+        let indexSet = IndexSet(integer: tableView.row(for: rowView))
+        NSAnimationContext.runAnimationGroup({ context in
+          tableView.removeRows(at: indexSet, withAnimation: .slideUp)
+        }) {
+          resolution.completed = newValue
+        }
+      } else {
+        resolution.completed = newValue
+      }
+    }
+  }
+
+  override class func keyPathsForValuesAffectingValue(forKey key: String) -> Set<String> {
+    if key == "completed" {
+      var set = Set<String>()
+      set.insert("objectValue.completed")
+      return set
+    } else {
+      return super.keyPathsForValuesAffectingValue(forKey: key)
+    }
+  }
 }

@@ -48,6 +48,7 @@
 		66B06C7E1E09B12000F203F6 /* RSPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */; };
 		66B06C821E09B46A00F203F6 /* PMKAlamofire.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */; };
 		66B06C831E09B46A00F203F6 /* PromiseKit.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */; };
+		66B0E8A11EA02B1100A3422E /* ResolutionsArrayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B0E8A01EA02B1100A3422E /* ResolutionsArrayController.swift */; };
 		66B3E01E1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */; };
 		66D2CF6B1E92E8020030FD54 /* GithubRepoMO+Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6A1E92E8020030FD54 /* GithubRepoMO+Resolutions.swift */; };
 		66D2CF6F1E92FB7F0030FD54 /* GithubNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D2CF6E1E92FB7F0030FD54 /* GithubNotification.swift */; };
@@ -137,6 +138,7 @@
 		66B06C7F1E09B46A00F203F6 /* PMKAlamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = PMKAlamofire.framework.dSYM; path = Carthage/Build/Mac/PMKAlamofire.framework.dSYM; sourceTree = "<group>"; };
 		66B06C801E09B46A00F203F6 /* PromiseKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = PromiseKit.framework.dSYM; path = Carthage/Build/Mac/PromiseKit.framework.dSYM; sourceTree = "<group>"; };
 		66B06C811E09B46A00F203F6 /* SwiftyJSON.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = SwiftyJSON.framework.dSYM; path = Carthage/Build/Mac/SwiftyJSON.framework.dSYM; sourceTree = "<group>"; };
+		66B0E8A01EA02B1100A3422E /* ResolutionsArrayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResolutionsArrayController.swift; path = Resolutions/Views/ResolutionsArrayController.swift; sourceTree = "<group>"; };
 		66B37A641E92B02D00FDC343 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		66B3E01D1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Resolutions.swift"; sourceTree = "<group>"; };
 		66D2CF6A1E92E8020030FD54 /* GithubRepoMO+Resolutions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GithubRepoMO+Resolutions.swift"; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 		66837DFA1E089C2700F70E8D = {
 			isa = PBXGroup;
 			children = (
+				66B0E8A01EA02B1100A3422E /* ResolutionsArrayController.swift */,
 				665CA8091E9F64220013A8F5 /* ResolutionsSplitView.swift */,
 				667ECF4D1E9F3C2C00D9CE80 /* NSColor+Resolutions.swift */,
 				667ECF4B1E9F03EA00D9CE80 /* LabelMO+Resolutions.swift */,
@@ -410,6 +413,7 @@
 				669AE2AF1E9C47650060FF3D /* GithubIssue.swift in Sources */,
 				662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */,
 				66A77D061E09D4E2009602B7 /* RequestPoller.swift in Sources */,
+				66B0E8A11EA02B1100A3422E /* ResolutionsArrayController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,6 +554,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danielma.Resolutions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -570,6 +575,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danielma.Resolutions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
