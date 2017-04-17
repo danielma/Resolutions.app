@@ -74,6 +74,7 @@ class ResolutionsTableViewController: NSViewController, NSTableViewDelegate {
     ResolutionsTableViewController.coordinator.addObserver(self, forKeyPath: "selectedObjects", options: .new, context: &myContext)
     ResolutionsTableViewController.coordinator.addObserver(self, forKeyPath: "headersVisible", options: .new, context: &myContext)
     NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(updateDockIcon), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: managedObjectContext)
 
     tableView.delegate = self
     tableView.target = self

@@ -11,7 +11,6 @@
 		661493651E0DA715000B87C8 /* notifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 661493641E0DA715000B87C8 /* notifications.json */; };
 		662882261E0B058200589D1E /* RSResolutionCheckboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */; };
 		662B928B1E0C679100CEDD09 /* ResolutionsSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */; };
-		662B928D1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */; };
 		662ED6351E95A48C007E0E39 /* GithubEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662ED6341E95A48C007E0E39 /* GithubEvent.swift */; };
 		66443AA11E931D0C006A269D /* ResolutionMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66443A9F1E931D0C006A269D /* ResolutionMO+CoreDataClass.swift */; };
 		66443AA21E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66443AA01E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift */; };
@@ -100,7 +99,6 @@
 		661493641E0DA715000B87C8 /* notifications.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = notifications.json; path = fixtures/notifications.json; sourceTree = "<group>"; };
 		662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSResolutionCheckboxCell.swift; sourceTree = "<group>"; };
 		662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResolutionsSourceViewController.swift; path = Resolutions/Views/ResolutionsSourceViewController.swift; sourceTree = SOURCE_ROOT; };
-		662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResolutionsSplitViewController.swift; path = Resolutions/Views/ResolutionsSplitViewController.swift; sourceTree = SOURCE_ROOT; };
 		662ED6341E95A48C007E0E39 /* GithubEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubEvent.swift; sourceTree = "<group>"; };
 		66443A9F1E931D0C006A269D /* ResolutionMO+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ResolutionMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		66443AA01E931D0C006A269D /* ResolutionMO+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ResolutionMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -269,7 +267,6 @@
 			isa = PBXGroup;
 			children = (
 				662B928A1E0C679100CEDD09 /* ResolutionsSourceViewController.swift */,
-				662B928C1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift */,
 				662882251E0B058200589D1E /* RSResolutionCheckboxCell.swift */,
 				66443AA51E94625F006A269D /* ResolutionsTableViewController.swift */,
 				66B06C7D1E09B12000F203F6 /* RSPreferencesViewController.swift */,
@@ -330,7 +327,7 @@
 				TargetAttributes = {
 					66837E021E089C2700F70E8D = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = 9ZS2BN65E9;
+						DevelopmentTeam = 6SXNJNU6LP;
 						ProvisioningStyle = Automatic;
 					};
 					66837E131E089C2700F70E8D = {
@@ -389,7 +386,6 @@
 			files = (
 				6695D06F1E92CDAE0057E54B /* MainWindowViewController.swift in Sources */,
 				662ED6351E95A48C007E0E39 /* GithubEvent.swift in Sources */,
-				662B928D1E0C836B00CEDD09 /* ResolutionsSplitViewController.swift in Sources */,
 				665CA80A1E9F64220013A8F5 /* ResolutionsSplitView.swift in Sources */,
 				6664C59F1E9D7FD70067C6E3 /* DataModel.xcdatamodeld in Sources */,
 				66B3E01E1E0B4F7100D66F43 /* NSRegularExpression+Resolutions.swift in Sources */,
@@ -544,7 +540,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 9ZS2BN65E9;
+				DEVELOPMENT_TEAM = 6SXNJNU6LP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
@@ -565,7 +561,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 9ZS2BN65E9;
+				DEVELOPMENT_TEAM = 6SXNJNU6LP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
