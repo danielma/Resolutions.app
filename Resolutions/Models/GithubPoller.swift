@@ -57,7 +57,7 @@ class GithubPoller {
     eventsPoller
       .map { events in
         NotificationCenter.default.post(name: GithubPoller.updateStartedNotificationName, object: self)
-        GithubPoller.queue.sync {
+        GithubPoller.queue.async {
           events.forEach { self.handleEvent($0) }
           do {
             NotificationCenter.default.post(name: GithubPoller.updateFinishedNotificationName, object: self)
@@ -71,7 +71,7 @@ class GithubPoller {
     notificationsPoller
       .map { notifications in
         NotificationCenter.default.post(name: GithubPoller.updateStartedNotificationName, object: self)
-        GithubPoller.queue.sync {
+        GithubPoller.queue.async {
           when(resolved: notifications.map { self.handleNotification($0) })
             .always {
               NotificationCenter.default.post(name: GithubPoller.updateFinishedNotificationName, object: self)
