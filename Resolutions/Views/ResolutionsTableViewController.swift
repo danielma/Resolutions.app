@@ -167,11 +167,11 @@ class CheckboxTableCell: NSTableCellView {
       }
     }
     set {
-      guard let resolution = objectValue as? ResolutionMO,
-        (ResolutionsTableViewController.coordinator["checkShouldRemove"] as? Bool) == true
+      guard let resolution = objectValue as? ResolutionMO
         else { return }
 
-      if let rowView = (superview as? NSTableRowView),
+      if (ResolutionsTableViewController.coordinator["checkShouldRemove"] as? Bool) == true,
+        let rowView = (superview as? NSTableRowView),
         let tableView = rowView.superview as? NSTableView {
         let indexSet = IndexSet(integer: tableView.row(for: rowView))
         NSAnimationContext.runAnimationGroup({ context in
