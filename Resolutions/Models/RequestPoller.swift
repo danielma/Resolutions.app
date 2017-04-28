@@ -62,7 +62,9 @@ class RequestPoller<Element> {
   }
 
   internal func timedIteration() {
-    _ = iteration().then { _ in self.enqueueNextIteration() }
+    _ = iteration().always {
+      self.enqueueNextIteration()
+    }
   }
 
   @discardableResult
